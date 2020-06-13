@@ -2,115 +2,108 @@ package controller;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import model.Planet;
 import model.Player;
 import model.SpaceObject;
 import model.Vector;
 
-public class GameBoard {
-	
+public class GameBoard{
+
 	// the player object with player car object
 	private Player player;
+
 	private Input input;
-	
+
 	private int width, height;
 	private boolean isRunning;
-	private Boolean gameWon;
-	
-	private static int maxSpaceObject;
+	private boolean gameEnded;
+
 	public List<SpaceObject> spaceObjects = new ArrayList<>();
-	public static List<SpaceObject> tmpspaceObjects = new ArrayList<>();
-	
-	//constants
-	public static int NUMBER_OF_PLANETS = 5;
-	public static int NUMBER_OF_MOONS = 2;
-	
-	
-	
+	public static List<SpaceObject> deadSpaceObjects = new ArrayList<>();
+
+	private static int maxSpaceObject;
+
 	/**
-	 * Constructor, creates the gameboard based on size 
+	 * Constructor, creates the gameboard based on size
+	 * 
 	 * @param size of the gameboard
 	 */
-	public GameBoard(int width, int height, Input input) {
-		this.player = new Player(new Vector(250, 30), new Vector(1, 0));
+	public GameBoard(int width, int height, Input input){
+		gameEnded = false;
+		this.player = new Player();
 		this.width = width;
 		this.height = height;
 		this.input = input;
 		this.addSpaceObjects();
 	}
-	
+
 	/**
 	 * Adds specified number of cars to the cars list, creates new object for each car
 	 */
-	public void addSpaceObjects() {
-		for (int i = 0; i < NUMBER_OF_PLANETS; i++) {
-			spaceObjects.add(new Planet(width(), height()));
-		}
-        for (int i = 0; i < NUMBER_OF_TESLA_CARS; i++) {
-        	spaceObjects.add(new FastCar(width(), height()));
-        }
-        
-        spaceObjects.add(new CrazyCar(width(), height()));
-		
-	}
-	
+	public void addSpaceObjects(){
+		spaceObjects = chooseMap().getObjects();
+		spaceObjects.add(player);
+	}  
+
 	/**
-	 * Removes all existing cars from the car list, resets the position of the
-	 * player car Invokes the creation of new car objects by calling addCars()
+	 * Removes all existing cars from the car list, resets the position of the player car
+	 * Invokes the creation of new car objects by calling addCars()
 	 */
-	public void resetSpaceObjects() {
-		this.player = new Player(new Vector(250, 30), new Vector(1, 0));
+	public void resetSpaceObjects(){
+		this.player = new Player();
 		spaceObjects.clear();
 		addSpaceObjects();
 	}
-	
+
 	/**
 	 * Checks if game is currently running by checking if the thread is running
+	 * 
 	 * @return boolean isRunning
 	 */
-	public boolean isRunning() {
+	public boolean isRunning(){
 		return this.isRunning;
 	}
-	
+
 	/**
 	 * Used for testing only
 	 */
-	public void setRunning(boolean isRunning) {
+	public void setRunning(boolean isRunning){
 		this.isRunning = isRunning;
 	}
-	
+
 	/**
 	 * 
-	 * @return null if the game is running; true if the player has won; false if the player has lost
+	 * @return null if the game is running; true if the player has won; false if the player
+	 *         has lost
 	 */
-	public Boolean hasWon() {
-		return this.gameWon;
-	}	
-	
+	public Boolean hasEnded(){
+		return this.gameEnded;
+	}
+
 	/**
 	 * @return list of cars
 	 */
-	public List<SpaceObject> getspaceObjects() {
+	public List<SpaceObject> getspaceObjects(){
 		return spaceObjects;
 	}
-	
+
 	/**
 	 * Starts the game. Cars start to move and background music starts to play.
 	 */
-	public void startGame() {
+	public void startGame(){
 		this.isRunning = true;
 	}
-	
+
 	/**
 	 * Stops the game. Cars stop moving and background music stops playing.
 	 */
-	public void stopGame() {
+	public void stopGame(){
 		this.isRunning = false;
 	}
-	
-	public void updateSpaceObjects() {
-		
+
+	public void updateSpaceObjects(){
 
 		List<SpaceObject> spaceObjects = getspaceObjects();
 
@@ -119,76 +112,81 @@ public class GameBoard {
 		int maxY = height;
 
 		// update the positions of the player car and the autonomous cars
-		for (SpaceObject so : spaceObjects) {
-			so.updatePosition(maxX, maxY);
+		for (SpaceObject so: spaceObjects){
+			so.move(maxX, maxY);
 		}
 
-		player.updatePosition(maxX, maxY);
+		player.move(maxX, maxY);
 
 		// iterate through all cars (except player car) and check if it is crunched
-		for (SpaceObject so : spaceObjects) {
-			if (so.isCrunched()) {
+		for (SpaceObject so1: spaceObjects){
+			if (!so1.isAlive())
 				continue; // because there is no need to check for a collision
-			}
 			
-			// : Add a new collision type! 
-			// Hint: Make sure to create a subclass of the class Collision 
-			// and store it in the new Collision package.
-			// Create a new collision object 
-			// and check if the collision between player car and autonomous car evaluates as expected
-
-			Collision collision = new Collision(player, so);
-
-			if (collision.detectCollision()) {
-			
+			for (SpaceObject so2: spaceObjects){
 				
-				collision.collide();
+				//TODO equals überschreiben
+				if(so1.equals(so2))
+					continue;
 				
-				if(winner != null) {
-					// : The loser car is crunched and stops driving
-					Car loser = collision.evaluateLoser();
-					loserCars.add(loser);
-					loser.setCrunched();
+				// : Add a new collision type!
+				// Hint: Make sure to create a subclass of the class Collision
+				// and store it in the new Collision package.
+				// Create a new collision object
+				// and check if the collision between player car and autonomous car evaluates as expected
+
+				Collision collision = new Collision(so1, so2);
+
+				if (collision.detectCollision()){
+
+					collision.collide();
+
+					// : The player gets notified when he looses or wins the game
+					// Hint: you should set the attribute gameWon accordingly, use 'isWinner()' below for your
+					// implementation
+					if (!player.isAlive())
+						gameEnded = true;
+
 				}
-				
-				// : The player gets notified when he looses or wins the game
-				// Hint: you should set the attribute gameWon accordingly, use 'isWinner()' below for your implementation
-				if(isWinner())
-					gameWon = true;
-				if(player.isAlive())
-					gameWon = false;
-				
 			}
 		}
-		
+
+		for (SpaceObject spaceObject: deadSpaceObjects){
+			spaceObjects.remove(spaceObject);
+		}
+
 		input.updateLoop();
 	}
-	
-	
-	public void chooseMap() {
-		
+
+	public Maps chooseMap(){
+
+		return Maps.EASY;
 	}
-	
-//	/**
-//	 * @return list of loser cars
-//	 */
-//	public List<Car> getLoserCars() {
-//		return this.loserCars;
-//	}
-	
-//	/**
-//	 * If all cars are crunched, the player wins.
-//	 * 
-//	 * @return true if game is won
-//	 * @return false if game is not (yet) won
-//	 */
-//	private boolean isWinner() {
-//		for (SpaceObject so : spaceObjects) {
-//			if (!so.isCrunched()) {
-//				return false;
-//			}
-//		}
-//		return true;
-//	}
-	
+
+	public Player getPlayer(){
+		return player;
+	}
+
+	// /**
+	// * @return list of loser cars
+	// */
+	// public List<Car> getLoserCars() {
+	// return this.loserCars;
+	// }
+
+	// /**
+	// * If all cars are crunched, the player wins.
+	// *
+	// * @return true if game is won
+	// * @return false if game is not (yet) won
+	// */
+	// private boolean isWinner() {
+	// for (SpaceObject so : spaceObjects) {
+	// if (!so.isCrunched()) {
+	// return false;
+	// }
+	// }
+	// return true;
+	// }
+
 }

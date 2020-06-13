@@ -1,5 +1,7 @@
 package model;
 
+import controller.GameBoard;
+
 public abstract class SpaceObject{
 	protected final int radius;
 	protected final String icon;
@@ -20,15 +22,52 @@ public abstract class SpaceObject{
 		this.alive = true;
 	}
 
-
-
-	public abstract void move();
+	public abstract void move(int maxX, int maxY);
 	
 	public void die() {
+		GameBoard.deadSpaceObjects.add(this);
 		alive = false;
 	}
 	
 	public boolean isAlive(){
 		return alive;
 	}
+
+	public double getSpeed(){
+		return speed;
+	}
+
+
+
+	public void setSpeed(double speed){
+		this.speed = speed;
+	}
+
+
+
+	public int getRadius(){
+		return radius;
+	}
+
+
+
+	public String getIcon(){
+		return icon;
+	}
+
+
+
+	public Vector getPositionVector(){
+		return positionVector;
+	}
+
+
+
+	public Vector getDirectionVector(){
+		return directionVector;
+	}
+
+
+
+
 }

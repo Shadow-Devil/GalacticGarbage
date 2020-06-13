@@ -62,13 +62,10 @@ public class GameBoardUI extends Canvas implements Runnable{
 	public void run(){
 		while (this.gameBoard.isRunning()){
 			// updates car positions and re-renders graphics
-			this.gameBoard.update();
+			this.gameBoard.updateSpaceObjects();
 			// when this.gameBoard.hasWon() is null, do nothing
-			if (this.gameBoard.hasWon() == Boolean.FALSE){
+			if (this.gameBoard.hasEnded() == true){
 				showAsyncAlert("Oh.. you lost.");
-				this.stopGame();
-			} else if (this.gameBoard.hasWon() == Boolean.TRUE){
-				showAsyncAlert("Congratulations! You won!!");
 				this.stopGame();
 			}
 			paint(this.graphicsContext);
@@ -108,17 +105,18 @@ public class GameBoardUI extends Canvas implements Runnable{
 	 * default value. Player car is reset to default starting position. Renders graphics.
 	 */
 	public void gameSetup(){
-		this.gameBoard = new GameBoard(this.size);
+		this.input = new Input();
+		this.gameBoard = new GameBoard(width, height, input);
 		this.widthProperty().set(this.width);
 		this.heightProperty().set(this.height);
 		this.width = (int) getWidth();
 		this.height = (int) getHeight();
 		this.spaceImages = new HashMap<>();
-		this.input = new Input();
-		this.gameBoard.resetCars();
-		this.gameBoard.getCars().forEach((car -> this.spaceImages.put(car, getImage(car.getIconLocation()))));
-		this.spaceImages.put(this.gameBoard.getPlayerCar(),
-			this.getImage(this.gameBoard.getPlayerCar().getIconLocation()));
+		
+		this.gameBoard.resetSpaceObjects();
+		this.gameBoard.getspaceObjects().forEach((so -> this.spaceImages.put(so, getImage(so.getIcon()))));
+		this.spaceImages.put(this.gameBoard.getPlayer(),
+			this.getImage(this.gameBoard.getPlayer().getIcon()));
 		paint(this.graphicsContext);
 		this.toolBar.resetToolBarButtonStatus(false);
 	}
@@ -169,7 +167,7 @@ public class GameBoardUI extends Canvas implements Runnable{
 		graphics.setFill(backgroundColor);
 		graphics.fillRect(0, 0, getWidth(), getHeight());
 
-		for (SpaceObject so: this.gameBoard.getSpaceObjects()){
+		for (SpaceObject so: this.gameBoard.getspaceObjects()){
 			paintSpaceObject(so, graphics);
 		}
 		// render player car
@@ -183,11 +181,15 @@ public class GameBoardUI extends Canvas implements Runnable{
 	 * @param graphics used to draw changes
 	 */
 	private void paintSpaceObject(SpaceObject so, GraphicsContext graphics){
-		Vector spaceObjectPositionVector = so.getPosition();
-		Point2D canvasPosition = convertPosition(carPosition);
+		Vector spaceObjectPositionVector = so.getPositionVector();
+		Vector canvasPosition = convertPosition(spaceObjectPositionVector);
 
-		graphics.drawImage(this.spaceImages.get(
-			so), canvasPosition.getX(), canvasPosition.getY(), so.getSize().getWidth(), so.getSize().getHeight());
+		//TODO richtige drehung, vll. invertieren
+		graphics.save(); // saves the current state on stack, including the current transform
+        graphics.rotate((double) (so.getDirectionVector().getDegree()));
+        graphics.drawImage(this.spaceImages.get(
+			so), canvasPosition.getX(), canvasPosition.getY(), so.getRadius()*2, so.getRadius()*2);
+        graphics.restore(); // back to original state (before rotation)
 	}
 
 	/**

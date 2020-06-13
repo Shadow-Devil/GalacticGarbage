@@ -32,7 +32,7 @@ public class Toolbar extends ToolBar {
             ButtonType YES = new ButtonType("Yes", ButtonBar.ButtonData.YES);
             ButtonType NO = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
 
-            Alert alert = new Alert(AlertType.CONFIRMATION, "Do you really want to stop the game ?", YES, NO);
+            Alert alert = new Alert(AlertType.CONFIRMATION, "Do you really want to stop the game?", YES, NO);
             alert.setTitle("Stop Game Confirmation");
             alert.setHeaderText("");
 
