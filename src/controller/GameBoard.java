@@ -15,6 +15,10 @@ public class GameBoard{
 	private Player player;
 
 	private Input input;
+	//sollte static sein um vom Player darauf zuzugreifen, 
+	//lässt sich für den Rest auch so argumentieren --> alles static?
+	
+	private final int difficulty;
 
 	private int width, height;
 	private boolean isRunning;
@@ -29,18 +33,23 @@ public class GameBoard{
 	 * Constructor, creates the gameboard based on size
 	 * 
 	 * @param size of the gameboard
+	 * @param input checker
+	 * @param difficulty from 0(EASY) to 2(HARD)
 	 */
-	public GameBoard(int width, int height, Input input){
+	public GameBoard(int width, int height, Input input, int difficulty){
 		gameEnded = false;
 		this.player = new Player();
 		this.width = width;
 		this.height = height;
 		this.input = input;
 		this.addSpaceObjects();
+		this.difficulty = difficulty;
 	}
 
 	/**
-	 * Adds specified number of cars to the cars list, creates new object for each car
+	 * Removes all existing spaceObjects from the spaceObjects list. <br>
+	 * Adds specified number of spaceObjects to the spaceObjects list. The number of spaceObjects depends on the chosen map
+	 * and therefore difficulty.
 	 */
 	public void addSpaceObjects(){
 		spaceObjects = chooseMap().getObjects();
@@ -48,12 +57,12 @@ public class GameBoard{
 	}  
 
 	/**
-	 * Removes all existing cars from the car list, resets the position of the player car
-	 * Invokes the creation of new car objects by calling addCars()
+	 * Resets the position of the player. <br>
+	 * Invokes the creation of new spaceObjects.
 	 */
 	public void resetSpaceObjects(){
 		this.player = new Player();
-		spaceObjects.clear();
+//		spaceObjects.clear();	//eig nicht nötig
 		addSpaceObjects();
 	}
 
@@ -83,21 +92,21 @@ public class GameBoard{
 	}
 
 	/**
-	 * @return list of cars
+	 * @return list of spaceObjects
 	 */
 	public List<SpaceObject> getspaceObjects(){
 		return spaceObjects;
 	}
 
 	/**
-	 * Starts the game. Cars start to move and background music starts to play.
+	 * Starts the game. SpaceObjects start to move.
 	 */
 	public void startGame(){
 		this.isRunning = true;
 	}
 
 	/**
-	 * Stops the game. Cars stop moving and background music stops playing.
+	 * Stops the game. SpaceObjects stop moving.
 	 */
 	public void stopGame(){
 		this.isRunning = false;
@@ -157,10 +166,29 @@ public class GameBoard{
 
 		input.updateLoop();
 	}
-
+	
+	/**
+	 * Sets the default number of maximum spaceObjects on the GameBoard.
+	 * @return the current Map
+	 */
 	public Maps chooseMap(){
-
-		return Maps.EASY;
+		switch (difficulty) {
+		case 0: {
+			maxSpaceObject = Maps.EASY.getMaxSpaceObjects();
+			return Maps.EASY;
+		}
+		case 1: {
+			maxSpaceObject = Maps.MEDIUM.getMaxSpaceObjects();
+			return Maps.MEDIUM;
+		}
+		case 2: {
+			maxSpaceObject = Maps.HARD.getMaxSpaceObjects();
+			return Maps.HARD;
+		}
+		default:
+			maxSpaceObject = Maps.EASY.getMaxSpaceObjects();
+			return Maps.EASY;
+		}
 	}
 
 	public Player getPlayer(){

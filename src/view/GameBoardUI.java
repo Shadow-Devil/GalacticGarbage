@@ -85,7 +85,6 @@ public class GameBoardUI extends Canvas implements Runnable{
 	}
 
 	/**
-	 * 
 	 * @return mouse steering control object
 	 */
 	public Input getInput(){
@@ -101,12 +100,12 @@ public class GameBoardUI extends Canvas implements Runnable{
 	}
 
 	/**
-	 * Removes all existing cars from the game board and re-adds them. Status bar is set to
-	 * default value. Player car is reset to default starting position. Renders graphics.
+	 * Removes all existing spaceObjects from the game board and re-adds them. Status bar is set to
+	 * default value. Player spaceship is reset to default starting position. Renders graphics.
 	 */
 	public void gameSetup(){
 		this.input = new Input();
-		this.gameBoard = new GameBoard(width, height, input);
+		this.gameBoard = new GameBoard(width, height, input, 0);
 		this.widthProperty().set(this.width);
 		this.heightProperty().set(this.height);
 		this.width = (int) getWidth();
@@ -127,7 +126,7 @@ public class GameBoardUI extends Canvas implements Runnable{
 	 * @param carImageFilePath: an image file path that needs to be available in the resources
 	 *                          folder of the project
 	 */
-	private Image getImage(String carImageFilePath){
+	private Image getImage(String carImageFilePath){	//TODO GameBoardUI - getImage()
 		try{
 			URL carImageUrl = getClass().getClassLoader().getResource(carImageFilePath);
 			if (carImageUrl == null){
@@ -144,7 +143,7 @@ public class GameBoardUI extends Canvas implements Runnable{
 
 	/**
 	 * Starts the GameBoardUI Thread, if it wasn't running. Starts the game board, which
-	 * causes the cars to change their positions (i.e. move). Renders graphics and updates
+	 * causes the spaceObjects to change their positions (i.e. move). Renders graphics and updates
 	 * tool bar status.
 	 */
 	public void startGame(){
@@ -158,8 +157,8 @@ public class GameBoardUI extends Canvas implements Runnable{
 	}
 
 	/**
-	 * Render the graphics of the whole game by iterating through the cars of the game board
-	 * at render each of them individually.
+	 * Render the graphics of the whole game by iterating through the spaceObjects 
+	 * of the game board at render each of them individually.
 	 * 
 	 * @param graphics used to draw changes
 	 */
@@ -170,14 +169,14 @@ public class GameBoardUI extends Canvas implements Runnable{
 		for (SpaceObject so: this.gameBoard.getspaceObjects()){
 			paintSpaceObject(so, graphics);
 		}
-		// render player car
+		// render player spaceShip
 		paintSpaceObject(this.gameBoard.getPlayer(), graphics);
 	}
 
 	/**
-	 * Show image of a car at the current position of the car.
+	 * Show image of a spaceObject at the current position of the spaceObject.
 	 * 
-	 * @param car      to be drawn
+	 * @param so SpaceObject to be drawn
 	 * @param graphics used to draw changes
 	 */
 	private void paintSpaceObject(SpaceObject so, GraphicsContext graphics){
@@ -193,7 +192,7 @@ public class GameBoardUI extends Canvas implements Runnable{
 	}
 
 	/**
-	 * Converts position of car to position on the canvas
+	 * Converts position of spaceObject to position on the canvas
 	 * 
 	 * @param toConvert the point to be converted
 	 */
@@ -211,6 +210,7 @@ public class GameBoardUI extends Canvas implements Runnable{
 		}
 	}
 
+	//TODO "in updateSpaceObjects()" ?
 	/**
 	 * Method used to display alerts in moveCars() Java 8 Lambda Functions: java 8 lambda
 	 * function without arguments Platform.runLater Function:
@@ -226,7 +226,4 @@ public class GameBoardUI extends Canvas implements Runnable{
 			this.gameSetup();
 		});
 	}
-
-
-
 }

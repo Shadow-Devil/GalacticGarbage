@@ -47,6 +47,7 @@ public class Toolbar extends ToolBar {
 
     /**
      * Resets the toolbar button status
+     * 
      * @param running Used to disable/enable buttons
      */
     public void resetToolBarButtonStatus(boolean running) {
