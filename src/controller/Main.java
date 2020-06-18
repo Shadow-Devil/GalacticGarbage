@@ -42,7 +42,7 @@ public class Main extends Application {
 
 		// scene and stages
 		Scene scene = new Scene(gridLayout);
-		primaryStage.setTitle("Bumpers");
+		primaryStage.setTitle("Galactic Garbage");
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
