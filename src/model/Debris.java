@@ -14,13 +14,19 @@ public class Debris extends SpaceObject{
 	
 	@Override
 	public void move(int maxX, int maxY){
-		// TODO Auto-generated method stub
+		// TODO Debris - move()
 	}
 
+	/**
+	 * Is invoked when debris is split into smaller parts.
+	 */
 	public void split() {
-		
+		//TODO Debris - split()
 	}
 	
+	/**
+	 * @return size
+	 */
 	public int getSize(){
 		return size;
 	}

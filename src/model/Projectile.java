@@ -11,8 +11,7 @@ public class Projectile extends SpaceObject{
 
 	@Override
 	public void move(int maxX, int maxY){
-		// TODO Auto-generated method stub
-		
+		// TODO Projectile - move()
 	}
 
 }

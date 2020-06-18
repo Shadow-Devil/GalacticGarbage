@@ -17,6 +17,12 @@ public class Input implements KeyListener{
         handle(e, false);
     }    
     
+    /**
+     * Wird bei Tastendruck aufgerufen & aktualisiert entsprechende booleans
+     * 
+     * @param e
+     * @param pressed
+     */
     private void handle(KeyEvent e, boolean pressed) {
         int keyCode = e.getKeyCode();
         

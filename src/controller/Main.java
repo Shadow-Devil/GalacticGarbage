@@ -10,11 +10,11 @@ import view.Toolbar;
 
 public class Main extends Application {
 
-	public GameBoardUI gameBoardUI; // the user interface object, where cars drive
+	public GameBoardUI gameBoardUI; // the user interface object
 	public Toolbar toolBar; // the tool bar object with start and stop buttons
 
 	/**
-	 * Starts the Bumpers Window by setting up a new tool bar, a new user
+	 * Starts the GalacticGarbage Window by setting up a new tool bar, a new user
 	 * interface and adding them to the stage.
 	 * 
 	 * @see javafx.application.Application#start(javafx.stage.Stage)
