@@ -19,7 +19,9 @@ public abstract class SpaceObject{
 		this.alive = true;
 	}
 
-	public abstract void move(int maxX, int maxY);
+	public void move(int maxX, int maxY) {
+		this.getPositionVector().add(directionVector.copy().multiply(speed));
+	}
 	
 	/**
 	 * Adds this spaceObject to GameBoard.deadSpaceObjects. <br>

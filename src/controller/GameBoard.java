@@ -14,7 +14,7 @@ public class GameBoard{
 	// the player object with player car object
 	private Player player;
 
-	private Input input;
+	public static Input input;
 	//sollte static sein um vom Player darauf zuzugreifen, 
 	//lässt sich für den Rest auch so argumentieren --> alles static?
 	

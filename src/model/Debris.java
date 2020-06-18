@@ -10,13 +10,6 @@ public class Debris extends SpaceObject{
 		// TODO Auto-generated constructor stub
 	}
 
-	
-	
-	@Override
-	public void move(int maxX, int maxY){
-		// TODO Debris - move()
-	}
-
 	/**
 	 * Is invoked when debris is split into smaller parts.
 	 */

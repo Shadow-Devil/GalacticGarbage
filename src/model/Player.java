@@ -1,9 +1,12 @@
 package model;
 
+import controller.GameBoard;
+
 public class Player extends SpaceObject{
 	
 	private static final String ICONNAME = "playerIcon";
 	private int health = 100;
+	private static double DEGREE_ON_TURN = 3.0;//TODO wert
 	
 	public Player(){
 		//TODO
@@ -19,7 +22,16 @@ public class Player extends SpaceObject{
 	
 	@Override
 	public void move(int maxX, int maxY) {
-		// TODO Player - move()
+		// TODO Turn
+		boolean a = GameBoard.input.isaPressed();
+		boolean b = GameBoard.input.isdPressed();
+		if (a && b) {
+		} else if (a) {
+			this.getDirectionVector().turn(DEGREE_ON_TURN);
+		} else if (b) {
+			this.getDirectionVector().turn(-DEGREE_ON_TURN);
+		}
+		super.move(maxX, maxY);
 	}
 	
 	/**
