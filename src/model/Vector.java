@@ -9,28 +9,41 @@ public class Vector{
 		this.y = y;
 	}
 	
-	public void add(Vector v) {
+	public Vector add(Vector v) {
 		x += v.x;
 		y += v.y;
+		return this;
 	}
 	
-	public void multiply(int scalar) {
+	public Vector multiply(double scalar) {
 		x *= scalar;
 		y *= scalar;
+		return this;
 	}
 	
-	public void turnUnitVector(int degree) {
+	public Vector turn(double degree) {
+		double length = this.getLength();
+		turnUnitVector(degree);
+		multiply(length);
+		return this;
+	}
+	
+	public void turnUnitVector(double degree) {
 		this.x = Math.cos(Math.toRadians(degree + this.getDegree()));
 		this.y = Math.sin(Math.toRadians(degree + this.getDegree()));
 	}
 	
-	public int getDegree() {
-		return (int) (Math.atan2(0.5, 0.5)*180/Math.PI);
+	public double getDegree() {
+		return Math.atan2(y, x)*180/Math.PI;
 	}
 	
 //	public static Vector vectorAfterDegree(int degree){
 //		return new Vector((float)Math.cos(Math.toRadians(degree)), (float)Math.sin(Math.toRadians(degree)));
 //	}
+	
+	public double getLength() {
+		return Math.sqrt(x*x + y*y);
+	}
 	
 	public double getX(){
 		return x;
@@ -38,6 +51,19 @@ public class Vector{
 	
 	public double getY(){
 		return y;
+	}
+	
+	public void setX(double x){
+		this.x = x;
+	}
+	
+	public void setY(double y){
+		this.y = y;
+	}
+	
+	public void setXY(double x, double y){
+		this.x = x;
+		this.y = y;
 	}
 	
 	public Vector copy() {
