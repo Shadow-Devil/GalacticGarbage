@@ -16,4 +16,23 @@ public class Moon extends SpaceObject{
 		Vector newPos = planet.copy().add(this.getDirectionVector());
 		this.getPositionVector().setXY(newPos.getX(), newPos.getY());
 	}
+
+	@Override
+	public void collide(SpaceObject two, Vector collisionVector){
+		if(two instanceof Player) {
+			two.die();
+		}else if(two instanceof Debris) {
+			if(((Debris) two).getSize() == 0) 
+				two.die();
+			else {
+				//TODO eventuell GameLost/fancy methode(split?)
+				//TODO mond keine auswirkung durch die Collision
+				repel(two, collisionVector);
+			}
+		}else if(two instanceof Projectile) {
+			two.die();
+		}else {
+			throw new IllegalArgumentException("Mond ist mit einem Mond/Planeten collided");
+		}
+	}
 }

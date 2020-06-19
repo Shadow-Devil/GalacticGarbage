@@ -10,7 +10,7 @@ public abstract class SpaceObject{
 	protected double speed;
 	protected boolean alive;
 	
-	public SpaceObject(int radius, String icon, Vector positionVector, Vector directionVector, double speed){
+	public SpaceObject(int radius, String icon, Vector positionVector, Vector directionVector, double speed) {
 		this.radius = radius;
 		this.icon = icon;
 		this.positionVector = positionVector;
@@ -21,6 +21,16 @@ public abstract class SpaceObject{
 
 	public void move(int maxX, int maxY) {
 		this.getPositionVector().add(directionVector.copy().multiply(speed));
+		//TODO Beschleunigung
+		if(this.getPositionVector().getX() >= maxX)
+			this.getPositionVector().setX(0);
+		if(this.getPositionVector().getY() >= maxY)
+			this.getPositionVector().setY(0);
+		
+		if(this.getPositionVector().getX() < 0)
+			this.getPositionVector().setX(maxX);
+		if(this.getPositionVector().getY() > 0)
+			this.getPositionVector().setY(maxY);
 	}
 	
 	/**
@@ -58,5 +68,30 @@ public abstract class SpaceObject{
 
 	public Vector getDirectionVector(){
 		return directionVector;
+	}
+
+	public abstract void collide(SpaceObject two, Vector collisionVector);
+	
+	public void bounce(SpaceObject two, Vector collisionVector){
+		double degree = 90 - collisionVector.getDegree();//TODO kontrollieren
+		
+		Vector v1 = this.directionVector.copy().turn(degree).multiply(this.speed);
+		Vector v2 = two.directionVector.copy().turn(degree).multiply(two.speed);
+		
+		double temp = v1.getY();
+		v1.setY(v2.getY());
+		v2.setY(temp);
+		
+	}
+	
+	public void repel(SpaceObject two, Vector collisionVector){
+		double degree = collisionVector.getDegree() - two.directionVector.getDegree();
+		double diff = Math.signum(degree);
+		if (diff == 0){
+			two.directionVector.multiply(-1);
+		} else {
+			two.directionVector.turn(2*degree*diff);
+		}
+
 	}
 }

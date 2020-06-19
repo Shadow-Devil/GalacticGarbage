@@ -36,7 +36,7 @@ public class GameBoard{
 	 * @param input checker
 	 * @param difficulty from 0(EASY) to 2(HARD)
 	 */
-	public GameBoard(int width, int height, Input input, int difficulty){
+	public GameBoard(int width, int height, Input input, int difficulty) {
 		gameEnded = false;
 		this.player = new Player();
 		this.width = width;
