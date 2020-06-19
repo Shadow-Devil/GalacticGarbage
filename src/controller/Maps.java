@@ -12,7 +12,7 @@ public enum Maps{	//TODO bei getObj immer neue Liste erstellen!!
 	EASY(6) {
 		@Override
 		public List<SpaceObject> getObjects(){
-			List<SpaceObject> map = new ArrayList<SpaceObject>();
+			List<SpaceObject> map = new ArrayList<>();
 			
 			//map.add(new Planet(20, 0, new Vector(30, 30)));
 			

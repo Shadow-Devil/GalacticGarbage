@@ -15,23 +15,23 @@ public class Input{
      * @param pressed
      */
     public static void handle(KeyEvent event, boolean pressed) {
-		String key = event.getCharacter();
+		String key = event.getCode().getChar();
 		System.out.println("Handle");
 		if (key.equalsIgnoreCase(" ") && spaceAlreadyPressed != true)
 			spacePressed = pressed;
 		spaceAlreadyPressed = pressed;
+	    System.out.println(key);
 		
-		
-		if (key.equalsIgnoreCase("w"))
+		if (key.equals("W"))
 			wPressed = pressed;
 		
-		if (key.equalsIgnoreCase("a"))
+		if (key.equals("A"))
 			aPressed = pressed;
 		
-		if (key.equalsIgnoreCase("s"))
+		if (key.equals("S"))
 			sPressed = pressed;
 		
-		if (key.equalsIgnoreCase("d"))
+		if (key.equals("D"))
 			dPressed = pressed;
 		
 		
@@ -48,6 +48,7 @@ public class Input{
 	}
 	
 	public static boolean iswPressed(){
+		//System.out.println(wPressed);
 		return wPressed;
 	}
 

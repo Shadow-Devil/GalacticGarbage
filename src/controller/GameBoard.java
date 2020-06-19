@@ -41,7 +41,6 @@ public class GameBoard{
 		this.player = new Player();
 		this.width = width;
 		this.height = height;
-		//GameBoard.input = input;
 		System.out.println("setup");
 		this.addSpaceObjects();
 		this.difficulty = difficulty;

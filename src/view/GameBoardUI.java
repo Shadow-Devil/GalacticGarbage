@@ -66,7 +66,7 @@ public class GameBoardUI extends Canvas implements Runnable{
 			// updates car positions and re-renders graphics
 			this.gameBoard.updateSpaceObjects();
 			// when this.gameBoard.hasWon() is null, do nothing
-			if (this.gameBoard.hasEnded() == true){
+			if (this.gameBoard.hasEnded()){
 				showAsyncAlert("Oh.. you lost.");
 				this.stopGame();
 			}
@@ -86,13 +86,6 @@ public class GameBoardUI extends Canvas implements Runnable{
 		return this.gameBoard;
 	}
 
-//	/**
-//	 * @return mouse steering control object
-//	 */
-//	public Input getInput(){
-//		return this.input;
-//	}
-
 	public static int getDEFAULT_WIDTH(){
 		return DEFAULT_WIDTH;
 	}
@@ -106,37 +99,35 @@ public class GameBoardUI extends Canvas implements Runnable{
 	 * default value. Player spaceship is reset to default starting position. Renders graphics.
 	 */
 	public void gameSetup(int difficulty){
-		//this.input = new Input();
 		
-		this.gameBoard = new GameBoard(width, height, difficulty);
-		this.widthProperty().set(this.width);
-		this.heightProperty().set(this.height);
-		this.width = (int) getWidth();
-		this.height = (int) getHeight();
-		this.spaceImages = new HashMap<>();
+		gameBoard = new GameBoard(width, height, difficulty);
+		widthProperty().set(width);
+		heightProperty().set(height);
+		width = (int) getWidth();
+		height = (int) getHeight();
+		spaceImages = new HashMap<>();
 		
-		this.gameBoard.resetSpaceObjects();
-		this.gameBoard.getspaceObjects().forEach((so -> this.spaceImages.put(so, getImage(so.getIcon()))));
-		this.spaceImages.put(this.gameBoard.getPlayer(),
-			this.getImage(this.gameBoard.getPlayer().getIcon()));
-		paint(this.graphicsContext);
-		this.toolBar.resetToolBarButtonStatus(false);
+		gameBoard.resetSpaceObjects();
+		gameBoard.getspaceObjects().forEach((so -> spaceImages.put(so, getImage(so.getIcon()))));
+		//spaceImages.put(gameBoard.getPlayer(), getImage(gameBoard.getPlayer().getIcon()));
+		paint(graphicsContext);
+		toolBar.resetToolBarButtonStatus(false);
 	}
 
 	/**
-	 * Sets the car's image
+	 * Sets the Spaceobjects image
 	 *
-	 * @param carImageFilePath: an image file path that needs to be available in the resources
+	 * @param soImageFilePath: an image file path that needs to be available in the resources
 	 *                          folder of the project
 	 */
-	private Image getImage(String carImageFilePath){	//TODO GameBoardUI - getImage()
+	private Image getImage(String soImageFilePath){	//TODO GameBoardUI - getImage()
 		try{
-			URL carImageUrl = getClass().getClassLoader().getResource(carImageFilePath);
-			if (carImageUrl == null){
+			URL soImageUrl = getClass().getClassLoader().getResource(soImageFilePath);
+			if (soImageUrl == null){
 				throw new RuntimeException(
 					"Please ensure that your resources folder contains the appropriate files for this exercise.");
 			}
-			InputStream inputStream = carImageUrl.openStream();
+			InputStream inputStream = soImageUrl.openStream();
 			return new Image(inputStream);
 		} catch (IOException e){
 			e.printStackTrace();
@@ -150,12 +141,12 @@ public class GameBoardUI extends Canvas implements Runnable{
 	 * tool bar status.
 	 */
 	public void startGame(){
-		if (!this.gameBoard.isRunning()){
-			this.gameBoard.startGame();
-			this.theThread = new Thread(this);
-			this.theThread.start();
-			paint(this.graphicsContext);
-			this.toolBar.resetToolBarButtonStatus(true);
+		if (!gameBoard.isRunning()){
+			gameBoard.startGame();
+			theThread = new Thread(this);
+			theThread.start();
+			paint(graphicsContext);
+			toolBar.resetToolBarButtonStatus(true);
 		}
 	}
 
@@ -169,11 +160,11 @@ public class GameBoardUI extends Canvas implements Runnable{
 		graphics.setFill(backgroundColor);
 		graphics.fillRect(0, 0, getWidth(), getHeight());
 
-		for (SpaceObject so: this.gameBoard.getspaceObjects()){
+		for (SpaceObject so: gameBoard.getspaceObjects()){
 			paintSpaceObject(so, graphics);
 		}
 		// render player spaceShip
-		paintSpaceObject(this.gameBoard.getPlayer(), graphics);
+		paintSpaceObject(gameBoard.getPlayer(), graphics);
 	}
 
 	/**
@@ -189,7 +180,7 @@ public class GameBoardUI extends Canvas implements Runnable{
 		//TODO richtige drehung, vll. invertieren
 		graphics.save(); // saves the current state on stack, including the current transform
         graphics.rotate((double) ((so instanceof Player ? ((Player)so).getFacingVector() : so.getDirectionVector()).getDegree()));
-        graphics.drawImage(this.spaceImages.get(
+        graphics.drawImage(spaceImages.get(
 			so), canvasPosition.getX() - so.getRadius(), canvasPosition.getY() - so.getRadius(), so.getRadius()*2, so.getRadius()*2);
         graphics.restore(); // back to original state (before rotation)
 	}
@@ -207,9 +198,9 @@ public class GameBoardUI extends Canvas implements Runnable{
 	 * Stops the game board and set the tool bar to default values.
 	 */
 	public void stopGame(){
-		if (this.gameBoard.isRunning()){
-			this.gameBoard.stopGame();
-			this.toolBar.resetToolBarButtonStatus(false);
+		if (gameBoard.isRunning()){
+			gameBoard.stopGame();
+			toolBar.resetToolBarButtonStatus(false);
 		}
 	}
 
@@ -226,7 +217,7 @@ public class GameBoardUI extends Canvas implements Runnable{
 			Alert alert = new Alert(Alert.AlertType.INFORMATION);
 			alert.setHeaderText(message);
 			alert.showAndWait();
-			this.gameSetup(0);
+			gameSetup(0);
 		});
 	}
 }
