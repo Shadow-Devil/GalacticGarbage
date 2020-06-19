@@ -14,7 +14,7 @@ public enum Maps{	//TODO bei getObj immer neue Liste erstellen!!
 		public List<SpaceObject> getObjects(){
 			List<SpaceObject> map = new ArrayList<SpaceObject>();
 			
-			map.add(new Planet(20, 0, new Vector(30, 30)));
+			//map.add(new Planet(20, 0, new Vector(30, 30)));
 			
 			
 			return map;

@@ -10,6 +10,11 @@ import view.Toolbar;
 
 public class Main extends Application {
 
+	public static void main(String[] args) {
+    	//This is a workaround for a known issue when starting JavaFX applications 
+        startApp(args);
+    }
+
 	public GameBoardUI gameBoardUI; // the user interface object
 	public Toolbar toolBar; // the tool bar object with start and stop buttons
 
@@ -42,6 +47,13 @@ public class Main extends Application {
 
 		// scene and stages
 		Scene scene = new Scene(gridLayout);
+		scene.setOnKeyPressed(event -> {
+			Input.handle(event, true);
+		});
+		scene.setOnKeyReleased(event -> {
+			Input.handle(event, false);
+		});
+		
 		primaryStage.setTitle("Galactic Garbage");
 		primaryStage.setScene(scene);
 		primaryStage.show();

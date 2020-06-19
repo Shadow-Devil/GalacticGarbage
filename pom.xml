@@ -73,7 +73,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>controller.Main</mainClass>
+							<mainClass>GalacticGarbage</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>

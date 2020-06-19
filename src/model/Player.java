@@ -1,13 +1,15 @@
 package model;
 
 import controller.GameBoard;
+import controller.Input;
 
 public class Player extends SpaceObject{
 	
-	private static final String ICONNAME = "playerIcon";
+	private static final String ICONNAME = "playerIcon.gif";
 	private int health = 100;
 	private static final double DEGREE_ON_TURN = 3.0;//TODO wert
 	private Vector facingVector;
+	private double maxSpeed;
 	
 	public Player(){
 		//TODO
@@ -22,16 +24,36 @@ public class Player extends SpaceObject{
 		
 	}
 	
+	public Vector getFacingVector(){
+		return facingVector;
+	}
+
 	@Override
 	public void move(int maxX, int maxY) {
 		// TODO Turn
-		boolean a = GameBoard.input.isaPressed();
-		boolean b = GameBoard.input.isdPressed();
-		if (a && b) {
-		} else if (a) {
-			this.getDirectionVector().turn(DEGREE_ON_TURN);
-		} else if (b) {
-			this.getDirectionVector().turn(-DEGREE_ON_TURN);
+		boolean a = Input.isaPressed();
+		boolean d = Input.isdPressed();
+		//System.out.println("move1");
+		if (a && d) {
+		} else if (a) { //facingVector
+			System.out.println("TURN LEFT");
+			this.getFacingVector().turn(DEGREE_ON_TURN);
+		} else if (d) {
+			this.getFacingVector().turn(-DEGREE_ON_TURN);
+		}
+		//change movement
+		boolean w = Input.iswPressed();
+		boolean s = Input.issPressed();
+		if (w && s) {
+		} else if (w) { //TODO speed increase
+			System.out.println("pressed w");
+			this.directionVector.multiply(speed).add(this.facingVector.copy().multiply(maxSpeed));
+			speed = this.directionVector.getLength();
+			this.directionVector.toUnit();
+		} else if (s) {
+			this.directionVector.multiply(speed).add(this.facingVector.copy().multiply(-1*maxSpeed));
+			speed = this.directionVector.getLength();
+			this.directionVector.toUnit();
 		}
 		super.move(maxX, maxY);
 	}

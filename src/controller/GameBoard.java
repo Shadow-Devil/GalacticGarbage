@@ -14,7 +14,7 @@ public class GameBoard{
 	// the player object with player car object
 	private Player player;
 
-	public static Input input;
+	//public static Input input;
 	//sollte static sein um vom Player darauf zuzugreifen, 
 	//lässt sich für den Rest auch so argumentieren --> alles static?
 	
@@ -36,12 +36,13 @@ public class GameBoard{
 	 * @param input checker
 	 * @param difficulty from 0(EASY) to 2(HARD)
 	 */
-	public GameBoard(int width, int height, Input input, int difficulty) {
+	public GameBoard(int width, int height, int difficulty) {
 		gameEnded = false;
 		this.player = new Player();
 		this.width = width;
 		this.height = height;
-		this.input = input;
+		//GameBoard.input = input;
+		System.out.println("setup");
 		this.addSpaceObjects();
 		this.difficulty = difficulty;
 	}
@@ -113,7 +114,6 @@ public class GameBoard{
 	}
 
 	public void updateSpaceObjects(){
-
 		List<SpaceObject> spaceObjects = getspaceObjects();
 
 		// maximum x and y values a car can have depending on the size of the game board
@@ -164,7 +164,7 @@ public class GameBoard{
 			spaceObjects.remove(spaceObject);
 		}
 
-		input.updateLoop();
+		Input.updateLoop();
 	}
 	
 	/**

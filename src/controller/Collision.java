@@ -37,17 +37,6 @@ public class Collision{
 		
 		one.collide(two, collisionVector);
 		
-		if(one instanceof Projectile || two instanceof Projectile) {
-			boolean onePr = one instanceof Projectile;
-			boolean twoPr = two instanceof Projectile;
-			
-		}
-		if(one instanceof Player) {
-			
-			
-		}
-		
-		
 		
 		/*
 		 * Player:

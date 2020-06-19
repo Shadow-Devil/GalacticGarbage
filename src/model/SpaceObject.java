@@ -19,7 +19,7 @@ public abstract class SpaceObject{
 		this.alive = true;
 	}
 
-	public void move(int maxX, int maxY) {
+	public void move(int maxX, int maxY) { 
 		this.getPositionVector().add(directionVector.copy().multiply(speed));
 		//TODO Beschleunigung
 		if(this.getPositionVector().getX() >= maxX)
@@ -33,7 +33,7 @@ public abstract class SpaceObject{
 			this.getPositionVector().setY(maxY);
 	}
 	
-	/**
+	/** 
 	 * Adds this spaceObject to GameBoard.deadSpaceObjects. <br>
 	 * Sets the boolean alive to false.
 	 */
@@ -72,16 +72,21 @@ public abstract class SpaceObject{
 
 	public abstract void collide(SpaceObject two, Vector collisionVector);
 	
-	public void bounce(SpaceObject two, Vector collisionVector){
+	public void bounce(SpaceObject two, Vector collisionVector){ 
 		double degree = 90 - collisionVector.getDegree();//TODO kontrollieren
 		
-		Vector v1 = this.directionVector.copy().turn(degree).multiply(this.speed);
-		Vector v2 = two.directionVector.copy().turn(degree).multiply(two.speed);
+		Vector v1 = this.directionVector.turn(degree).multiply(this.speed);
+		Vector v2 = two.directionVector.turn(degree).multiply(two.speed);
 		
 		double temp = v1.getY();
 		v1.setY(v2.getY());
 		v2.setY(temp);
 		
+		this.speed = v1.getLength();
+		two.speed = v2.getLength();
+
+		v1.toUnit();
+		v2.toUnit();
 	}
 	
 	public void repel(SpaceObject two, Vector collisionVector){

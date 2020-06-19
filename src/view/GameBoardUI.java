@@ -1,11 +1,13 @@
 package view;
 
 import javafx.application.Platform;
+import javafx.event.EventType;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import model.Player;
 import model.SpaceObject;
 import model.Vector;
 
@@ -36,7 +38,7 @@ public class GameBoardUI extends Canvas implements Runnable{
 	private Toolbar toolBar;
 
 	// user control objects
-	private Input input;
+	//private Input input;
 
 	private HashMap<SpaceObject, Image> spaceImages;
 
@@ -84,12 +86,12 @@ public class GameBoardUI extends Canvas implements Runnable{
 		return this.gameBoard;
 	}
 
-	/**
-	 * @return mouse steering control object
-	 */
-	public Input getInput(){
-		return this.input;
-	}
+//	/**
+//	 * @return mouse steering control object
+//	 */
+//	public Input getInput(){
+//		return this.input;
+//	}
 
 	public static int getDEFAULT_WIDTH(){
 		return DEFAULT_WIDTH;
@@ -104,8 +106,9 @@ public class GameBoardUI extends Canvas implements Runnable{
 	 * default value. Player spaceship is reset to default starting position. Renders graphics.
 	 */
 	public void gameSetup(int difficulty){
-		this.input = new Input();
-		this.gameBoard = new GameBoard(width, height, input, difficulty);
+		//this.input = new Input();
+		
+		this.gameBoard = new GameBoard(width, height, difficulty);
 		this.widthProperty().set(this.width);
 		this.heightProperty().set(this.height);
 		this.width = (int) getWidth();
@@ -162,7 +165,7 @@ public class GameBoardUI extends Canvas implements Runnable{
 	 * 
 	 * @param graphics used to draw changes
 	 */
-	private void paint(GraphicsContext graphics){
+	private void paint(GraphicsContext graphics){ 
 		graphics.setFill(backgroundColor);
 		graphics.fillRect(0, 0, getWidth(), getHeight());
 
@@ -185,9 +188,9 @@ public class GameBoardUI extends Canvas implements Runnable{
 
 		//TODO richtige drehung, vll. invertieren
 		graphics.save(); // saves the current state on stack, including the current transform
-        graphics.rotate((double) (so.getDirectionVector().getDegree()));
+        graphics.rotate((double) ((so instanceof Player ? ((Player)so).getFacingVector() : so.getDirectionVector()).getDegree()));
         graphics.drawImage(this.spaceImages.get(
-			so), canvasPosition.getX(), canvasPosition.getY(), so.getRadius()*2, so.getRadius()*2);
+			so), canvasPosition.getX() - so.getRadius(), canvasPosition.getY() - so.getRadius(), so.getRadius()*2, so.getRadius()*2);
         graphics.restore(); // back to original state (before rotation)
 	}
 

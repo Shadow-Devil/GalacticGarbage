@@ -20,6 +20,12 @@ public class Vector{
 		y *= scalar;
 		return this;
 	}
+
+	public Vector toUnit() {
+		x /= getLength();
+		y /= getLength();
+		return this;
+	}
 	
 	public Vector turn(double degree) {
 		double length = this.getLength();

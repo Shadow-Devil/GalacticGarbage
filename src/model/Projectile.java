@@ -2,7 +2,7 @@ package model;
 
 public class Projectile extends SpaceObject{
 	
-	private static final String ICONNAME = "ProjectileIcon";
+	private static final String ICONNAME = "playerIcon.gif";
 
 	public Projectile(Vector positionVector, Vector directionVector){
 		//TODO radius, iconName, speed

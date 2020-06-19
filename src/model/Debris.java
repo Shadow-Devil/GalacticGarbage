@@ -2,7 +2,7 @@ package model;
 
 public class Debris extends SpaceObject{
 	
-	private static final String ICONNAME = "debrisIcon";
+	private static final String ICONNAME = "playerIcon.gif";
 	private final int size;//0, 1, 2
 	public static final int damagePerSize = 10;
 	private static final int radiusPerSize = 10;

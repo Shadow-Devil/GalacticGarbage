@@ -1,7 +1,7 @@
 package model;
 
 public class Planet extends SpaceObject{
-	private static final String[] ICONNAME = {"PlanetIcon1", "PlanetIcon2", "PlanetIcon3"};
+	private static final String[] ICONNAME = {"playerIcon.gif", "playerIcon.gif", "playerIcon.gif"};
 
 	public Planet(int radius, int icon, Vector positionVector){
 		

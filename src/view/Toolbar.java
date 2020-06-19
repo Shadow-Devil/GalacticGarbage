@@ -43,6 +43,7 @@ public class Toolbar extends ToolBar {
             }else{
                 getGameWindow().gameBoardUI.gameSetup(0);
             }
+            getGameWindow().gameBoardUI.startGame();
         });
 
         this.stop.setOnAction(event -> {
