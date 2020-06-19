@@ -24,7 +24,26 @@ public class Toolbar extends ToolBar {
      * Initialises the actions
      */
     private void initActions() {
-        this.start.setOnAction(event -> getGameWindow().gameBoardUI.startGame());
+        this.start.setOnAction(event -> {
+            Toolbar.this.getGameWindow().gameBoardUI.stopGame();
+    
+            ButtonType EASY = new ButtonType("Easy", ButtonBar.ButtonData.OK_DONE);
+            ButtonType MEDIUM = new ButtonType("Medium", ButtonBar.ButtonData.OK_DONE);
+            ButtonType HARD = new ButtonType("Hard", ButtonBar.ButtonData.OK_DONE);
+    
+            Alert alert = new Alert(AlertType.INFORMATION, "Which difficulty do you want to play?", EASY, MEDIUM, HARD);
+            alert.setTitle("Choose Difficulty");
+            alert.setHeaderText("");
+    
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == MEDIUM) {
+                getGameWindow().gameBoardUI.gameSetup(1);
+            } else if(result.get() == HARD){
+                getGameWindow().gameBoardUI.gameSetup(2);
+            }else{
+                getGameWindow().gameBoardUI.gameSetup(0);
+            }
+        });
 
         this.stop.setOnAction(event -> {
             Toolbar.this.getGameWindow().gameBoardUI.stopGame();
@@ -38,7 +57,7 @@ public class Toolbar extends ToolBar {
 
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == YES) {
-                getGameWindow().gameBoardUI.gameSetup();
+                getGameWindow().gameBoardUI.gameSetup(0);
             } else {
                 getGameWindow().gameBoardUI.startGame();
             }

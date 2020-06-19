@@ -49,7 +49,7 @@ public class GameBoardUI extends Canvas implements Runnable{
 		this.toolBar = toolBar;
 		this.width = getDEFAULT_WIDTH();
 		this.height = getDEFAULT_HEIGHT();
-		gameSetup();
+		gameSetup(0);
 	}
 
 	/**
@@ -103,9 +103,9 @@ public class GameBoardUI extends Canvas implements Runnable{
 	 * Removes all existing spaceObjects from the game board and re-adds them. Status bar is set to
 	 * default value. Player spaceship is reset to default starting position. Renders graphics.
 	 */
-	public void gameSetup(){
+	public void gameSetup(int difficulty){
 		this.input = new Input();
-		this.gameBoard = new GameBoard(width, height, input, 0);
+		this.gameBoard = new GameBoard(width, height, input, difficulty);
 		this.widthProperty().set(this.width);
 		this.heightProperty().set(this.height);
 		this.width = (int) getWidth();
@@ -223,7 +223,7 @@ public class GameBoardUI extends Canvas implements Runnable{
 			Alert alert = new Alert(Alert.AlertType.INFORMATION);
 			alert.setHeaderText(message);
 			alert.showAndWait();
-			this.gameSetup();
+			this.gameSetup(0);
 		});
 	}
 }
