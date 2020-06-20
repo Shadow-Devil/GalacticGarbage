@@ -42,11 +42,12 @@ public class Player extends SpaceObject{
 		//System.out.println(a);
 		if (a && d) {
 		} else if (a) { //facingVector
-			this.getFacingVector().turn(DEGREE_ON_TURN);
+			this.getFacingVector().turn(DEGREE_ON_TURN).toUnit();
+			
 			//System.out.println("Turn " + facingVector);
 			//System.out.println(facingVector.getDegree());
 		} else if (d) {
-			this.getFacingVector().turn(-DEGREE_ON_TURN);
+			this.getFacingVector().turn(-DEGREE_ON_TURN).toUnit();
 			//System.out.println(facingVector);
 		}
 		//change movement

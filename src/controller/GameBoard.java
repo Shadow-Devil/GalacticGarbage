@@ -154,7 +154,7 @@ public class GameBoard{
 				Collision collision = new Collision(so1, so2);
 
 				if (collision.detectCollision()){
-					System.out.println("collision:" + collision);
+					//System.out.println("collision:" + collision);
 					collision.collide();
 
 					// : The player gets notified when he looses or wins the game
@@ -184,7 +184,7 @@ public class GameBoard{
 			maxDebris += 4;
 			updateCounter %= 10;
 		}
-		if(debrisCount+4 <= maxDebris && false) {	//neuer Spawn possible
+		if(debrisCount+4 <= maxDebris) {	//neuer Spawn possible
 			System.out.println("new Spawn");
 			Debris debris = spawn.get(spawncounter++ % spawn.size()).getCopy();
 			GameBoard.spaceObjects.add(debris);

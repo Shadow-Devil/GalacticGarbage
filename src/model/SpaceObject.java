@@ -14,7 +14,7 @@ public abstract class SpaceObject{
 		this.radius = radius;
 		this.icon = icon;
 		this.positionVector = positionVector;
-		this.directionVector = directionVector.toUnit();
+		this.directionVector = directionVector;
 		this.speed = speed;
 		this.alive = true;
 	}

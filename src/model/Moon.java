@@ -4,16 +4,21 @@ public class Moon extends SpaceObject{
 	
 	private static final String[] ICONNAME = {"playerIcon.gif", "playerIcon.gif", "playerIcon.gif"};
 	private Vector planet;
+	private double orbit;
 	
 	public Moon(int radius, int icon, Vector planetToMoonVector, double turnSpeed, Vector planet){
 		super(radius, ICONNAME[icon], planet.copy().add(planetToMoonVector), planetToMoonVector, turnSpeed);
 		this.planet= planet;
+		orbit = planetToMoonVector.getLength();
 	}
 
 	@Override
 	public void move(int maxX, int maxY){
-		this.getDirectionVector().turn(this.getSpeed());
+		//System.out.println(directionVector);
+		this.getDirectionVector().toUnit().turn(this.getSpeed());
+		directionVector.multiply(orbit);
 		Vector newPos = planet.copy().add(this.getDirectionVector());
+		
 		this.getPositionVector().setXY(newPos.getX(), newPos.getY());
 	}
 

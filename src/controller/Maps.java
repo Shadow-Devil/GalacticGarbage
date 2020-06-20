@@ -19,7 +19,7 @@ public enum Maps{	//TODO bei getObj immer neue Liste erstellen!!
 			Planet p1 = new Planet(100, 0, new Vector(700,300));
 			map.add(p1);
 			//Moon(int radius, int icon, Vector planetToMoonVector, double turnSpeed, Vector planet)
-			//map.add(new Moon(10, 0, new Vector(0,85), 5.0, p1.getPositionVector().copy()));
+			map.add(new Moon(10, 0, new Vector(0,200), -3.0, p1.getPositionVector().copy()));
 
 
 			return map;
@@ -29,7 +29,7 @@ public enum Maps{	//TODO bei getObj immer neue Liste erstellen!!
 		public List<Debris> getBaseDebris(){
 			//TODO Maps
 			List<Debris> baseDebris = new ArrayList<>();
-			baseDebris.add(new Debris(2, new Vector(500, 500), new Vector(1, 0) , 0));
+			baseDebris.add(new Debris(2, new Vector(500, 500), new Vector(1, 0) , 10));
 
 
 			return baseDebris;

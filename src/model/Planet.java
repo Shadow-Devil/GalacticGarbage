@@ -5,7 +5,7 @@ public class Planet extends SpaceObject{
 
 	public Planet(int radius, int icon, Vector positionVector){
 		
-		super(radius, ICONNAME[icon], positionVector, new Vector(0, 0), 0);
+		super(radius, ICONNAME[icon], positionVector, new Vector(1, 0), 0);
 	}
 
 	@Override

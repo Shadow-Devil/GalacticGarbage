@@ -29,8 +29,9 @@ public class Vector{
 	}
 	
 	public Vector turn(double degree) {
+		double length = getLength();
 		turnUnitVector(degree);
-		toUnit();
+		multiply(length);
 		return this;
 	}
 	
