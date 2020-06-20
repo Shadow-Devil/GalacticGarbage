@@ -1,5 +1,7 @@
 package controller;
 
+import model.Debris;
+import model.Moon;
 import model.Planet;
 import model.SpaceObject;
 import model.Vector;
@@ -9,28 +11,30 @@ import java.util.List;
 
 
 public enum Maps{	//TODO bei getObj immer neue Liste erstellen!!
-	EASY(6) {
+	EASY(1) {
 		@Override
-		public List<SpaceObject> getObjects(){
+		public List<SpaceObject> getObjects() {	//alles außer Player
 			List<SpaceObject> map = new ArrayList<>();
 			
-			//map.add(new Planet(20, 0, new Vector(30, 30)));
-			
-			
+			Planet p1 = new Planet(100, 0, new Vector(700,300));
+			map.add(p1);
+			//Moon(int radius, int icon, Vector planetToMoonVector, double turnSpeed, Vector planet)
+			//map.add(new Moon(10, 0, new Vector(0,85), 5.0, p1.getPositionVector().copy()));
+
+
 			return map;
 		}
 
 		@Override
-		public List<Vector> getSpawnPoints(){
+		public List<Debris> getBaseDebris(){
 			//TODO Maps
-			List<Vector> spawnPoints = new ArrayList<>();
+			List<Debris> baseDebris = new ArrayList<>();
+			baseDebris.add(new Debris(2, new Vector(500, 500), new Vector(1, 0) , 0));
 
 
-
-			return spawnPoints;
-
+			return baseDebris;
 		}
-	}, MEDIUM(8) {
+	}, MEDIUM(3) {
 		@Override
 		public List<SpaceObject> getObjects(){
 			// TODO Maps
@@ -38,11 +42,11 @@ public enum Maps{	//TODO bei getObj immer neue Liste erstellen!!
 		}
 
 		@Override
-		public List<Vector> getSpawnPoints(){
+		public List<Debris> getBaseDebris(){
 			// TODO Maps
 			return null;
 		}
-	}, HARD(10) {
+	}, HARD(4) {
 		@Override
 		public List<SpaceObject> getObjects(){
 			// TODO Maps
@@ -50,25 +54,25 @@ public enum Maps{	//TODO bei getObj immer neue Liste erstellen!!
 		}
 
 		@Override
-		public List<Vector> getSpawnPoints(){
+		public List<Debris> getBaseDebris(){
 			// TODO Maps
 			return null;
 		}
 	};
 
 	
-	Maps(int maxSpaceObjects) {
-		this.maxSpaceObjects = maxSpaceObjects;
+	Maps(int maxDebris) {
+		this.maxDebris = maxDebris*4;
 	}
 	
-	public abstract List<SpaceObject> getObjects();
-	public abstract List<Vector> getSpawnPoints();
-	private final int maxSpaceObjects;
+	public abstract List<SpaceObject> getObjects(); 
+	public abstract List<Debris> getBaseDebris();
+	private final int maxDebris;
 	
 	/**
 	 * @return amount of (initial) maxSpaceObjects, diese wird erst im GameBoard incremented.
 	 */
-	public int getMaxSpaceObjects() {
-		return maxSpaceObjects;
+	public int getMaxDebris() {
+		return maxDebris;
 	}
 }

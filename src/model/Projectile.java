@@ -10,11 +10,11 @@ public class Projectile extends SpaceObject{
 	}
 
 	@Override
-	public void collide(SpaceObject two, Vector collisionVector){
+	public void collide(SpaceObject two, Vector collisionVector){ 
 		if(two instanceof Debris) {
 			if(((Debris) two).getSize() > 0)
-				((Debris) two).split();
-			
+				two.die();
+			 
 		}else if(two instanceof Projectile) {
 			two.die();
 		}

@@ -22,9 +22,10 @@ public class Collision{
 	 * @return true if there is a collision
 	 */
 	public boolean detectCollision() {
-		collisionVector = one.getDirectionVector().copy();
-		Vector positionTwo = two.getDirectionVector().copy().multiply(-1);
+		collisionVector = one.getPositionVector().copy();
+		Vector positionTwo = two.getPositionVector().copy().multiply(-1);
 		double distance = collisionVector.add(positionTwo).getLength();
+		//System.out.println(distance);
 		
 		return one.getRadius() + two.getRadius() >= distance;
 	}
@@ -35,6 +36,7 @@ public class Collision{
 	public void collide() {
 		//TODO Collision - collide()
 		
+		//System.out.println();
 		one.collide(two, collisionVector);
 		
 		
@@ -54,5 +56,17 @@ public class Collision{
 		 * bounce sonst
 		 */
 		
+	}
+
+	@Override
+	public String toString(){
+		return "Collision [collide=" + collide +
+			", one=" +
+			one +
+			", two=" +
+			two +
+			", collisionVector=" +
+			collisionVector +
+			"]";
 	}
 }

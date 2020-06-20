@@ -1,12 +1,12 @@
 package view;
 
 import javafx.application.Platform;
-import javafx.event.EventType;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.scene.transform.Rotate;
 import model.Player;
 import model.SpaceObject;
 import model.Vector;
@@ -17,17 +17,17 @@ import java.net.URL;
 import java.util.HashMap;
 
 import controller.GameBoard;
-import controller.Input;
 
 public class GameBoardUI extends Canvas implements Runnable{
 
-	private static final int DEFAULT_WIDTH = 500;
-	private static final int DEFAULT_HEIGHT = 300;
+	private static final int DEFAULT_WIDTH = 1000;
+	private static final int DEFAULT_HEIGHT = 600;
 
 	private static final Color backgroundColor = Color.WHITE;
 	private static final int SLEEP_TIME = 1000 / 25; // this gives us 25fps
+	
 	// attribute inherited by the JavaFX Canvas class
-	private GraphicsContext graphicsContext = this.getGraphicsContext2D();
+	private final GraphicsContext graphicsContext = this.getGraphicsContext2D();
 
 	// thread responsible for starting game
 	private Thread theThread;
@@ -40,7 +40,9 @@ public class GameBoardUI extends Canvas implements Runnable{
 	// user control objects
 	//private Input input;
 
-	private HashMap<SpaceObject, Image> spaceImages;
+	private static HashMap<SpaceObject, Image> spaceImages;
+
+	public static GameBoardUI gui;
 
 	/**
 	 * Sets up all attributes, starts the mouse steering and sets up all graphics
@@ -49,9 +51,10 @@ public class GameBoardUI extends Canvas implements Runnable{
 	 */
 	public GameBoardUI(Toolbar toolBar){
 		this.toolBar = toolBar;
-		this.width = getDEFAULT_WIDTH();
-		this.height = getDEFAULT_HEIGHT();
+		width = DEFAULT_WIDTH;
+		height = DEFAULT_HEIGHT;
 		gameSetup(0);
+		gui = this;
 	}
 
 	/**
@@ -62,37 +65,23 @@ public class GameBoardUI extends Canvas implements Runnable{
 	 */
 	@Override
 	public void run(){
-		while (this.gameBoard.isRunning()){
-			// updates car positions and re-renders graphics
-			this.gameBoard.updateSpaceObjects();
+		while (gameBoard.isRunning()){
+			// updates Spaceobjects positions and re-renders graphics
+			gameBoard.updateSpaceObjects();
 			// when this.gameBoard.hasWon() is null, do nothing
-			if (this.gameBoard.hasEnded()){
+			if (gameBoard.hasEnded()){
 				showAsyncAlert("Oh.. you lost.");
-				this.stopGame();
+				stopGame();
 			}
-			paint(this.graphicsContext);
+			paint(graphicsContext);
 			try{
 				Thread.sleep(SLEEP_TIME); // milliseconds to sleep
-			} catch (InterruptedException ex){
-				ex.printStackTrace();
+			} catch (InterruptedException e){
+				e.printStackTrace();
 			}
 		}
 	}
 
-	/**
-	 * @return current gameBoard
-	 */
-	public GameBoard getGameBoard(){
-		return this.gameBoard;
-	}
-
-	public static int getDEFAULT_WIDTH(){
-		return DEFAULT_WIDTH;
-	}
-	
-	public static int getDEFAULT_HEIGHT(){
-		return DEFAULT_HEIGHT;
-	}
 
 	/**
 	 * Removes all existing spaceObjects from the game board and re-adds them. Status bar is set to
@@ -109,9 +98,12 @@ public class GameBoardUI extends Canvas implements Runnable{
 		
 		gameBoard.resetSpaceObjects();
 		gameBoard.getspaceObjects().forEach((so -> spaceImages.put(so, getImage(so.getIcon()))));
-		//spaceImages.put(gameBoard.getPlayer(), getImage(gameBoard.getPlayer().getIcon()));
 		paint(graphicsContext);
 		toolBar.resetToolBarButtonStatus(false);
+	}
+
+	public static HashMap<SpaceObject, Image> getSpaceImages(){
+		return spaceImages;
 	}
 
 	/**
@@ -123,16 +115,19 @@ public class GameBoardUI extends Canvas implements Runnable{
 	private Image getImage(String soImageFilePath){	//TODO GameBoardUI - getImage()
 		try{
 			URL soImageUrl = getClass().getClassLoader().getResource(soImageFilePath);
-			if (soImageUrl == null){
-				throw new RuntimeException(
-					"Please ensure that your resources folder contains the appropriate files for this exercise.");
-			}
+			if (soImageUrl == null)
+				throw new RuntimeException("Resource not found: " + soImageFilePath);
+			
 			InputStream inputStream = soImageUrl.openStream();
 			return new Image(inputStream);
 		} catch (IOException e){
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public static void addNew(SpaceObject so){
+		spaceImages.put(so, gui.getImage(so.getIcon()));
 	}
 
 	/**
@@ -147,6 +142,16 @@ public class GameBoardUI extends Canvas implements Runnable{
 			theThread.start();
 			paint(graphicsContext);
 			toolBar.resetToolBarButtonStatus(true);
+		}
+	}
+	
+	/**
+	 * Stops the game board and set the tool bar to default values.
+	 */
+	public void stopGame(){
+		if (gameBoard.isRunning()){
+			gameBoard.stopGame();
+			toolBar.resetToolBarButtonStatus(false);
 		}
 	}
 
@@ -176,32 +181,30 @@ public class GameBoardUI extends Canvas implements Runnable{
 	private void paintSpaceObject(SpaceObject so, GraphicsContext graphics){
 		Vector spaceObjectPositionVector = so.getPositionVector();
 		Vector canvasPosition = convertPosition(spaceObjectPositionVector);
-
+		//System.out.println(so);
 		//TODO richtige drehung, vll. invertieren
 		graphics.save(); // saves the current state on stack, including the current transform
-        graphics.rotate((double) ((so instanceof Player ? ((Player)so).getFacingVector() : so.getDirectionVector()).getDegree()));
-        graphics.drawImage(spaceImages.get(
-			so), canvasPosition.getX() - so.getRadius(), canvasPosition.getY() - so.getRadius(), so.getRadius()*2, so.getRadius()*2);
+		//graphics.rotate((double) (so.getDirectionVector().getDegree()));
+        rotate(graphics, -((so instanceof Player ? ((Player)so).getFacingVector() : so.getDirectionVector()).getDegree()),
+		 canvasPosition.getX(), canvasPosition.getY());
+        //graphics.rotate((double) ((so instanceof Player ? ((Player)so).getFacingVector() : so.getDirectionVector()).getDegree()));
+        graphics.drawImage(spaceImages.get(so),
+		        canvasPosition.getX() - so.getRadius(), canvasPosition.getY() - so.getRadius(), so.getRadius()*2, so.getRadius()*2);
         graphics.restore(); // back to original state (before rotation)
 	}
+
+	private void rotate(GraphicsContext gc, double angle, double px, double py) {
+        Rotate r = new Rotate(angle, px, py);
+        gc.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
+    }
 
 	/**
 	 * Converts position of spaceObject to position on the canvas
 	 * 
 	 * @param toConvert the point to be converted
 	 */
-	public Vector convertPosition(Vector toConvert){
+	private Vector convertPosition(Vector toConvert){
 		return new Vector(toConvert.getX(), (int) (getHeight() - toConvert.getY()));
-	}
-
-	/**
-	 * Stops the game board and set the tool bar to default values.
-	 */
-	public void stopGame(){
-		if (gameBoard.isRunning()){
-			gameBoard.stopGame();
-			toolBar.resetToolBarButtonStatus(false);
-		}
 	}
 
 	//TODO "in updateSpaceObjects()" ?
@@ -220,4 +223,11 @@ public class GameBoardUI extends Canvas implements Runnable{
 			gameSetup(0);
 		});
 	}
+	
+//	/**
+//	 * @return current gameBoard
+//	 */
+//	public GameBoard getGameBoard(){
+//		return this.gameBoard;
+//	}
 }

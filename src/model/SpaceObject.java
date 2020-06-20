@@ -14,23 +14,29 @@ public abstract class SpaceObject{
 		this.radius = radius;
 		this.icon = icon;
 		this.positionVector = positionVector;
-		this.directionVector = directionVector;
+		this.directionVector = directionVector.toUnit();
 		this.speed = speed;
 		this.alive = true;
 	}
 
 	public void move(int maxX, int maxY) { 
 		this.getPositionVector().add(directionVector.copy().multiply(speed));
+		//System.out.println(speed);
 		//TODO Beschleunigung
-		if(this.getPositionVector().getX() >= maxX)
-			this.getPositionVector().setX(0);
-		if(this.getPositionVector().getY() >= maxY)
-			this.getPositionVector().setY(0);
 		
-		if(this.getPositionVector().getX() < 0)
-			this.getPositionVector().setX(maxX);
-		if(this.getPositionVector().getY() > 0)
-			this.getPositionVector().setY(maxY);
+		positionVector.setXY(((positionVector.getX() % maxX) + maxX) % maxX, 
+							 ((positionVector.getY() % maxY) + maxY) % maxY);
+
+//		if(this.getPositionVector().getX() >= maxX)
+//			this.getPositionVector().setX(0);
+//		if(this.getPositionVector().getY() >= maxY)
+//			this.getPositionVector().setY(0);
+//
+//		if(this.getPositionVector().getX() < 0)
+//			this.getPositionVector().setX(maxX);
+//		if(this.getPositionVector().getY() > 0)
+//			this.getPositionVector().setY(maxY);
+		//System.out.println(positionVector);
 	}
 	
 	/** 
@@ -38,7 +44,7 @@ public abstract class SpaceObject{
 	 * Sets the boolean alive to false.
 	 */
 	public void die() {
-		GameBoard.deadSpaceObjects.add(this);
+		GameBoard.eventSpaceObjects.add(this);
 		alive = false;
 	}
 	
@@ -73,7 +79,7 @@ public abstract class SpaceObject{
 	public abstract void collide(SpaceObject two, Vector collisionVector);
 	
 	public void bounce(SpaceObject two, Vector collisionVector){ 
-		double degree = 90 - collisionVector.getDegree();//TODO kontrollieren
+		double degree = collisionVector.getDegree() - 90;//TODO kontrollieren
 		
 		Vector v1 = this.directionVector.turn(degree).multiply(this.speed);
 		Vector v2 = two.directionVector.turn(degree).multiply(two.speed);
@@ -85,8 +91,8 @@ public abstract class SpaceObject{
 		this.speed = v1.getLength();
 		two.speed = v2.getLength();
 
-		v1.toUnit();
-		v2.toUnit();
+		v1.turn(-degree).toUnit();
+		v2.turn(-degree).toUnit();
 	}
 	
 	public void repel(SpaceObject two, Vector collisionVector){

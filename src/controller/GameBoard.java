@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import model.Debris;
 import model.Planet;
 import model.Player;
 import model.SpaceObject;
 import model.Vector;
+import view.GameBoardUI;
 
 public class GameBoard{
 
@@ -23,27 +25,32 @@ public class GameBoard{
 	private int width, height;
 	private boolean isRunning;
 	private boolean gameEnded;
+	private int updateCounter;
 
-	public List<SpaceObject> spaceObjects = new ArrayList<>();
-	public static List<SpaceObject> deadSpaceObjects = new ArrayList<>();
+	public static List<SpaceObject> spaceObjects = new ArrayList<>();
+	public static List<SpaceObject> eventSpaceObjects = new ArrayList<>();
+	public List<Debris> spawn = new ArrayList<>();
+	private int spawncounter;
 
-	private static int maxSpaceObject;
+	private static int maxDebris;
+	public static int debrisCount;
 
 	/**
 	 * Constructor, creates the gameboard based on size
 	 * 
-	 * @param size of the gameboard
-	 * @param input checker
+	 * @param width of the gameboard
+	 * @param height of the gameboard
 	 * @param difficulty from 0(EASY) to 2(HARD)
 	 */
-	public GameBoard(int width, int height, int difficulty) {
+	public GameBoard(int width, int height, int difficulty) { 
 		gameEnded = false;
-		this.player = new Player();
+		player = new Player();
 		this.width = width;
 		this.height = height;
-		System.out.println("setup");
-		this.addSpaceObjects();
+		spawncounter = 0;
+		addSpaceObjects();
 		this.difficulty = difficulty;
+		updateCounter = 0;
 	}
 
 	/**
@@ -52,8 +59,9 @@ public class GameBoard{
 	 * and therefore difficulty.
 	 */
 	public void addSpaceObjects(){
+		spawn = chooseMap().getBaseDebris();
 		spaceObjects = chooseMap().getObjects();
-		spaceObjects.add(player);
+		spaceObjects.add(player); 
 	}  
 
 	/**
@@ -72,13 +80,13 @@ public class GameBoard{
 	 * @return boolean isRunning
 	 */
 	public boolean isRunning(){
-		return this.isRunning;
+		return isRunning;
 	}
 
 	/**
 	 * Used for testing only
 	 */
-	public void setRunning(boolean isRunning){
+	private void setRunning(boolean isRunning){
 		this.isRunning = isRunning;
 	}
 
@@ -87,8 +95,8 @@ public class GameBoard{
 	 * @return null if the game is running; true if the player has won; false if the player
 	 *         has lost
 	 */
-	public Boolean hasEnded(){
-		return this.gameEnded;
+	public boolean hasEnded(){
+		return gameEnded;
 	}
 
 	/**
@@ -115,18 +123,18 @@ public class GameBoard{
 	public void updateSpaceObjects(){
 		List<SpaceObject> spaceObjects = getspaceObjects();
 
-		// maximum x and y values a car can have depending on the size of the game board
+		// maximum x and y values a spaceObjects can have depending on the size of the game board
 		int maxX = width;
 		int maxY = height;
 
-		// update the positions of the player car and the autonomous cars
+		// update the positions of the player and the other spaceObjects
 		for (SpaceObject so: spaceObjects){
 			so.move(maxX, maxY);
 		}
 
 		player.move(maxX, maxY);
 
-		// iterate through all cars (except player car) and check if it is crunched
+		// iterate through all spaceObjects (except player) and check if it is crunched
 		for (SpaceObject so1: spaceObjects){
 			if (!so1.isAlive())
 				continue; // because there is no need to check for a collision
@@ -146,7 +154,7 @@ public class GameBoard{
 				Collision collision = new Collision(so1, so2);
 
 				if (collision.detectCollision()){
-
+					System.out.println("collision:" + collision);
 					collision.collide();
 
 					// : The player gets notified when he looses or wins the game
@@ -159,11 +167,33 @@ public class GameBoard{
 			}
 		}
 
-		for (SpaceObject spaceObject: deadSpaceObjects){
+		for (SpaceObject spaceObject: eventSpaceObjects){ 
+			if (spaceObject.isAlive()){
+				
+				GameBoardUI.addNew(spaceObject);
+			} else {
+				if (spaceObject instanceof Debris && ((Debris) spaceObject).getSize() > 0){
+					((Debris) spaceObject).split();
+				}
+		
+			}
 			spaceObjects.remove(spaceObject);
 		}
 
+		if(updateCounter >= 15000) {	//over time increase
+			maxDebris += 4;
+			updateCounter %= 10;
+		}
+		if(debrisCount+4 <= maxDebris && false) {	//neuer Spawn possible
+			System.out.println("new Spawn");
+			Debris debris = spawn.get(spawncounter++ % spawn.size()).getCopy();
+			GameBoard.spaceObjects.add(debris);
+			GameBoardUI.addNew(debris);
+			
+		}
+
 		Input.updateLoop();
+		updateCounter++;
 	}
 	
 	/**
@@ -173,19 +203,19 @@ public class GameBoard{
 	public Maps chooseMap(){
 		switch (difficulty) {
 		case 0: {
-			maxSpaceObject = Maps.EASY.getMaxSpaceObjects();
+			maxDebris = Maps.EASY.getMaxDebris();
 			return Maps.EASY;
 		}
 		case 1: {
-			maxSpaceObject = Maps.MEDIUM.getMaxSpaceObjects();
+			maxDebris = Maps.MEDIUM.getMaxDebris();
 			return Maps.MEDIUM;
 		}
 		case 2: {
-			maxSpaceObject = Maps.HARD.getMaxSpaceObjects();
+			maxDebris = Maps.HARD.getMaxDebris();
 			return Maps.HARD;
 		}
 		default:
-			maxSpaceObject = Maps.EASY.getMaxSpaceObjects();
+			maxDebris = Maps.EASY.getMaxDebris();
 			return Maps.EASY;
 		}
 	}

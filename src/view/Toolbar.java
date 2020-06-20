@@ -17,7 +17,7 @@ public class Toolbar extends ToolBar {
         this.stop = new Button("Stop");
         initActions();
         this.getItems().addAll(start, new Separator(), stop);
-        this.setGameWindow(gameWindow);
+        this.gameWindow = gameWindow;
     }
 
     /**
@@ -25,29 +25,29 @@ public class Toolbar extends ToolBar {
      */
     private void initActions() {
         this.start.setOnAction(event -> {
-            Toolbar.this.getGameWindow().gameBoardUI.stopGame();
+        	gameWindow.gameBoardUI.stopGame();
     
             ButtonType EASY = new ButtonType("Easy", ButtonBar.ButtonData.OK_DONE);
             ButtonType MEDIUM = new ButtonType("Medium", ButtonBar.ButtonData.OK_DONE);
             ButtonType HARD = new ButtonType("Hard", ButtonBar.ButtonData.OK_DONE);
     
-            Alert alert = new Alert(AlertType.INFORMATION, "Which difficulty do you want to play?", EASY, MEDIUM, HARD);
+            Alert alert = new Alert(AlertType.CONFIRMATION, "Which difficulty do you want to play?", EASY, MEDIUM, HARD);
             alert.setTitle("Choose Difficulty");
             alert.setHeaderText("");
     
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == MEDIUM) {
-                getGameWindow().gameBoardUI.gameSetup(1);
+            	gameWindow.gameBoardUI.gameSetup(1);
             } else if(result.get() == HARD){
-                getGameWindow().gameBoardUI.gameSetup(2);
+            	gameWindow.gameBoardUI.gameSetup(2);
             }else{
-                getGameWindow().gameBoardUI.gameSetup(0);
+            	gameWindow.gameBoardUI.gameSetup(0);
             }
-            getGameWindow().gameBoardUI.startGame();
+            gameWindow.gameBoardUI.startGame();
         });
 
         this.stop.setOnAction(event -> {
-            Toolbar.this.getGameWindow().gameBoardUI.stopGame();
+        	gameWindow.gameBoardUI.stopGame();
 
             ButtonType YES = new ButtonType("Yes", ButtonBar.ButtonData.YES);
             ButtonType NO = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
@@ -58,9 +58,9 @@ public class Toolbar extends ToolBar {
 
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == YES) {
-                getGameWindow().gameBoardUI.gameSetup(0);
+            	gameWindow.gameBoardUI.gameSetup(0);
             } else {
-                getGameWindow().gameBoardUI.startGame();
+            	gameWindow.gameBoardUI.startGame();
             }
         });
     }
@@ -75,17 +75,17 @@ public class Toolbar extends ToolBar {
         this.stop.setDisable(!running);
     }
 
-    /**
-     * @return current gameWindow
-     */
-    public Main getGameWindow() {
-        return this.gameWindow;
-    }
+//    /**
+//     * @return current gameWindow
+//     */
+//    public Main getGameWindow() {
+//        return this.gameWindow;
+//    }
 
-    /**
-     * @param gameWindow New gameWindow to be set
-     */
-    public void setGameWindow(Main gameWindow) {
-        this.gameWindow = gameWindow;
-    }
+//    /**
+//     * @param gameWindow New gameWindow to be set
+//     */
+//    public void setGameWindow(Main gameWindow) {
+//        this.gameWindow = gameWindow;
+//    }
 }

@@ -16,11 +16,11 @@ public class Input{
      */
     public static void handle(KeyEvent event, boolean pressed) {
 		String key = event.getCode().getChar();
-		System.out.println("Handle");
-		if (key.equalsIgnoreCase(" ") && spaceAlreadyPressed != true)
+		//System.out.println("Handle");
+		if (key.equals("E") && !spaceAlreadyPressed)
 			spacePressed = pressed;
 		spaceAlreadyPressed = pressed;
-	    System.out.println(key);
+	    //System.out.println(key);
 		
 		if (key.equals("W"))
 			wPressed = pressed;

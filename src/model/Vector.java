@@ -22,24 +22,27 @@ public class Vector{
 	}
 
 	public Vector toUnit() {
-		x /= getLength();
-		y /= getLength();
+		double length = getLength();
+		x /= length;
+		y /= length;
 		return this;
 	}
 	
 	public Vector turn(double degree) {
-		double length = this.getLength();
 		turnUnitVector(degree);
-		multiply(length);
+		toUnit();
 		return this;
 	}
 	
-	public void turnUnitVector(double degree) {
+	private void turnUnitVector(double degree) {
+//		this.x = Math.cos(degree )* x - Math.sin(degree )* y;
+//		this.y = Math.sin(degree )* x + Math.cos(degree )* y;
 		this.x = Math.cos(Math.toRadians(degree + this.getDegree()));
 		this.y = Math.sin(Math.toRadians(degree + this.getDegree()));
 	}
 	
 	public double getDegree() {
+//		return Math.atan2(y, x);
 		return Math.atan2(y, x)*180/Math.PI;
 	}
 	
@@ -74,5 +77,10 @@ public class Vector{
 	
 	public Vector copy() {
 		return new Vector(x, y);
+	}
+
+	@Override
+	public String toString(){
+		return "Vector [x=" + x + ", y=" + y + "]";
 	}
 }

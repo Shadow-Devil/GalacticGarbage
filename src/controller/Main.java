@@ -10,11 +10,6 @@ import view.Toolbar;
 
 public class Main extends Application {
 
-	public static void main(String[] args) {
-    	//This is a workaround for a known issue when starting JavaFX applications 
-        startApp(args);
-    }
-
 	public GameBoardUI gameBoardUI; // the user interface object
 	public Toolbar toolBar; // the tool bar object with start and stop buttons
 
@@ -29,9 +24,9 @@ public class Main extends Application {
 	 */
 	@Override
 	public void start(Stage primaryStage) {
-		this.toolBar = new Toolbar(this);
-		this.gameBoardUI = new GameBoardUI(this.toolBar);
-		this.toolBar.resetToolBarButtonStatus(false); // set tool bar to default values
+		toolBar = new Toolbar(this);
+		gameBoardUI = new GameBoardUI(this.toolBar);
+		toolBar.resetToolBarButtonStatus(false); // set tool bar to default values
 
 		// initialize GridPane and format
 		// GridPanes are divided into columns and rows, like a table
@@ -42,8 +37,8 @@ public class Main extends Application {
 
 		// add all components to the gridLayout
 		// second parameter is column index, second parameter is row index of grid
-		gridLayout.add(this.gameBoardUI, 0, 1);
-		gridLayout.add(this.toolBar, 0, 0);
+		gridLayout.add(gameBoardUI, 0, 1);
+		gridLayout.add(toolBar, 0, 0);
 
 		// scene and stages
 		Scene scene = new Scene(gridLayout);
