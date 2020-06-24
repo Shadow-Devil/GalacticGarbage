@@ -23,7 +23,7 @@ public class GameBoardUI extends Canvas implements Runnable{
 	private static final int DEFAULT_WIDTH = 1000;
 	private static final int DEFAULT_HEIGHT = 600;
 
-	private static final Color backgroundColor = Color.WHITE;
+	private static final Color backgroundColor = Color.BLACK;
 	private static final int SLEEP_TIME = 1000 / 25; // this gives us 25fps
 	
 	// attribute inherited by the JavaFX Canvas class
@@ -70,7 +70,8 @@ public class GameBoardUI extends Canvas implements Runnable{
 			gameBoard.updateSpaceObjects();
 			// when this.gameBoard.hasWon() is null, do nothing
 			if (gameBoard.hasEnded()){
-				showAsyncAlert("Oh.. you lost.");
+				showAsyncAlert("Oh.. you lost.\n" +
+						"Your Score: " + gameBoard.getScore());
 				stopGame();
 			}
 			paint(graphicsContext);
@@ -126,9 +127,9 @@ public class GameBoardUI extends Canvas implements Runnable{
 		return null;
 	}
 
-	public static void addNew(SpaceObject so){
-		spaceImages.put(so, gui.getImage(so.getIcon()));
-	}
+//	public static void addNew(SpaceObject so){
+//		spaceImages.put(so, gui.getImage(so.getIcon()));
+//	}
 
 	/**
 	 * Starts the GameBoardUI Thread, if it wasn't running. Starts the game board, which
@@ -169,7 +170,7 @@ public class GameBoardUI extends Canvas implements Runnable{
 			paintSpaceObject(so, graphics);
 		}
 		// render player spaceShip
-		paintSpaceObject(gameBoard.getPlayer(), graphics);
+		//paintSpaceObject(gameBoard.getPlayer(), graphics); //Unnötig, da player auch in der Liste drin ist
 	}
 
 	/**
@@ -179,15 +180,19 @@ public class GameBoardUI extends Canvas implements Runnable{
 	 * @param graphics used to draw changes
 	 */
 	private void paintSpaceObject(SpaceObject so, GraphicsContext graphics){
-		Vector spaceObjectPositionVector = so.getPositionVector();
-		Vector canvasPosition = convertPosition(spaceObjectPositionVector);
+		Vector canvasPosition = convertPosition(so.getPositionVector());
 		//System.out.println(so);
 		//TODO richtige drehung, vll. invertieren
+		
 		graphics.save(); // saves the current state on stack, including the current transform
 		//graphics.rotate((double) (so.getDirectionVector().getDegree()));
         rotate(graphics, -((so instanceof Player ? ((Player)so).getFacingVector() : so.getDirectionVector()).getDegree()),
 		 canvasPosition.getX(), canvasPosition.getY());
-        //graphics.rotate((double) ((so instanceof Player ? ((Player)so).getFacingVector() : so.getDirectionVector()).getDegree()));
+   
+		//TODO FELIX: hier überprüfen, ob das bild geladen ist und wenn nein neu laden??
+		if(spaceImages.get(so) == null)
+			spaceImages.put(so, gui.getImage(so.getIcon()));
+		
         graphics.drawImage(spaceImages.get(so),
 		        canvasPosition.getX() - so.getRadius(), canvasPosition.getY() - so.getRadius(), so.getRadius()*2, so.getRadius()*2);
         graphics.restore(); // back to original state (before rotation)

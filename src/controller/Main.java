@@ -42,12 +42,8 @@ public class Main extends Application {
 
 		// scene and stages
 		Scene scene = new Scene(gridLayout);
-		scene.setOnKeyPressed(event -> {
-			Input.handle(event, true);
-		});
-		scene.setOnKeyReleased(event -> {
-			Input.handle(event, false);
-		});
+		scene.setOnKeyPressed(event -> Input.handle(event, true));
+		scene.setOnKeyReleased(event -> Input.handle(event, false));
 		
 		primaryStage.setTitle("Galactic Garbage");
 		primaryStage.setScene(scene);

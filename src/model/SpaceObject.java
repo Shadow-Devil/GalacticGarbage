@@ -1,6 +1,7 @@
 package model;
 
 import controller.GameBoard;
+import controller.collision.Collision;
 
 public abstract class SpaceObject{
 	protected final int radius;
@@ -19,24 +20,18 @@ public abstract class SpaceObject{
 		this.alive = true;
 	}
 
-	public void move(int maxX, int maxY) { 
-		this.getPositionVector().add(directionVector.copy().multiply(speed));
+	public void move() { 
+		positionVector.add(directionVector.copy().multiply(speed));
 		//System.out.println(speed);
 		//TODO Beschleunigung
-		
-		positionVector.setXY(((positionVector.getX() % maxX) + maxX) % maxX, 
-							 ((positionVector.getY() % maxY) + maxY) % maxY);
-
-//		if(this.getPositionVector().getX() >= maxX)
-//			this.getPositionVector().setX(0);
-//		if(this.getPositionVector().getY() >= maxY)
-//			this.getPositionVector().setY(0);
-//
-//		if(this.getPositionVector().getX() < 0)
-//			this.getPositionVector().setX(maxX);
-//		if(this.getPositionVector().getY() > 0)
-//			this.getPositionVector().setY(maxY);
-		//System.out.println(positionVector);
+		GameBoard.keepInFrame(positionVector);
+	}
+	
+	public void move2() { 
+		positionVector.add(directionVector.copy().multiply(speed));
+		//System.out.println(speed);
+		//TODO Beschleunigung
+		GameBoard.keepInFrame(positionVector);
 	}
 	
 	/** 
@@ -76,33 +71,4 @@ public abstract class SpaceObject{
 		return directionVector;
 	}
 
-	public abstract void collide(SpaceObject two, Vector collisionVector);
-	
-	public void bounce(SpaceObject two, Vector collisionVector){ 
-		double degree = collisionVector.getDegree() - 90;//TODO kontrollieren
-		
-		Vector v1 = this.directionVector.turn(degree).multiply(this.speed);
-		Vector v2 = two.directionVector.turn(degree).multiply(two.speed);
-		
-		double temp = v1.getY();
-		v1.setY(v2.getY());
-		v2.setY(temp);
-		
-		this.speed = v1.getLength();
-		two.speed = v2.getLength();
-
-		v1.turn(-degree).toUnit();
-		v2.turn(-degree).toUnit();
-	}
-	
-	public void repel(SpaceObject two, Vector collisionVector){
-		double degree = collisionVector.getDegree() - two.directionVector.getDegree();
-		double diff = Math.signum(degree);
-		if (diff == 0){
-			two.directionVector.multiply(-1);
-		} else {
-			two.directionVector.turn(2*degree*diff);
-		}
-
-	}
 }

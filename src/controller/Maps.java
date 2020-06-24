@@ -29,7 +29,7 @@ public enum Maps{	//TODO bei getObj immer neue Liste erstellen!!
 		public List<Debris> getBaseDebris(){
 			//TODO Maps
 			List<Debris> baseDebris = new ArrayList<>();
-			baseDebris.add(new Debris(2, new Vector(500, 500), new Vector(1, 0) , 10));
+			baseDebris.add(new Debris(2, new Vector(500, 500), new Vector(-1, 0) , 2));
 
 
 			return baseDebris;
@@ -74,5 +74,23 @@ public enum Maps{	//TODO bei getObj immer neue Liste erstellen!!
 	 */
 	public int getMaxDebris() {
 		return maxDebris;
+	}
+	
+	/**
+	 * Sets the default number of maximum spaceObjects on the GameBoard.
+	 * @return the current Map
+	 */
+	public static Maps chooseMap(int difficulty){
+		switch (difficulty) {
+			case 0:
+				return Maps.EASY;
+			case 1:
+				return Maps.MEDIUM;
+			case 2:
+				return Maps.HARD;
+			default:
+				throw new IllegalArgumentException("Ausgewählte Difficulty gibt es nicht");
+			}
+		
 	}
 }

@@ -5,21 +5,25 @@ import javafx.scene.input.KeyEvent;
 
 public class Input{
 
-	private static boolean wPressed, aPressed, sPressed, dPressed, spacePressed, spaceAlreadyPressed, escapePressed;
+	private static boolean wPressed, aPressed, sPressed, dPressed, spacePressed;
  
     
-    /**
+
+
+
+
+	/**
      * Wird bei Tastendruck aufgerufen & aktualisiert entsprechende booleans
      * 
-     * @param e
+     * @param event
      * @param pressed
      */
     public static void handle(KeyEvent event, boolean pressed) {
 		String key = event.getCode().getChar();
 		//System.out.println("Handle");
-		if (key.equals("E") && !spaceAlreadyPressed)
+		if (key.equals("E")){
 			spacePressed = pressed;
-		spaceAlreadyPressed = pressed;
+		}
 	    //System.out.println(key);
 		
 		if (key.equals("W"))
@@ -33,19 +37,14 @@ public class Input{
 		
 		if (key.equals("D"))
 			dPressed = pressed;
-		
-		
-		
-		if (event.getCode().isFunctionKey())
-			escapePressed = pressed;
+
    
     }
     
-
-
-	public static boolean isSpaceAlreadyPressed(){
-		return spaceAlreadyPressed;
+    public static void resetSpacePressed(){
+		spacePressed = false;
 	}
+
 	
 	public static boolean iswPressed(){
 		//System.out.println(wPressed);
@@ -67,13 +66,4 @@ public class Input{
 	public static boolean isSpacePressed(){
 		return spacePressed;
 	}
-
-	public static boolean isEscapePressed(){
-		return escapePressed;
-	}
-
-    public static void updateLoop() {
-    	spaceAlreadyPressed = false;
-    }
-
 }

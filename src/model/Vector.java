@@ -36,15 +36,13 @@ public class Vector{
 	}
 	
 	private void turnUnitVector(double degree) {
-//		this.x = Math.cos(degree )* x - Math.sin(degree )* y;
-//		this.y = Math.sin(degree )* x + Math.cos(degree )* y;
 		this.x = Math.cos(Math.toRadians(degree + this.getDegree()));
 		this.y = Math.sin(Math.toRadians(degree + this.getDegree()));
 	}
 	
 	public double getDegree() {
-//		return Math.atan2(y, x);
-		return Math.atan2(y, x)*180/Math.PI;
+		double degree = Math.atan2(y, x)*180/Math.PI;
+		return degree >= 0 ? degree : degree + 360;
 	}
 	
 //	public static Vector vectorAfterDegree(int degree){

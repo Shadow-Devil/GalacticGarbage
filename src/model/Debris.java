@@ -1,7 +1,7 @@
 package model;
 
 import controller.GameBoard;
-import view.GameBoardUI;
+import controller.collision.Collision;
 
 public class Debris extends SpaceObject{
 	
@@ -22,15 +22,15 @@ public class Debris extends SpaceObject{
 	 */
 	public void split() { 
 		//TODO Debris - split()
-		Vector d1 = this.directionVector.copy().turn(30.0);
-		Vector d2 = this.directionVector.copy().turn(-30.0);
-		Debris deb1 = new Debris(this.size - 1, this.positionVector, d1, this.baseSpeed);
-		Debris deb2 = new Debris(this.size - 1, this.positionVector, d2, this.baseSpeed);
+		//System.out.println("Split");
 
-		GameBoardUI.addNew(deb1);
-		GameBoardUI.addNew(deb2);
+		Debris deb1 = new Debris(size - 1, positionVector.copy(), directionVector.copy().turn(30.0), baseSpeed);
+		Debris deb2 = new Debris(size - 1, positionVector.copy(), directionVector.copy().turn(-30.0), baseSpeed);
+		Collision.moveAppart(deb1, deb2, true);
+		
 		GameBoard.spaceObjects.add(deb1);
 		GameBoard.spaceObjects.add(deb2);
+		
 		System.out.println("Splited");
 		GameBoard.debrisCount += size*2;
 	}
@@ -43,37 +43,12 @@ public class Debris extends SpaceObject{
 	}
 
 	@Override
-	public void collide(SpaceObject two, Vector collisionVector){
-		if(two instanceof Player) {
-			if(size > 0)
-				((Player) two).loseHealth(size * damagePerSize);
-			
-			bounce(two, collisionVector);
-		}else if(two instanceof Projectile) {
-			if (size > 0){
-				die();
-			}
-			two.die();
-		}else if(two instanceof Moon || two instanceof Planet){
-			if(size == 0)
-				die();
-			else {
-				//TODO eventuell GameLost
-				two.repel(this, collisionVector);
-			}
-		}else {
-			bounce(two, collisionVector);
-		}
-	}
-
-	@Override
 	public void die() {
 		super.die();
 		GameBoard.debrisCount -= (size>0 ? size*2 : 1);
 	}
 
 	public Debris getCopy() {
-		
 		GameBoard.debrisCount += (size>0 ? size*2 : 1);
 		return new Debris(size, positionVector, directionVector, baseSpeed);
 	}

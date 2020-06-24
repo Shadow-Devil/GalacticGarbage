@@ -1,11 +1,12 @@
 package controller;
 
 import java.util.List;
+
+import controller.collision.Collision;
+
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import model.Debris;
-import model.Planet;
 import model.Player;
 import model.SpaceObject;
 import model.Vector;
@@ -22,7 +23,7 @@ public class GameBoard{
 	
 	private final int difficulty;
 
-	private int width, height;
+	private static int width, height;
 	private boolean isRunning;
 	private boolean gameEnded;
 	private int updateCounter;
@@ -31,6 +32,8 @@ public class GameBoard{
 	public static List<SpaceObject> eventSpaceObjects = new ArrayList<>();
 	public List<Debris> spawn = new ArrayList<>();
 	private int spawncounter;
+
+	private int score;
 
 	private static int maxDebris;
 	public static int debrisCount;
@@ -42,16 +45,19 @@ public class GameBoard{
 	 * @param height of the gameboard
 	 * @param difficulty from 0(EASY) to 2(HARD)
 	 */
-	public GameBoard(int width, int height, int difficulty) { 
+	public GameBoard(int w, int h, int difficulty) { 
 		gameEnded = false;
 		player = new Player();
-		this.width = width;
-		this.height = height;
+		width = w;
+		height = h;
 		spawncounter = 0;
 		addSpaceObjects();
 		this.difficulty = difficulty;
 		updateCounter = 0;
+		score = 0;
 	}
+
+
 
 	/**
 	 * Removes all existing spaceObjects from the spaceObjects list. <br>
@@ -59,8 +65,10 @@ public class GameBoard{
 	 * and therefore difficulty.
 	 */
 	public void addSpaceObjects(){
-		spawn = chooseMap().getBaseDebris();
-		spaceObjects = chooseMap().getObjects();
+		Maps map = Maps.chooseMap(difficulty);
+		maxDebris = map.getMaxDebris();
+		spawn = map.getBaseDebris();
+		spaceObjects = map.getObjects();
 		spaceObjects.add(player); 
 	}  
 
@@ -71,7 +79,9 @@ public class GameBoard{
 	public void resetSpaceObjects(){
 		this.player = new Player();
 //		spaceObjects.clear();	//eig nicht nötig
+		debrisCount = 0;
 		addSpaceObjects();
+		
 	}
 
 	/**
@@ -123,25 +133,22 @@ public class GameBoard{
 	public void updateSpaceObjects(){
 		List<SpaceObject> spaceObjects = getspaceObjects();
 
-		// maximum x and y values a spaceObjects can have depending on the size of the game board
-		int maxX = width;
-		int maxY = height;
+
 
 		// update the positions of the player and the other spaceObjects
 		for (SpaceObject so: spaceObjects){
-			so.move(maxX, maxY);
+			so.move();
 		}
 
-		player.move(maxX, maxY);
+		//player.control();
 
 		// iterate through all spaceObjects (except player) and check if it is crunched
 		for (SpaceObject so1: spaceObjects){
 			if (!so1.isAlive())
 				continue; // because there is no need to check for a collision
 			
-			for (SpaceObject so2: spaceObjects){
-				
-				//TODO equals überschreiben
+			for (int i = spaceObjects.indexOf(so1) + 1; i < spaceObjects.size(); i++){
+				SpaceObject so2 = spaceObjects.get(i);
 				if(so1.equals(so2))
 					continue;
 				
@@ -169,18 +176,19 @@ public class GameBoard{
 
 		for (SpaceObject spaceObject: eventSpaceObjects){ 
 			if (spaceObject.isAlive()){
-				
-				GameBoardUI.addNew(spaceObject);
+				//System.out.println("new Projectile: " + spaceObject);
+				spaceObjects.add(spaceObject);
 			} else {
 				if (spaceObject instanceof Debris && ((Debris) spaceObject).getSize() > 0){
 					((Debris) spaceObject).split();
-				}
-		
+				}else if(spaceObject instanceof Debris)
+					increaseScore();
+				spaceObjects.remove(spaceObject);
 			}
-			spaceObjects.remove(spaceObject);
 		}
+		eventSpaceObjects.clear();
 
-		if(updateCounter >= 15000) {	//over time increase
+		if(updateCounter >= 1500) {	//over time increase
 			maxDebris += 4;
 			updateCounter %= 10;
 		}
@@ -188,42 +196,31 @@ public class GameBoard{
 			System.out.println("new Spawn");
 			Debris debris = spawn.get(spawncounter++ % spawn.size()).getCopy();
 			GameBoard.spaceObjects.add(debris);
-			GameBoardUI.addNew(debris);
 			
 		}
+		//System.out.println(updateCounter);
 
-		Input.updateLoop();
 		updateCounter++;
 	}
 	
-	/**
-	 * Sets the default number of maximum spaceObjects on the GameBoard.
-	 * @return the current Map
-	 */
-	public Maps chooseMap(){
-		switch (difficulty) {
-		case 0: {
-			maxDebris = Maps.EASY.getMaxDebris();
-			return Maps.EASY;
-		}
-		case 1: {
-			maxDebris = Maps.MEDIUM.getMaxDebris();
-			return Maps.MEDIUM;
-		}
-		case 2: {
-			maxDebris = Maps.HARD.getMaxDebris();
-			return Maps.HARD;
-		}
-		default:
-			maxDebris = Maps.EASY.getMaxDebris();
-			return Maps.EASY;
-		}
+	public static void keepInFrame(Vector v) {
+		v.setXY(((v.getX() % width) + width) % width, 
+			 ((v.getY() % height) + height) % height);
 	}
+
 
 	public Player getPlayer(){
 		return player;
 	}
-
+	
+	public void increaseScore() {
+		score++;
+	}
+	
+	public int getScore() {
+		return score;
+	}
+	
 	// /**
 	// * @return list of loser cars
 	// */
