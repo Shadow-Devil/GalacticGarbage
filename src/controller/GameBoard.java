@@ -3,6 +3,7 @@ package controller;
 import java.util.List;
 
 import controller.collision.Collision;
+import controller.collision.Policy;
 
 import java.util.ArrayList;
 
@@ -139,7 +140,6 @@ public class GameBoard{
 			so.move();
 		}
 
-		//player.control();
 
 		// iterate through all spaceObjects (except player) and check if it is crunched
 		for (SpaceObject so1: spaceObjects){
@@ -151,21 +151,15 @@ public class GameBoard{
 				if(so1.equals(so2))
 					continue;
 				
-				// : Add a new collision type!
-				// Hint: Make sure to create a subclass of the class Collision
-				// and store it in the new Collision package.
-				// Create a new collision object
-				// and check if the collision between player car and autonomous car evaluates as expected
 
 				Collision collision = new Collision(so1, so2);
 
 				if (collision.detectCollision()){
 					//System.out.println("collision:" + collision);
-					collision.collide();
+					Policy policy = new Policy(collision);
+					policy.selectStrategy();
+					collision.executeCollision();
 
-					// : The player gets notified when he looses or wins the game
-					// Hint: you should set the attribute gameWon accordingly, use 'isWinner()' below for your
-					// implementation
 					if (!player.isAlive())
 						gameEnded = true;
 
@@ -219,27 +213,6 @@ public class GameBoard{
 	public int getScore() {
 		return score;
 	}
-	
-	// /**
-	// * @return list of loser cars
-	// */
-	// public List<Car> getLoserCars() {
-	// return this.loserCars;
-	// }
 
-	// /**
-	// * If all cars are crunched, the player wins.
-	// *
-	// * @return true if game is won
-	// * @return false if game is not (yet) won
-	// */
-	// private boolean isWinner() {
-	// for (SpaceObject so : spaceObjects) {
-	// if (!so.isCrunched()) {
-	// return false;
-	// }
-	// }
-	// return true;
-	// }
 
 }

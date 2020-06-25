@@ -34,7 +34,6 @@ public class Collision{
 	 */
 	public void collide() {
 		//TODO Collision - collide()
-		selectCollisionType();
 		executeCollision();
 		
 		//one.collide(two, collisionVector);
@@ -59,7 +58,7 @@ public class Collision{
 		 */
 	}
 	
-	private void selectCollisionType(){
+	public void selectCollisionType(){
 		if (one instanceof Projectile){
 			if (two instanceof Projectile){
 				this.collisionType = new CollisionProjectile_Projectile();
@@ -108,25 +107,52 @@ public class Collision{
 		one = tmp;
 	}
 	
-	private void executeCollision(){
+	public void executeCollision(){
 		collisionType.collide(one, two, collisionVector);
 	}
 
 	
 	public static void repel(SpaceObject one, SpaceObject two, Vector collisionVector){
 		//System.out.println("repel");
+		System.out.println(collisionVector.getDegree());
 		double degree = collisionVector.getDegree() - two.getDirectionVector().getDegree();
+		System.out.println(degree);
 		double diff = Math.signum(degree);
-		if (diff == 0){
-			two.getDirectionVector().multiply(-1);
-		} else {
-			two.getDirectionVector().turn(2*degree*diff);
-		}
+		System.out.println(diff);
+//		if (diff == 0){
+//			two.getDirectionVector().multiply(-1);
+//		} else {
+			two.getDirectionVector().turn(2*degree*diff).multiply(-1).toUnit();
+
 		moveAppart(one, two, false);
 	}
 	
 	public static void bounce(SpaceObject one, SpaceObject two, Vector collisionVector){
 		//System.out.println("Bounce");
+//		if(one instanceof Player) {
+//			Player player = (Player) one;
+//			
+//			double degree = collisionVector.getDegree() - 90;//TODO kontrollieren
+//			//System.out.println(collisionVector.getDegree() + " " + degree);
+//			//System.out.println(one + " speed " + one.getSpeed());
+//			Vector v1 = player.getDirectionVector().turn(degree).multiply(one.getSpeed());
+//			Vector v2 = two.getDirectionVector().turn(degree).multiply(two.getSpeed());
+//			
+//			double temp = v1.getY();
+//			v1.setY(v2.getY());
+//			v2.setY(temp);
+//			
+//			one.setSpeed(v1.getLength());
+//			two.setSpeed(v2.getLength());
+//			//System.out.println(v1);
+//			v1.turn(-degree).toUnit();
+//			v2.turn(-degree).toUnit();
+//			//System.out.println(v1);
+//			Collision.moveAppart(one, two, true);
+//			
+//			
+//		}
+			
 		double degree = collisionVector.getDegree() - 90;//TODO kontrollieren
 		//System.out.println(collisionVector.getDegree() + " " + degree);
 		//System.out.println(one + " speed " + one.getSpeed());

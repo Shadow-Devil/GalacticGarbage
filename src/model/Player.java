@@ -14,10 +14,11 @@ public class Player extends SpaceObject{
 	private double maxSpeed = 4;	
 	private Vector facingVector;
 	private Vector accelerationVector;
+	private boolean firstCollision = false;
 	
-	
+
 	public Player(){
-		super(20, ICONNAME, new Vector(30, 30), new Vector(1, 0), 0);
+		super(20, ICONNAME, new Vector(30, 30), new Vector(1, 0), 5);
 		facingVector = new Vector(1, 0);
 		accelerationVector = new Vector(0, 0);
 	}
@@ -57,9 +58,11 @@ public class Player extends SpaceObject{
 		
 		if (w && s) {
 		} else if (w) { //TODO speed increase
-			Vector m = directionVector.copy()
-			.multiply(speed).add(facingVector.copy().multiply(maxSpeed));
-			positionVector.add(m);
+			Vector n = facingVector.copy().multiply(maxSpeed);
+			if (this.firstCollision){
+				n.add(directionVector.copy().multiply(speed));
+			}
+			positionVector.add(n);
 			//speed = m.getLength();
 			//System.out.println(speed);
 			//TODO Beschleunigung
@@ -74,9 +77,11 @@ public class Player extends SpaceObject{
 			//this.directionVector.toUnit();
 			//System.out.println(directionVector);
 		} else if (s) { 
-			Vector m = directionVector.copy()
-			.multiply(speed).add(this.facingVector.copy().multiply(-1*maxSpeed));
-			positionVector.add(m);
+			Vector n = facingVector.copy().multiply(-1*maxSpeed);
+			if (this.firstCollision){
+				n.add(directionVector.copy().multiply(speed));
+			}
+			positionVector.add(n);
 			
 			//speed = m.getLength();
 			//System.out.println(speed);
@@ -84,20 +89,34 @@ public class Player extends SpaceObject{
 		
 			GameBoard.keepInFrame(positionVector);
 		} else{
-			super.move();
+			if (this.firstCollision){
+				super.move();
+			}
 		}
-		
+		//Speed 
+		speed *= 0.99;
 		
 		if (Input.isSpacePressed()){
 			//System.out.println("Shoot");
 			this.shoot();
 		}
 		
+		
 		accelerationVector = new Vector(0, 0);
 	}
 	
+	public Vector getAccelerationVector(){
+		return accelerationVector;
+	}
+
+	public void setFirstCollision(){
+		this.firstCollision = true;
+	}
 	
-	
+	public boolean isFirstCollision(){
+		return firstCollision;
+	}
+
 	/**
 	 * Reduces the players amount of health by the incoming damage. <br>
 	 * Kills the player if health drops to 0.

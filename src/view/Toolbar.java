@@ -30,8 +30,9 @@ public class Toolbar extends ToolBar {
             ButtonType EASY = new ButtonType("Easy", ButtonBar.ButtonData.OK_DONE);
             ButtonType MEDIUM = new ButtonType("Medium", ButtonBar.ButtonData.OK_DONE);
             ButtonType HARD = new ButtonType("Hard", ButtonBar.ButtonData.OK_DONE);
+            ButtonType CANCLE = new ButtonType("Cancle", ButtonBar.ButtonData.CANCEL_CLOSE);
     
-            Alert alert = new Alert(AlertType.INFORMATION, "Which difficulty do you want to play?", EASY, MEDIUM, HARD);
+            Alert alert = new Alert(AlertType.INFORMATION, "Which difficulty do you want to play?", EASY, MEDIUM, HARD, CANCLE);
             alert.setTitle("Choose Difficulty");
             alert.setHeaderText("");
     

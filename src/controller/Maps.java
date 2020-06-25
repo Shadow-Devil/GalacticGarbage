@@ -34,20 +34,27 @@ public enum Maps{	//TODO bei getObj immer neue Liste erstellen!!
 
 			return baseDebris;
 		}
-	}, MEDIUM(3) {
+	}, MEDIUM(1) {
 		@Override
-		public List<SpaceObject> getObjects(){
-			// TODO Maps
+		public List<SpaceObject> getObjects() {	//alles außer Player
 			List<SpaceObject> map = new ArrayList<>();
 			
+			Planet p1 = new Planet(100, 0, new Vector(700,300));
+			map.add(p1);
+			//Moon(int radius, int icon, Vector planetToMoonVector, double turnSpeed, Vector planet)
+			//map.add(new Moon(10, 0, new Vector(0,200), -3.0, p1.getPositionVector().copy()));
+
+
 			return map;
 		}
 
 		@Override
 		public List<Debris> getBaseDebris(){
-			// TODO Maps
+			//TODO Maps
 			List<Debris> baseDebris = new ArrayList<>();
-			
+			baseDebris.add(new Debris(2, new Vector(900, 500), new Vector(-0.5, -0.5) , 2));
+			System.out.println("Medium");
+
 			return baseDebris;
 		}
 	}, HARD(4) {
