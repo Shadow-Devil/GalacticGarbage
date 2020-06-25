@@ -2,7 +2,7 @@ package model;
 
 public class Projectile extends SpaceObject{
 	
-	private static final String ICONNAME = "playerIcon.gif";
+	private static final String ICONNAME = "projectileIcon.gif";
 	private int lifeTime = 50;
 
 	public Projectile(Vector positionVector, Vector directionVector){

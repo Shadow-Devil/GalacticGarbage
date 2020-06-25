@@ -2,7 +2,7 @@ package model;
 
 public class Moon extends SpaceObject{
 	
-	private static final String[] ICONNAME = {"playerIcon.gif", "playerIcon.gif", "playerIcon.gif"};
+	private static final String[] ICONNAME = {"moon1Icon.gif", "moon2Icon.gif", "moon3Icon.gif"};
 	private final Vector planet;
 	private final double orbit;
 	
