@@ -114,7 +114,7 @@ public class Collision{
 
 	
 	public static void repel(SpaceObject one, SpaceObject two, Vector collisionVector){
-		System.out.println("repel");
+		//System.out.println("repel");
 		double degree = collisionVector.getDegree() - two.getDirectionVector().getDegree();
 		double diff = Math.signum(degree);
 		if (diff == 0){
@@ -126,10 +126,10 @@ public class Collision{
 	}
 	
 	public static void bounce(SpaceObject one, SpaceObject two, Vector collisionVector){
-		System.out.println("Bounce");
+		//System.out.println("Bounce");
 		double degree = collisionVector.getDegree() - 90;//TODO kontrollieren
-		System.out.println(collisionVector.getDegree() + " " + degree);
-		System.out.println(one + " speed " + one.getSpeed());
+		//System.out.println(collisionVector.getDegree() + " " + degree);
+		//System.out.println(one + " speed " + one.getSpeed());
 		Vector v1 = one.getDirectionVector().turn(degree).multiply(one.getSpeed());
 		Vector v2 = two.getDirectionVector().turn(degree).multiply(two.getSpeed());
 		
@@ -139,10 +139,10 @@ public class Collision{
 		
 		one.setSpeed(v1.getLength());
 		two.setSpeed(v2.getLength());
-		System.out.println(v1);
+		//System.out.println(v1);
 		v1.turn(-degree).toUnit();
 		v2.turn(-degree).toUnit();
-		System.out.println(v1);
+		//System.out.println(v1);
 		Collision.moveAppart(one, two, true);
 	}
 

@@ -38,25 +38,33 @@ public enum Maps{	//TODO bei getObj immer neue Liste erstellen!!
 		@Override
 		public List<SpaceObject> getObjects(){
 			// TODO Maps
-			return null;
+			List<SpaceObject> map = new ArrayList<>();
+			
+			return map;
 		}
 
 		@Override
 		public List<Debris> getBaseDebris(){
 			// TODO Maps
-			return null;
+			List<Debris> baseDebris = new ArrayList<>();
+			
+			return baseDebris;
 		}
 	}, HARD(4) {
 		@Override
 		public List<SpaceObject> getObjects(){
 			// TODO Maps
-			return null;
+			List<SpaceObject> map = new ArrayList<>();
+			
+			return map;
 		}
 
 		@Override
 		public List<Debris> getBaseDebris(){
 			// TODO Maps
-			return null;
+			List<Debris> baseDebris = new ArrayList<>();
+			
+			return baseDebris;
 		}
 	};
 

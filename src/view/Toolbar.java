@@ -31,7 +31,7 @@ public class Toolbar extends ToolBar {
             ButtonType MEDIUM = new ButtonType("Medium", ButtonBar.ButtonData.OK_DONE);
             ButtonType HARD = new ButtonType("Hard", ButtonBar.ButtonData.OK_DONE);
     
-            Alert alert = new Alert(AlertType.CONFIRMATION, "Which difficulty do you want to play?", EASY, MEDIUM, HARD);
+            Alert alert = new Alert(AlertType.INFORMATION, "Which difficulty do you want to play?", EASY, MEDIUM, HARD);
             alert.setTitle("Choose Difficulty");
             alert.setHeaderText("");
     
@@ -43,7 +43,8 @@ public class Toolbar extends ToolBar {
             }else{
             	gameWindow.gameBoardUI.gameSetup(0);
             }
-            gameWindow.gameBoardUI.startGame();
+            //System.out.println(result);
+        	gameWindow.gameBoardUI.startGame();
         });
 
         this.stop.setOnAction(event -> {

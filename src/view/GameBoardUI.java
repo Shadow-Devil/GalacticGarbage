@@ -103,9 +103,9 @@ public class GameBoardUI extends Canvas implements Runnable{
 		toolBar.resetToolBarButtonStatus(false);
 	}
 
-	public static HashMap<SpaceObject, Image> getSpaceImages(){
-		return spaceImages;
-	}
+	//public static HashMap<SpaceObject, Image> getSpaceImages(){
+	//	return spaceImages;
+	//}
 
 	/**
 	 * Sets the Spaceobjects image

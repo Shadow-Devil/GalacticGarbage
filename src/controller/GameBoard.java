@@ -10,7 +10,6 @@ import model.Debris;
 import model.Player;
 import model.SpaceObject;
 import model.Vector;
-import view.GameBoardUI;
 
 public class GameBoard{
 
@@ -41,8 +40,8 @@ public class GameBoard{
 	/**
 	 * Constructor, creates the gameboard based on size
 	 * 
-	 * @param width of the gameboard
-	 * @param height of the gameboard
+	 * @param w of the gameboard
+	 * @param h of the gameboard
 	 * @param difficulty from 0(EASY) to 2(HARD)
 	 */
 	public GameBoard(int w, int h, int difficulty) { 
@@ -193,7 +192,7 @@ public class GameBoard{
 			updateCounter %= 10;
 		}
 		if(debrisCount+4 <= maxDebris) {	//neuer Spawn possible
-			System.out.println("new Spawn");
+			//System.out.println("new Spawn");
 			Debris debris = spawn.get(spawncounter++ % spawn.size()).getCopy();
 			GameBoard.spaceObjects.add(debris);
 			

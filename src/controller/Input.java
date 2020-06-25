@@ -5,10 +5,8 @@ import javafx.scene.input.KeyEvent;
 
 public class Input{
 
-	private static boolean wPressed, aPressed, sPressed, dPressed, spacePressed;
+	private static boolean wPressed, aPressed, sPressed, dPressed, spacePressed, resetet;
  
-    
-
 
 
 
@@ -22,7 +20,13 @@ public class Input{
 		String key = event.getCode().getChar();
 		//System.out.println("Handle");
 		if (key.equals("E")){
-			spacePressed = pressed;
+			if(pressed && !resetet) 
+					spacePressed = pressed;
+			
+			if(!pressed){
+				spacePressed = false;
+				resetet = false;
+			}
 		}
 	    //System.out.println(key);
 		
@@ -43,6 +47,7 @@ public class Input{
     
     public static void resetSpacePressed(){
 		spacePressed = false;
+		resetet = true;
 	}
 
 	

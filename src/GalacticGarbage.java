@@ -5,7 +5,7 @@ public class GalacticGarbage {
 	/**
 	 * Bis jetzt implementiert:
 	 * 	Bewegung des Players mit W,A,S,D
-	 * 	Shoot mit E (Da Space Button aufruft)
+	 * 	Shoot mit E (Da Space StopButton aufruft)
 	 * 	Große und mittlere Debris gehen durch shoot kaputt, 
 	 * 		beim colliden mit Player bekommt dieser Schaden
 	 * 	Kleine Debris gehen durch Monde/Planeten kaputt
@@ -16,7 +16,6 @@ public class GalacticGarbage {
 	 * 	Collisionen fixen
 	 * 	Verschiedene Maps erstellen
 	 * 	Beschleunigung des Players
-	 * 	Input durchgehend shooten aus
 	 * 
 	 * @param args
 	 */
