@@ -5,6 +5,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import view.GameBoardUI;
 import view.Toolbar;
 
@@ -48,6 +49,7 @@ public class Main extends Application {
 		primaryStage.setTitle("Galactic Garbage");
 		primaryStage.setScene(scene);
 		primaryStage.show();
+		primaryStage.addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, event -> System.exit(0));
 	}
 
 	/**

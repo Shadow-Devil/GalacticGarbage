@@ -2,6 +2,7 @@ package view;
 
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
 
 import java.util.Optional;
 
@@ -30,13 +31,17 @@ public class Toolbar extends ToolBar {
             ButtonType EASY = new ButtonType("Easy", ButtonBar.ButtonData.OK_DONE);
             ButtonType MEDIUM = new ButtonType("Medium", ButtonBar.ButtonData.OK_DONE);
             ButtonType HARD = new ButtonType("Hard", ButtonBar.ButtonData.OK_DONE);
-            ButtonType CANCLE = new ButtonType("Cancle", ButtonBar.ButtonData.CANCEL_CLOSE);
+            ButtonType CANCEL = new ButtonType("Cancle", ButtonBar.ButtonData.CANCEL_CLOSE);
     
-            Alert alert = new Alert(AlertType.INFORMATION, "Which difficulty do you want to play?", EASY, MEDIUM, HARD, CANCLE);
+            Alert alert = new Alert(AlertType.INFORMATION, "Which difficulty do you want to play?", EASY, MEDIUM, HARD, CANCEL);
             alert.setTitle("Choose Difficulty");
             alert.setHeaderText("");
     
             Optional<ButtonType> result = alert.showAndWait();
+            if(result.get() == CANCEL) {
+            	gameWindow.gameBoardUI.stopGame();
+            	return;
+            }
             if (result.get() == MEDIUM) {
             	gameWindow.gameBoardUI.gameSetup(1);
             } else if(result.get() == HARD){
