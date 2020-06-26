@@ -13,7 +13,6 @@ public class Player extends SpaceObject{
 	private double maxSpeed = 2;	
 	private Vector facingVector;
 	private Vector accelerationVector;
-	private boolean firstCollision = false;
 	
 
 	public Player(){
@@ -85,13 +84,6 @@ public class Player extends SpaceObject{
 		return accelerationVector;
 	}
 
-	public void setFirstCollision(){
-		this.firstCollision = true;
-	}
-	
-	public boolean isFirstCollision(){
-		return firstCollision;
-	}
 
 	/**
 	 * Reduces the players amount of health by the incoming damage. <br>
