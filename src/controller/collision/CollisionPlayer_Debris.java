@@ -15,8 +15,6 @@ public class CollisionPlayer_Debris implements CollisionType{
 	private void internCollide(Player one, Debris two, Vector collisionVector) {
 		if(two.getSize() > 0) 
 			one.loseHealth(two.getSize() * Debris.damagePerSize);
-		
-		one.setFirstCollision();
 		Collision.bounce(one, two, collisionVector);
 	}
 }

@@ -27,12 +27,6 @@ public abstract class SpaceObject{
 		GameBoard.keepInFrame(positionVector);
 	}
 	
-	public void move2() { 
-		positionVector.add(directionVector.copy().multiply(speed));
-		//System.out.println(speed);
-		//TODO Beschleunigung
-		GameBoard.keepInFrame(positionVector);
-	}
 	
 	/** 
 	 * Adds this spaceObject to GameBoard.deadSpaceObjects. <br>

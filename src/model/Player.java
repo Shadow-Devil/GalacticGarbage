@@ -2,7 +2,6 @@ package model;
 
 import controller.GameBoard;
 import controller.Input;
-import view.GameBoardUI;
 
 public class Player extends SpaceObject{
 	
@@ -11,14 +10,14 @@ public class Player extends SpaceObject{
 	private static final double projectileSpawnDiff = 20;	
 	
 	private int health = 100;
-	private double maxSpeed = 4;	
+	private double maxSpeed = 2;	
 	private Vector facingVector;
 	private Vector accelerationVector;
 	private boolean firstCollision = false;
 	
 
 	public Player(){
-		super(20, ICONNAME, new Vector(30, 30), new Vector(1, 0), 5);
+		super(20, ICONNAME, new Vector(30, 30), new Vector(0, 0), 0);
 		facingVector = new Vector(1, 0);
 		accelerationVector = new Vector(0, 0);
 	}
@@ -40,69 +39,46 @@ public class Player extends SpaceObject{
 
 	@Override
 	public void move() {
-		// TODO Turn
-		//System.out.println(a);
+		moveWithAcc();
+		accelerationVector = new Vector(0, 0);
 
-		if (Input.isaPressed() && !Input.isdPressed())  //facingVector
+		if (Input.isaPressed() && !Input.isdPressed())
 			facingVector.turn(DEGREE_ON_TURN).toUnit();
-			
-			//System.out.println("Turn " + facingVector);
-			//System.out.println(facingVector.getDegree());
-
 		if (Input.isdPressed() && !Input.isaPressed())
 			facingVector.turn(-DEGREE_ON_TURN).toUnit();
 		
 		//change movement
 		boolean w = Input.iswPressed();
 		boolean s = Input.issPressed();
-		
 		if (w && s) {
-		} else if (w) { //TODO speed increase
+		} else if (w) { 
 			Vector n = facingVector.copy().multiply(maxSpeed);
-			if (this.firstCollision){
-				n.add(directionVector.copy().multiply(speed));
-			}
-			positionVector.add(n);
-			//speed = m.getLength();
-			//System.out.println(speed);
-			//TODO Beschleunigung
-			
+			accelerationVector.add(n);
 			GameBoard.keepInFrame(positionVector);
-
 			//System.out.println("pressed w");
-			//this.directionVector.multiply(speed).add(this.facingVector.copy().multiply(maxSpeed));
-			//System.out.println(directionVector);
-			//System.out.println(positionVector.getDegree());
-			//speed = this.directionVector.getLength();
-			//this.directionVector.toUnit();
-			//System.out.println(directionVector);
 		} else if (s) { 
 			Vector n = facingVector.copy().multiply(-1*maxSpeed);
-			if (this.firstCollision){
-				n.add(directionVector.copy().multiply(speed));
-			}
-			positionVector.add(n);
-			
-			//speed = m.getLength();
-			//System.out.println(speed);
-			//TODO Beschleunigung
-		
+			accelerationVector.add(n);
 			GameBoard.keepInFrame(positionVector);
-		} else{
-			if (this.firstCollision){
-				super.move();
-			}
 		}
-		//Speed 
-		speed *= 0.99;
 		
 		if (Input.isSpacePressed()){
 			//System.out.println("Shoot");
 			this.shoot();
 		}
-		
-		
-		accelerationVector = new Vector(0, 0);
+	}
+	
+	public void moveWithAcc() {
+		double y = -0.2;
+		Vector dir = directionVector.copy().multiply(y);
+		accelerationVector.add(dir);
+		directionVector.add(accelerationVector);
+		moveBasic();
+	}
+
+	public void moveBasic() { 
+		positionVector.add(directionVector.copy());
+		GameBoard.keepInFrame(positionVector);
 	}
 	
 	public Vector getAccelerationVector(){

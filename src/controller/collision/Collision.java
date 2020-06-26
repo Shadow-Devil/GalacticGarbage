@@ -29,18 +29,8 @@ public class Collision{
 		return one.getRadius() + two.getRadius() >= distance;
 	}
 	
-	/*
-	 * 
-	 */
 	public void collide() {
-		//TODO Collision - collide()
 		executeCollision();
-		
-		//one.collide(two, collisionVector);
-
-		
-		
-		
 		/*
 		 * Player:
 		 * 		debris -> eventuell damage	
@@ -130,43 +120,36 @@ public class Collision{
 	public static void bounce(SpaceObject one, SpaceObject two, Vector collisionVector){
 		//System.out.println("Bounce");
 //		if(one instanceof Player) {
-//			Player player = (Player) one;
-//			
-//			double degree = collisionVector.getDegree() - 90;//TODO kontrollieren
-//			//System.out.println(collisionVector.getDegree() + " " + degree);
-//			//System.out.println(one + " speed " + one.getSpeed());
-//			Vector v1 = player.getDirectionVector().turn(degree).multiply(one.getSpeed());
-//			Vector v2 = two.getDirectionVector().turn(degree).multiply(two.getSpeed());
-//			
-//			double temp = v1.getY();
-//			v1.setY(v2.getY());
-//			v2.setY(temp);
-//			
-//			one.setSpeed(v1.getLength());
-//			two.setSpeed(v2.getLength());
-//			//System.out.println(v1);
-//			v1.turn(-degree).toUnit();
-//			v2.turn(-degree).toUnit();
-//			//System.out.println(v1);
-//			Collision.moveAppart(one, two, true);
-//			
-//			
-//		}
 			
 		double degree = collisionVector.getDegree() - 90;//TODO kontrollieren
 		//System.out.println(collisionVector.getDegree() + " " + degree);
 		//System.out.println(one + " speed " + one.getSpeed());
-		Vector v1 = one.getDirectionVector().turn(degree).multiply(one.getSpeed());
-		Vector v2 = two.getDirectionVector().turn(degree).multiply(two.getSpeed());
+		Vector v1 = one.getDirectionVector();
+		Vector v2 = two.getDirectionVector();
+		if(one instanceof Player) {
+			v1 = v1.copy();
+		}
+		v1.turn(degree);
+		if(!(one instanceof Player)) {
+			v1.multiply(one.getSpeed());
+		}
+		v2.turn(degree).multiply(two.getSpeed());
 		
 		double temp = v1.getY();
 		v1.setY(v2.getY());
 		v2.setY(temp);
 		
-		one.setSpeed(v1.getLength());
+		if(!(one instanceof Player)) {
+			one.setSpeed(v1.getLength());
+		}
 		two.setSpeed(v2.getLength());
 		//System.out.println(v1);
-		v1.turn(-degree).toUnit();
+		v1.turn(-degree);
+		if(!(one instanceof Player)) {
+			v1.toUnit();
+		} else {
+			((Player) one).getAccelerationVector().add(v1);
+		}
 		v2.turn(-degree).toUnit();
 		//System.out.println(v1);
 		Collision.moveAppart(one, two, true);
@@ -175,9 +158,14 @@ public class Collision{
 	public static void moveAppart(SpaceObject one, SpaceObject two, boolean both) {
 		Collision collision = new Collision(one, two);
 		while(collision.detectCollision()) {
-			if(both)
-				one.move2();
-			two.move2();
+			if(both) {
+				if(one instanceof Player) {
+					((Player) one).moveBasic();
+				} else {
+					one.move();
+				}
+			}
+			two.move();
 		}
 	}
 
