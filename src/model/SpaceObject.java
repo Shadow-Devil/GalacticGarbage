@@ -1,7 +1,6 @@
 package model;
 
 import controller.GameBoard;
-import controller.collision.Collision;
 
 public abstract class SpaceObject{
 	protected final int radius;
