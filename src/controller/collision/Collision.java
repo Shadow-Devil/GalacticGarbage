@@ -109,17 +109,13 @@ public class Collision{
 		System.out.println(degree);
 		double diff = Math.signum(degree);
 		System.out.println(diff);
-//		if (diff == 0){
-//			two.getDirectionVector().multiply(-1);
-//		} else {
-			two.getDirectionVector().turn(2*degree*diff).multiply(-1).toUnit();
+		two.getDirectionVector().turn(2*degree*diff).multiply(-1).toUnit();
 
 		moveAppart(one, two, false);
 	}
 	
 	public static void bounce(SpaceObject one, SpaceObject two, Vector collisionVector){
 		//System.out.println("Bounce");
-//		if(one instanceof Player) {
 			
 		double degree = collisionVector.getDegree() - 90;//TODO kontrollieren
 		//System.out.println(collisionVector.getDegree() + " " + degree);
@@ -143,7 +139,6 @@ public class Collision{
 			one.setSpeed(v1.getLength());
 		}
 		two.setSpeed(v2.getLength());
-		//System.out.println(v1);
 		v1.turn(-degree);
 		if(!(one instanceof Player)) {
 			v1.toUnit();
@@ -151,7 +146,6 @@ public class Collision{
 			((Player) one).getAccelerationVector().add(v1);
 		}
 		v2.turn(-degree).toUnit();
-		//System.out.println(v1);
 		Collision.moveAppart(one, two, true);
 	}
 
