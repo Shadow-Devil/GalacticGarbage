@@ -15,7 +15,7 @@ public class GalacticGarbage {
 	 * TODO:
 	 * 	Collisionen fixen
 	 * 	Verschiedene Maps erstellen
-	 * 	Beschleunigung des Players
+	 * 	Gravitation
 	 * 
 	 * @param args
 	 */

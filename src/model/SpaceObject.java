@@ -23,7 +23,7 @@ public abstract class SpaceObject{
 	public void move() { 
 		positionVector.add(directionVector.copy().multiply(speed));
 		//System.out.println(speed);
-		//TODO Beschleunigung
+		//TODO Gravitation
 		GameBoard.keepInFrame(positionVector);
 	}
 	

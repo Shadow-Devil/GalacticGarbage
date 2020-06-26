@@ -7,10 +7,10 @@ public class Player extends SpaceObject{
 	
 	private static final String ICONNAME = "spaceshipIcon.gif";
 	private static final double DEGREE_ON_TURN = 4.0;//TODO wert
-	private static final double projectileSpawnDiff = 20;	
+	private static final double projectileSpawnDiff = 30;	
 	
 	private int health = 100;
-	private double maxSpeed = 2;	
+	private double maxSpeed = 1.8;	
 	private Vector facingVector;
 	private Vector accelerationVector;
 	
@@ -38,6 +38,7 @@ public class Player extends SpaceObject{
 
 	@Override
 	public void move() {
+		//TODO Gravitation
 		moveWithAcc();
 		accelerationVector = new Vector(0, 0);
 
