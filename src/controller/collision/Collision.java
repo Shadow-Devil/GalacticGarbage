@@ -29,6 +29,9 @@ public class Collision{
 		return one.getRadius() + two.getRadius() >= distance;
 	}
 	
+	/**
+	 * Calls the executeCollision method
+	 */
 	public void collide() {
 		executeCollision();
 		/*
@@ -48,6 +51,9 @@ public class Collision{
 		 */
 	}
 	
+	/**
+	 * Initializes the CollisionType based on the two SpaceObjects
+	 */
 	public void selectCollisionType(){
 		if (one instanceof Projectile){
 			if (two instanceof Projectile){
@@ -91,17 +97,28 @@ public class Collision{
 		
 	}
 	
+	/**
+	 * Switches the references for one & two
+	 */
 	private void switchSpaceObjects() {
 		SpaceObject tmp = two;
 		two = one;
 		one = tmp;
 	}
 	
+	/**
+	 * Calls the collide method of the (previously chosen) collisionType
+	 */
 	public void executeCollision(){
 		collisionType.collide(one, two, collisionVector);
 	}
 
-	
+	/**
+	 * Repels the movable SpaceObject from the stationary one
+	 * @param one = stationary SpaceObject
+	 * @param two = movable SpaceObject
+	 * @param collisionVector = the vector between the two SpaceObjects
+	 */
 	public static void repel(SpaceObject one, SpaceObject two, Vector collisionVector){
 		//System.out.println("repel");
 		System.out.println(collisionVector.getDegree());
@@ -114,6 +131,12 @@ public class Collision{
 		moveAppart(one, two, false);
 	}
 	
+	/**
+	 * Bounces the SpaceObjects from each other
+	 * @param one = first movable SpaceObject
+	 * @param two = second movable SpaceObject
+	 * @param collisionVector = the vector between the two SpaceObjects
+	 */
 	public static void bounce(SpaceObject one, SpaceObject two, Vector collisionVector){
 		//System.out.println("Bounce");
 			

@@ -54,14 +54,6 @@ public abstract class SpaceObject{
 	public boolean isAlive(){
 		return alive;
 	}
-
-//	public double getSpeed(){
-//		return speed;
-//	}
-//
-//	public void setSpeed(double speed){
-//		this.speed = speed;
-//	}
 	
 	public int getRadius(){
 		return radius;

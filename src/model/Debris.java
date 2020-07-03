@@ -49,11 +49,19 @@ public class Debris extends SpaceObject{
 		GameBoard.debrisCount -= (size>0 ? size*2 : 1);
 	}
 	
+	/**
+	 * Saves the vector of the killer projectile for direction purposes after being split
+	 * @param projdir = the new projectileDirectionVector
+	 */
 	public void die(Vector projdir) {
 		projectileDirectionVector = projdir;
 		die();
 	}
-
+	
+	/**
+	 * 
+	 * @return a new copy of this debris
+	 */
 	public Debris getCopy() {
 		GameBoard.debrisCount += (size>0 ? size*2 : 1);
 		return new Debris(size, positionVector, directionVector, baseSpeed);

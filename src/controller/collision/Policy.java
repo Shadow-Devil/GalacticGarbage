@@ -8,6 +8,9 @@ public class Policy{
 		this.context = context;
 	}
 	
+	/**
+	 * Calls selectCollisionType in context
+	 */
 	public void selectStrategy() {
 		context.selectCollisionType();
 	}

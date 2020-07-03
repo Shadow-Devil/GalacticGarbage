@@ -81,6 +81,9 @@ public class Vector{
 		this.y = y;
 	}
 	
+	/**
+	 * @return new vector with same coordinates
+	 */
 	public Vector copy() {
 		return new Vector(x, y);
 	}
