@@ -112,8 +112,12 @@ public class GameBoard{
 	/**
 	 * @return list of spaceObjects
 	 */
-	public List<SpaceObject> getspaceObjects(){
+	public List<SpaceObject> getSpaceObjects(){
 		return spaceObjects;
+	}
+	
+	public static void setSpaceObjects(List<SpaceObject> sObj){
+		spaceObjects = sObj;
 	}
 
 	/**
@@ -131,7 +135,7 @@ public class GameBoard{
 	}
 
 	public void updateSpaceObjects(){
-		List<SpaceObject> spaceObjects = getspaceObjects();
+		List<SpaceObject> spaceObjects = getSpaceObjects();
 
 
 

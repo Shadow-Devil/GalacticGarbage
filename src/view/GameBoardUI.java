@@ -98,7 +98,7 @@ public class GameBoardUI extends Canvas implements Runnable{
 		spaceImages = new HashMap<>();
 		
 		gameBoard.resetSpaceObjects();
-		gameBoard.getspaceObjects().forEach((so -> spaceImages.put(so, getImage(so.getIcon()))));
+		gameBoard.getSpaceObjects().forEach((so -> spaceImages.put(so, getImage(so.getIcon()))));
 		paint(graphicsContext);
 		toolBar.resetToolBarButtonStatus(false);
 	}
@@ -166,7 +166,7 @@ public class GameBoardUI extends Canvas implements Runnable{
 		graphics.setFill(backgroundColor);
 		graphics.fillRect(0, 0, getWidth(), getHeight());
 
-		for (SpaceObject so: gameBoard.getspaceObjects()){
+		for (SpaceObject so: gameBoard.getSpaceObjects()){
 			paintSpaceObject(so, graphics);
 		}
 		// render player spaceShip

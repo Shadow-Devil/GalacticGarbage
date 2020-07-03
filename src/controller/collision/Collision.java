@@ -10,7 +10,7 @@ public class Collision{
 	private Vector collisionVector;
 	private CollisionType collisionType;
 	
-	public Collision(SpaceObject one, SpaceObject two){
+	public Collision(SpaceObject one, SpaceObject two) {
 		this.one = one;
 		this.two = two;
 	}
@@ -212,5 +212,9 @@ public class Collision{
 			", collisionVector=" +
 			collisionVector +
 			"]";
+	}
+	
+	public CollisionType getCollisionType() {
+		return collisionType;
 	}
 }
