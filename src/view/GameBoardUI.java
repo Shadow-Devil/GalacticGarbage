@@ -186,7 +186,7 @@ public class GameBoardUI extends Canvas implements Runnable{
 		
 		graphics.save(); // saves the current state on stack, including the current transform
 		//graphics.rotate((double) (so.getDirectionVector().getDegree()));
-        rotate(graphics, -((so instanceof Player ? ((Player)so).getFacingVector() : so.getDirectionVector()).getDegree()),
+        rotate(graphics, -(so.getFacingVector().getDegree()),
 		 canvasPosition.getX(), canvasPosition.getY());
    
 		//TODO FELIX: hier überprüfen, ob das bild geladen ist und wenn nein neu laden??

@@ -15,6 +15,12 @@ public class Vector{
 		return this;
 	}
 	
+	public Vector sub(Vector v){
+		x -= v.x;
+		y -= v.y;
+		return this;
+	}
+	
 	public Vector multiply(double scalar) {
 		x *= scalar;
 		y *= scalar;
@@ -35,9 +41,10 @@ public class Vector{
 		return this;
 	}
 	
-	private void turnUnitVector(double degree) {
+	public Vector turnUnitVector(double degree) {
 		this.x = Math.cos(Math.toRadians(degree + this.getDegree()));
 		this.y = Math.sin(Math.toRadians(degree + this.getDegree()));
+		return this;
 	}
 	
 	public double getDegree() {

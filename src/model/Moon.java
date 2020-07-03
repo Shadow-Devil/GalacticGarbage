@@ -5,9 +5,11 @@ public class Moon extends SpaceObject{
 	private static final String[] ICONNAME = {"moon1Icon.gif", "moon2Icon.gif", "moon3Icon.gif"};
 	private final Vector planet;
 	private final double orbit;
+	private final double turnSpeed;
 	
 	public Moon(int radius, int icon, Vector planetToMoonVector, double turnSpeed, Vector planet){
-		super(radius, ICONNAME[icon], planet.copy().add(planetToMoonVector), planetToMoonVector, turnSpeed);
+		super(radius, ICONNAME[icon], planet.copy().add(planetToMoonVector), planetToMoonVector);
+		this.turnSpeed = turnSpeed;
 		this.planet= planet;
 		orbit = planetToMoonVector.getLength();
 	}
@@ -15,7 +17,7 @@ public class Moon extends SpaceObject{
 	@Override
 	public void move(){
 		//System.out.println(directionVector);
-		directionVector.toUnit().turn(speed);
+		directionVector.toUnit().turn(turnSpeed);
 		directionVector.multiply(orbit);
 		Vector newPos = planet.copy().add(directionVector);
 		

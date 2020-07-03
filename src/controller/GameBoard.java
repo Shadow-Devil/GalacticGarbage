@@ -214,5 +214,9 @@ public class GameBoard{
 		return score;
 	}
 
+	public static void newGameborders(int w, int h) {
+		width = w;
+		height = h;
+	}
 
 }

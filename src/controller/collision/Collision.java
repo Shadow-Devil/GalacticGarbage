@@ -21,9 +21,9 @@ public class Collision{
 	 * @return true if there is a collision
 	 */
 	public boolean detectCollision() {
+		//zeigt von two nach one
 		collisionVector = one.getPositionVector().copy();
-		Vector positionTwo = two.getPositionVector().copy().multiply(-1);
-		double distance = collisionVector.add(positionTwo).getLength();
+		double distance = collisionVector.sub(two.getPositionVector()).getLength();
 		//System.out.println(distance);
 		
 		return one.getRadius() + two.getRadius() >= distance;
@@ -122,45 +122,85 @@ public class Collision{
 		//System.out.println(one + " speed " + one.getSpeed());
 		Vector v1 = one.getDirectionVector();
 		Vector v2 = two.getDirectionVector();
-		if(one instanceof Player) {
-			v1 = v1.copy();
-		}
+		
+		//System.out.println("Player: " + v1 + "\nDebris: " + v2 + "\nCollision: " + collisionVector);
+		
+		//Wenn one Player, directionVector wird nicht geändert (kopiert)
+
+		v1 = v1.copy();
+		v2 = v2.copy();
+		
+		//
 		v1.turn(degree);
-		if(!(one instanceof Player)) {
-			v1.multiply(one.getSpeed());
-		}
-		v2.turn(degree).multiply(two.getSpeed());
+		
+		//System.out.println("Turned DirectionVector Player: " + v1);
+		v2.turn(degree);
+		//System.out.println("Turned DirectionVector Debris: " + v2);
 		
 		double temp = v1.getY();
 		v1.setY(v2.getY());
 		v2.setY(temp);
 		
-		if(!(one instanceof Player)) {
-			one.setSpeed(v1.getLength());
-		}
-		two.setSpeed(v2.getLength());
+		
+//		two.setSpeed(v2.getLength());
 		v1.turn(-degree);
-		if(!(one instanceof Player)) {
-			v1.toUnit();
-		} else {
-			((Player) one).getAccelerationVector().add(v1);
-		}
-		v2.turn(-degree).toUnit();
+		v2.turn(-degree);
+		
+		one.getAccelerationVector().add(v1);
+		two.getAccelerationVector().add(v1);
+		
+		
+		
+		//System.out.println("Player: " + one.getAccelerationVector() + "\nDebris: " + two.getAccelerationVector());
 		Collision.moveAppart(one, two, true);
 	}
 
+	
+	/**
+	 * 
+	 * @param one Stationary, wenn nur repellt wurde
+	 * @param two Sich immer bewegende Spaceobject
+	 * @param both Variable, ob repellt oder gebounced wird
+	 */
 	public static void moveAppart(SpaceObject one, SpaceObject two, boolean both) {
 		Collision collision = new Collision(one, two);
-		while(collision.detectCollision()) {
-			if(both) {
-				if(one instanceof Player) {
-					((Player) one).moveBasic();
-				} else {
-					one.move();
-				}
-			}
-			two.move();
+		collision.detectCollision();
+		
+		//collisionVector von two nach one
+//		if(both) {
+//			
+//		}else {
+//			Vector v = collision.collisionVector;
+//			double x = v.getLength() - one.getRadius() - two.getRadius();
+//			x*=1.5;
+//			x = x / v.getLength();
+//			
+//			two.getPositionVector().add(v.multiply(x));
+//			
+//			
+//		}
+		
+		Vector v = new Vector(0,0)
+		.turnUnitVector(collision.collisionVector.getDegree())
+		.multiply((one.getRadius() + two.getRadius()));
+		if(both) {
+			
+			one.getPositionVector().sub(v.copy().multiply(0.5));
+			two.getPositionVector().sub(v.multiply(0.5));
+			
+		System.out.println(two);
+		}else {
+			two.getPositionVector().sub(v);
+			
 		}
+		
+		
+//		while(collision.detectCollision()) {
+//			if(both) 
+//				one.moveBasic();
+//			//System.out.println("moveapart");
+//			two.moveBasic();
+//		}
 	}
 
 	@Override

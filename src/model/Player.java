@@ -11,14 +11,11 @@ public class Player extends SpaceObject{
 	
 	private int health = 100;
 	private double maxSpeed = 1.8;	
-	private Vector facingVector;
-	private Vector accelerationVector;
+
 	
 
 	public Player(){
-		super(20, ICONNAME, new Vector(30, 30), new Vector(0, 0), 0);
-		facingVector = new Vector(1, 0);
-		accelerationVector = new Vector(0, 0);
+		super(20, ICONNAME, new Vector(30, 30), new Vector(0, 0));
 	}
 	
 	/**
@@ -32,15 +29,11 @@ public class Player extends SpaceObject{
 		//System.out.println("Shoot");
 	}
 	
-	public Vector getFacingVector(){
-		return facingVector;
-	}
 
 	@Override
 	public void move() {
 		//TODO Gravitation
-		moveWithAcc();
-		accelerationVector = new Vector(0, 0);
+		super.move();
 
 		if (Input.isaPressed() && !Input.isdPressed())
 			facingVector.turn(DEGREE_ON_TURN).toUnit();
@@ -68,23 +61,7 @@ public class Player extends SpaceObject{
 		}
 	}
 	
-	public void moveWithAcc() {
-		double y = -0.2;
-		Vector dir = directionVector.copy().multiply(y);
-		accelerationVector.add(dir);
-		directionVector.add(accelerationVector);
-		moveBasic();
-	}
-
-	public void moveBasic() { 
-		positionVector.add(directionVector.copy());
-		GameBoard.keepInFrame(positionVector);
-	}
 	
-	public Vector getAccelerationVector(){
-		return accelerationVector;
-	}
-
 
 	/**
 	 * Reduces the players amount of health by the incoming damage. <br>

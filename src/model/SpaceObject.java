@@ -6,23 +6,38 @@ public abstract class SpaceObject{
 	protected final int radius;
 	protected final String icon;
 	protected final Vector positionVector, directionVector;
+	protected Vector accelerationVector;
+	protected Vector facingVector;
 	
-	protected double speed;
+//	protected double speed;
 	protected boolean alive;
 	
-	public SpaceObject(int radius, String icon, Vector positionVector, Vector directionVector, double speed) {
+	public SpaceObject(int radius, String icon, Vector positionVector, Vector directionVector) {
 		this.radius = radius;
 		this.icon = icon;
 		this.positionVector = positionVector;
 		this.directionVector = directionVector;
-		this.speed = speed;
+		this.accelerationVector = new Vector(0, 0);
 		this.alive = true;
+		this.facingVector = new Vector(1, 0);
 	}
 
 	public void move() { 
-		positionVector.add(directionVector.copy().multiply(speed));
-		//System.out.println(speed);
-		//TODO Gravitation
+		//moveWithAcceleration
+		double y = -0.2;
+		Vector dir = directionVector.copy().multiply(y);
+		accelerationVector.add(dir);
+		directionVector.add(accelerationVector);
+//		if(directionVector.getLength() > 0.0001)
+//			facingVector = directionVector.copy().toUnit();
+		
+		moveBasic();
+		
+		accelerationVector = new Vector(0, 0);
+	}
+	
+	public void moveBasic() {
+		positionVector.add(directionVector);
 		GameBoard.keepInFrame(positionVector);
 	}
 	
@@ -40,13 +55,13 @@ public abstract class SpaceObject{
 		return alive;
 	}
 
-	public double getSpeed(){
-		return speed;
-	}
-
-	public void setSpeed(double speed){
-		this.speed = speed;
-	}
+//	public double getSpeed(){
+//		return speed;
+//	}
+//
+//	public void setSpeed(double speed){
+//		this.speed = speed;
+//	}
 	
 	public int getRadius(){
 		return radius;
@@ -62,6 +77,14 @@ public abstract class SpaceObject{
 
 	public Vector getDirectionVector(){
 		return directionVector;
+	}
+	
+	public Vector getAccelerationVector(){
+		return accelerationVector;
+	}
+	
+	public Vector getFacingVector(){
+		return facingVector;
 	}
 
 }

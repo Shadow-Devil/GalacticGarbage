@@ -10,9 +10,10 @@ public class Debris extends SpaceObject{
 	public static final int damagePerSize = 10;
 	private static final int radiusPerSize = 10;
 	private final double baseSpeed;
+	private Vector projectileDirectionVector;
 	
 	public Debris(int size, Vector positionVector, Vector directionVector, double speed){
-		super((size+1) * radiusPerSize, ICONNAME, positionVector, directionVector, speed);
+		super((size+1) * radiusPerSize, ICONNAME, positionVector, directionVector);
 		this.size = size;
 		this.baseSpeed = speed;
 	}
@@ -24,8 +25,8 @@ public class Debris extends SpaceObject{
 		//TODO Debris - split()
 		//System.out.println("Split");
 
-		Debris deb1 = new Debris(size - 1, positionVector.copy(), directionVector.copy().turn(30.0), baseSpeed);
-		Debris deb2 = new Debris(size - 1, positionVector.copy(), directionVector.copy().turn(-30.0), baseSpeed);
+		Debris deb1 = new Debris(size - 1, positionVector.copy(), projectileDirectionVector.copy().turn(30.0), baseSpeed);
+		Debris deb2 = new Debris(size - 1, positionVector.copy(), projectileDirectionVector.copy().turn(-30.0), baseSpeed);
 		Collision.moveAppart(deb1, deb2, true);
 		
 		GameBoard.spaceObjects.add(deb1);
@@ -47,9 +48,19 @@ public class Debris extends SpaceObject{
 		super.die();
 		GameBoard.debrisCount -= (size>0 ? size*2 : 1);
 	}
+	
+	public void die(Vector projdir) {
+		projectileDirectionVector = projdir;
+		die();
+	}
 
 	public Debris getCopy() {
 		GameBoard.debrisCount += (size>0 ? size*2 : 1);
 		return new Debris(size, positionVector, directionVector, baseSpeed);
+	}
+	
+	@Override
+	public void move(){
+		super.moveBasic();
 	}
 }

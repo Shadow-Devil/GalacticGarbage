@@ -15,7 +15,9 @@ public class CollisionProjectile_Debris implements CollisionType{
 	
 	private void internCollide(Projectile one, Debris two) {
 		one.die();
-		if(two.getSize() > 0)
-			two.die();
+		if(two.getSize() > 0) 
+			two.die(one.getDirectionVector().copy());
+			
+		
 	}
 }
