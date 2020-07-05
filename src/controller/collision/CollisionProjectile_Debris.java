@@ -1,7 +1,6 @@
 package controller.collision;
 
 import model.Debris;
-import model.Player;
 import model.Projectile;
 import model.SpaceObject;
 import model.Vector;

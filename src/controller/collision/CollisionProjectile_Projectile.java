@@ -1,6 +1,5 @@
 package controller.collision;
 
-import model.Projectile;
 import model.SpaceObject;
 import model.Vector;
 

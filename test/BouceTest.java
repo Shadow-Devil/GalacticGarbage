@@ -6,7 +6,6 @@ import controller.GameBoard;
 import controller.collision.Collision;
 import controller.collision.Policy;
 import model.Debris;
-import model.Player;
 import model.SpaceObject;
 import model.Vector;
 
