@@ -35,7 +35,7 @@ public class GameBoard{
 
 	private int score;
 
-	private static int maxDebris;
+	public static int maxDebris;
 	public static int debrisCount;
 	
 	private CollisionInterface collision;

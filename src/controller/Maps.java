@@ -11,6 +11,7 @@ import java.util.List;
 
 
 public enum Maps{	//TODO bei getObj immer neue Liste erstellen!!
+	//in controller da es nur als rexxourve für GameBoard benutzt wird
 	EASY(1) {
 		@Override
 		public List<SpaceObject> getObjects() {	//alles außer Player
