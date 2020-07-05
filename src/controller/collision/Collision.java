@@ -2,7 +2,7 @@ package controller.collision;
 
 import model.*;
 
-public class Collision implements CollisionInterface {
+public class Collision implements CollisionInterface { 
 
 	//private boolean collide;
 	private SpaceObject one;
