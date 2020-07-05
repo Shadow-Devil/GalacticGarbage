@@ -28,8 +28,9 @@ public abstract class SpaceObject{
 		Vector dir = directionVector.copy().multiply(y);
 		accelerationVector.add(dir);
 		directionVector.add(accelerationVector);
-//		if(directionVector.getLength() > 0.0001)
-//			facingVector = directionVector.copy().toUnit();
+		
+		if(!(this instanceof Player) && directionVector.getLength() > 0.0001)
+			facingVector = directionVector.copy().toUnit();
 		
 		moveBasic();
 		

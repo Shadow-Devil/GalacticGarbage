@@ -4,6 +4,11 @@ public class Vector{
 	
 	private double x, y;
 	
+	//1,0 - rechts - deg=0
+	//0,1 - oben - deg=90
+	//-1,0 - links - deg=180
+	//0,-1 - unten - deg=270
+	
 	public Vector(double x, double y){
 		this.x = x;
 		this.y = y;
@@ -42,8 +47,9 @@ public class Vector{
 	}
 	
 	public Vector turnUnitVector(double degree) {
-		this.x = Math.cos(Math.toRadians(degree + this.getDegree()));
-		this.y = Math.sin(Math.toRadians(degree + this.getDegree()));
+		double oldDegree = this.getDegree();
+		this.x = Math.cos(Math.toRadians(degree + oldDegree));
+		this.y = Math.sin(Math.toRadians(degree + oldDegree));
 		return this;
 	}
 	

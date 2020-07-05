@@ -67,8 +67,8 @@ public class Debris extends SpaceObject{
 		return new Debris(size, positionVector, directionVector, baseSpeed);
 	}
 	
-	@Override
-	public void move(){
-		super.moveBasic();
-	}
+//	@Override
+//	public void move(){
+//		super.moveBasic();
+//	}
 }

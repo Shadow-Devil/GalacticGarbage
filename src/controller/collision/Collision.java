@@ -55,6 +55,9 @@ public class Collision{
 	 * Initializes the CollisionType based on the two SpaceObjects
 	 */
 	public void selectCollisionType(){
+		if(one == null || two == null)
+			throw new IllegalArgumentException("A SpaceObject isn't instantiated.");
+		
 		if (one instanceof Projectile){
 			if (two instanceof Projectile){
 				this.collisionType = new CollisionProjectile_Projectile();
@@ -69,6 +72,8 @@ public class Collision{
 			}else if(two instanceof Projectile){
 				switchSpaceObjects();
 				this.collisionType = new CollisionPlayer_MoonPlanet__Projectile_SpaceObject();
+			}else if(two instanceof Player){
+				throw new UnsupportedOperationException("Multiplayer not implemented.");
 			}else {//Planet oder Moon
 				this.collisionType = new CollisionPlayer_MoonPlanet__Projectile_SpaceObject();
 			}
@@ -92,6 +97,8 @@ public class Collision{
 			}else if(two instanceof Debris) {
 				switchSpaceObjects();
 				this.collisionType = new CollisionDebris_MoonPlanet();
+			}else if(two instanceof Moon || two instanceof Planet) {
+				throw new UnsupportedOperationException("Planets & moons are not allowed to collide.");
 			}
 		} 
 		
@@ -208,7 +215,7 @@ public class Collision{
 		.multiply((one.getRadius() + two.getRadius()));
 		if(both) {
 			
-			one.getPositionVector().sub(v.copy().multiply(0.5));
+			one.getPositionVector().add(v.copy().multiply(0.5));
 			two.getPositionVector().sub(v.multiply(0.5));
 			
 		System.out.println(two);

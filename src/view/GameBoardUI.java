@@ -211,10 +211,9 @@ public class GameBoardUI extends Canvas implements Runnable{
 	private Vector convertPosition(Vector toConvert){
 		return new Vector(toConvert.getX(), (int) (getHeight() - toConvert.getY()));
 	}
-
-	//TODO "in updateSpaceObjects()" ?
+	
 	/**
-	 * Method used to display alerts in moveCars() Java 8 Lambda Functions: java 8 lambda
+	 * Method used to display alerts in updateSpaceObjects() Java 8 Lambda Functions: java 8 lambda
 	 * function without arguments Platform.runLater Function:
 	 * https://docs.oracle.com/javase/8/javafx/api/javafx/application/Platform.html
 	 *
