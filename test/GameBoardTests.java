@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import controller.*;
+import controller.collision.Collision;
 import model.*;
 
 public class GameBoardTests {
@@ -15,7 +16,7 @@ public class GameBoardTests {
 	
 	@Before
 	public void setup() {
-		gameboard = new GameBoard(1000, 1000, 0);	//difficulty easy
+		gameboard = new GameBoard(1000, 1000, 0, new Collision());	//difficulty easy
 		GameBoard.setSpaceObjects(new ArrayList<SpaceObject>());
 		gameboard.addSpaceObjects();
 	}

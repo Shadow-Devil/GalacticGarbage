@@ -22,15 +22,16 @@ public class BouceTest{
 		SpaceObject two = new Debris(0, new Vector(110, 100), new Vector(-1, 0), 2);
 		
 
-		Collision collision = new Collision(one, two);
+		Collision collision = new Collision();
+		collision.setSObjects(one, two);
 		
 		assertTrue(collision.detectCollision());
 		Policy policy = new Policy(collision);
 		policy.selectStrategy();
 		collision.collide();
 		
-		System.out.println(one.getPositionVector());
-		System.out.println(two.getPositionVector());
+		assertNotEquals(new Vector(100, 100), one.getPositionVector());
+		assertNotEquals(new Vector(110, 100), two.getPositionVector());
 	}
 
 }

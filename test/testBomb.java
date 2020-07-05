@@ -20,7 +20,7 @@ import org.easymock.TestSubject;
 public class testBomb {
 	
 	@TestSubject
-	private GameBoard game = new GameBoard(1000, 800, 0);
+	private GameBoard game = new GameBoard(1000, 800, 0, new Collision());
     
     @Mock
     private Collision collision;

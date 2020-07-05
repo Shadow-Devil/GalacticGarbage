@@ -11,7 +11,8 @@ public class CollisonTests {
 	public void testCollisionSelection() {
 		SpaceObject one = new Debris(2, new Vector(100, 100), new Vector(1, 0) , 2);
 		SpaceObject two = new Player();
-		Collision collision = new Collision(one, two);
+		Collision collision = new Collision();
+		collision.setSObjects(one, two);
 		Policy policy = new Policy(collision);
 		policy.selectStrategy();
 		
@@ -26,7 +27,8 @@ public class CollisonTests {
 	public void testNullCollisionSelection() {
 		SpaceObject one = new Debris(2, new Vector(0, 0), new Vector(1, 0) , 2);
 		SpaceObject two = null;
-		Collision collision = new Collision(one, two);
+		Collision collision = new Collision();
+		collision.setSObjects(one, two);
 		Policy policy = new Policy(collision);
 		policy.selectStrategy();
 		
@@ -39,7 +41,8 @@ public class CollisonTests {
 	public void testUnsupportedCollisionSelection() {		
 		SpaceObject one = new Planet(100, 0, new Vector(700,300));
 		SpaceObject two = new Moon(10, 0, new Vector(0,200), -3.0, one.getPositionVector().copy());
-		Collision collision = new Collision(one, two);
+		Collision collision = new Collision();
+		collision.setSObjects(one, two);
 		Policy policy = new Policy(collision);
 		policy.selectStrategy();
 		
@@ -52,7 +55,8 @@ public class CollisonTests {
 	public void testPlayerPlayerCollisionSelection() {
 		SpaceObject one = new Player();
 		SpaceObject two = new Player();
-		Collision collision = new Collision(one, two);
+		Collision collision = new Collision();
+		collision.setSObjects(one, two);
 		Policy policy = new Policy(collision);
 		policy.selectStrategy();
 		

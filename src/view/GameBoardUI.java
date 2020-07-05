@@ -17,6 +17,7 @@ import java.net.URL;
 import java.util.HashMap;
 
 import controller.GameBoard;
+import controller.collision.Collision;
 
 public class GameBoardUI extends Canvas implements Runnable{
 
@@ -90,7 +91,7 @@ public class GameBoardUI extends Canvas implements Runnable{
 	 */
 	public void gameSetup(int difficulty){
 		
-		gameBoard = new GameBoard(width, height, difficulty);
+		gameBoard = new GameBoard(width, height, difficulty, new Collision());
 		widthProperty().set(width);
 		heightProperty().set(height);
 		width = (int) getWidth();

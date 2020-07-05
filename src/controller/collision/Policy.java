@@ -2,10 +2,10 @@ package controller.collision;
 
 public class Policy{
 	
-	private Collision context;
+	private CollisionInterface context;
 	
-	public Policy(Collision context){
-		this.context = context;
+	public Policy(CollisionInterface collision){
+		this.context = collision;
 	}
 	
 	/**

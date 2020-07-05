@@ -2,7 +2,7 @@ package controller;
 
 import java.util.List;
 
-import controller.collision.Collision;
+import controller.collision.CollisionInterface;
 import controller.collision.Policy;
 
 import java.util.ArrayList;
@@ -37,6 +37,8 @@ public class GameBoard{
 
 	private static int maxDebris;
 	public static int debrisCount;
+	
+	private CollisionInterface collision;
 
 	/**
 	 * Constructor, creates the gameboard based on size
@@ -45,7 +47,7 @@ public class GameBoard{
 	 * @param h of the gameboard
 	 * @param difficulty from 0(EASY) to 2(HARD)
 	 */
-	public GameBoard(int w, int h, int difficulty) { 
+	public GameBoard(int w, int h, int difficulty, CollisionInterface collision) { 
 		gameEnded = false;
 		player = new Player();
 		width = w;
@@ -55,6 +57,7 @@ public class GameBoard{
 		this.difficulty = difficulty;
 		updateCounter = 0;
 		score = 0;
+		this.collision = collision;
 	}
 
 
@@ -155,7 +158,7 @@ public class GameBoard{
 					continue;
 				
 
-				Collision collision = new Collision(so1, so2);
+				collision.setSObjects(so1, so2);
 
 				if (collision.detectCollision()){
 					//System.out.println("collision:" + collision);

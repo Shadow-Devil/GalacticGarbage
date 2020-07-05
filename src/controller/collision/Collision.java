@@ -2,7 +2,7 @@ package controller.collision;
 
 import model.*;
 
-public class Collision{
+public class Collision implements CollisionInterface {
 
 	//private boolean collide;
 	private SpaceObject one;
@@ -10,7 +10,12 @@ public class Collision{
 	private Vector collisionVector;
 	private CollisionType collisionType;
 	
-	public Collision(SpaceObject one, SpaceObject two) {
+//	public Collision(SpaceObject one, SpaceObject two) {
+//		this.one = one;
+//		this.two = two;
+//	}
+	
+	public void setSObjects(SpaceObject one, SpaceObject two) {
 		this.one = one;
 		this.two = two;
 	}
@@ -133,9 +138,10 @@ public class Collision{
 		System.out.println(degree);
 		double diff = Math.signum(degree);
 		System.out.println(diff);
-		two.getDirectionVector().turn(2*degree*diff).multiply(-1).toUnit();
+		Vector v = two.getDirectionVector().copy().turn(2*degree*diff).multiply(-1);
 
-		moveAppart(one, two, false);
+		two.getAccelerationVector().add(v);
+		//moveAppart(one, two, false);
 	}
 	
 	/**
@@ -182,7 +188,7 @@ public class Collision{
 		
 		
 		//System.out.println("Player: " + one.getAccelerationVector() + "\nDebris: " + two.getAccelerationVector());
-		Collision.moveAppart(one, two, true);
+		//Collision.moveAppart(one, two, true);
 	}
 
 	
@@ -193,7 +199,8 @@ public class Collision{
 	 * @param both Variable, ob repellt oder gebounced wird
 	 */
 	public static void moveAppart(SpaceObject one, SpaceObject two, boolean both) {
-		Collision collision = new Collision(one, two);
+		Collision collision = new Collision();
+		collision.setSObjects(one, two);
 		collision.detectCollision();
 		
 		//collisionVector von two nach one
