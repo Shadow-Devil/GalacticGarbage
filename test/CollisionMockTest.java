@@ -1,5 +1,8 @@
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.easymock.EasyMock.* ;
 import static org.junit.Assert.* ;
 
@@ -27,6 +30,12 @@ public class CollisionMockTest {
 
     @Test
     public void testUpdateSpaceObjects(){
+    	gameboard.addSpaceObjects();
+    	List<SpaceObject> list = new ArrayList<SpaceObject>();
+    	
+    	
+    	GameBoard.setSpaceObjects(list);
+    	
 		expect(collisionMock.detectCollision()).andReturn(true);
 		replay(collisionMock);
 
