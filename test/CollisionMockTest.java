@@ -75,11 +75,8 @@ public class CollisionMockTest {
     	List<SpaceObject> list = new ArrayList<SpaceObject>();
     	
     	SpaceObject one = new Debris(0, new Vector(30, 30), new Vector(-1, 0) , 2);
-<<<<<<< HEAD
-    	SpaceObject two = new baseProjectile(new Vector(300, 300), new Vector(70, 70));
-=======
-    	SpaceObject two = new Projectile(new Vector(30, 30), new Vector(70, 70));
->>>>>>> origin/master
+
+    	SpaceObject two = new Projectile(new Vector(300, 300), new Vector(70, 70));
     	
     	list.add(one);
     	list.add(two);
