@@ -1,12 +1,22 @@
 package model;
 
-public abstract class Projectile extends SpaceObject {
+import controller.GameBoard;
+
+public class Projectile extends SpaceObject {
 	
-	public Projectile(int radius, String icon, Vector positionVector, Vector directionVector){
-		//TODO radius, iconName, speed
-		super(radius, icon, positionVector, directionVector);
+	private static final String ICONNAME = "projectileIcon.gif";
+	private int lifeTime = 50;
+
+	public Projectile(Vector positionVector, Vector directionVector){
+		super(5, ICONNAME, positionVector, directionVector.toUnit().multiply(10));
 	}
 	
 	@Override
-	public abstract void move();
+	public void move(){
+		positionVector.add(directionVector);
+		GameBoard.keepInFrame(positionVector);
+		
+		if(lifeTime-- < 0)
+			die();
+	}
 }

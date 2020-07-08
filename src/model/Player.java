@@ -21,7 +21,7 @@ public class Player extends SpaceObject{
 	 * Spawns a projectile in the direction the player is facing.
 	 */
 	public void shoot() {
-		Projectile laser = new baseProjectile(positionVector.copy().add(facingVector.copy().
+		Projectile laser = new Projectile(positionVector.copy().add(facingVector.copy().
 			multiply(projectileSpawnDiff)), facingVector.copy());
 		Input.resetSpacePressed();		
 		GameBoard.eventSpaceObjects.add(laser);

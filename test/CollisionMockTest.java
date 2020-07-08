@@ -11,9 +11,9 @@ import org.junit.runner.RunWith;
 import controller.GameBoard;
 import controller.collision.CollisionInterface;
 import model.Debris;
+import model.Projectile;
 import model.SpaceObject;
 import model.Vector;
-import model.baseProjectile;
 
 @RunWith(EasyMockRunner.class)
 public class CollisionMockTest {
@@ -32,7 +32,7 @@ public class CollisionMockTest {
     	List<SpaceObject> list = new ArrayList<SpaceObject>();
     	
     	SpaceObject one = new Debris(0, new Vector(30, 30), new Vector(-1, 0) , 2);
-    	SpaceObject two = new baseProjectile(new Vector(30, 30), new Vector(70, 70));
+    	SpaceObject two = new Projectile(new Vector(30, 30), new Vector(70, 70));
     	
     	list.add(one);
     	list.add(two);
@@ -75,7 +75,7 @@ public class CollisionMockTest {
     	List<SpaceObject> list = new ArrayList<SpaceObject>();
     	
     	SpaceObject one = new Debris(0, new Vector(30, 30), new Vector(-1, 0) , 2);
-    	SpaceObject two = new baseProjectile(new Vector(30, 30), new Vector(70, 70));
+    	SpaceObject two = new Projectile(new Vector(30, 30), new Vector(70, 70));
     	
     	list.add(one);
     	list.add(two);
