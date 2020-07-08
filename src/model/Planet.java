@@ -9,8 +9,4 @@ public class Planet extends SpaceObject{
 
 	@Override
 	public void move(){}
-	
-	public static int numberOfDiffrentPlanets() {
-		return ICONNAME.length;
-	}
 }

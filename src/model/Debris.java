@@ -6,9 +6,10 @@ import controller.collision.Collision;
 public class Debris extends SpaceObject{
 	
 	private static final String ICONNAME = "debrisIcon.gif";
-	private final int size;//0, 1, 2
 	public static final int damagePerSize = 10;
 	private static final int radiusPerSize = 10;
+	
+	private final int size;//0, 1, 2
 	private final double baseSpeed;
 	private Vector projectileDirectionVector;
 	
@@ -21,9 +22,7 @@ public class Debris extends SpaceObject{
 	/**
 	 * Is invoked when debris is split into smaller parts.
 	 */
-	public void split() { 
-		//TODO Debris - split()
-		//System.out.println("Split");
+	public void split() {
 
 		Debris deb1 = new Debris(size - 1, positionVector.copy(), projectileDirectionVector.copy().turn(30.0), baseSpeed);
 		Debris deb2 = new Debris(size - 1, positionVector.copy(), projectileDirectionVector.copy().turn(-30.0), baseSpeed);
@@ -32,7 +31,6 @@ public class Debris extends SpaceObject{
 		GameBoard.spaceObjects.add(deb1);
 		GameBoard.spaceObjects.add(deb2);
 		
-		System.out.println("Splited");
 		GameBoard.debrisCount += size*2;
 	}
 	
@@ -66,9 +64,4 @@ public class Debris extends SpaceObject{
 		GameBoard.debrisCount += (size>0 ? size*2 : 1);
 		return new Debris(size, positionVector, directionVector, baseSpeed);
 	}
-	
-//	@Override
-//	public void move(){
-//		super.moveBasic();
-//	}
 }

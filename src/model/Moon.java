@@ -16,7 +16,6 @@ public class Moon extends SpaceObject{
 
 	@Override
 	public void move(){
-		//System.out.println(directionVector);
 		directionVector.toUnit().turn(turnSpeed);
 		directionVector.multiply(orbit);
 		Vector newPos = planet.copy().add(directionVector);

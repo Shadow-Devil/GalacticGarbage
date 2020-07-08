@@ -10,10 +10,6 @@ public class Collision implements CollisionInterface {
 	private Vector collisionVector;
 	private CollisionType collisionType;
 	
-//	public Collision(SpaceObject one, SpaceObject two) {
-//		this.one = one;
-//		this.two = two;
-//	}
 	
 	public void setSObjects(SpaceObject one, SpaceObject two) {
 		this.one = one;
@@ -34,32 +30,12 @@ public class Collision implements CollisionInterface {
 		return one.getRadius() + two.getRadius() >= distance;
 	}
 	
-	/**
-	 * Calls the executeCollision method
-	 */
-	public void collide() {
-		executeCollision();
-		/*
-		 * Player:
-		 * 		debris -> eventuell damage	
-		 * 		moon/planet -> die	
-		 * 		
-		 * Projectile:
-		 * 		wird ausgelöscht
-		 * 		debris -> eventuell split
-		 * 
-		 * debris:
-		 * 		moon/planet(/debris) -> die (wenn klein)
-		 * 	
-		 * 
-		 * bounce sonst
-		 */
-	}
 	
 	/**
 	 * Initializes the CollisionType based on the two SpaceObjects
 	 */
 	public void selectCollisionType(){
+		
 		if(one == null || two == null)
 			throw new IllegalArgumentException("A SpaceObject isn't instantiated.");
 		

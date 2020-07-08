@@ -9,9 +9,9 @@ import java.util.Optional;
 import controller.Main;
 
 public class Toolbar extends ToolBar {
-	private Main gameWindow;
-    private Button start;
-    private Button stop;
+	private final Main gameWindow;
+    private final Button start;
+    private final Button stop;
 
     public Toolbar(Main gameWindow) {
         this.start = new Button("Start");
@@ -49,7 +49,6 @@ public class Toolbar extends ToolBar {
             }else{
             	gameWindow.gameBoardUI.gameSetup(0);
             }
-            //System.out.println(result);
         	gameWindow.gameBoardUI.startGame();
         });
 
@@ -81,18 +80,5 @@ public class Toolbar extends ToolBar {
         this.start.setDisable(running);
         this.stop.setDisable(!running);
     }
-
-//    /**
-//     * @return current gameWindow
-//     */
-//    public Main getGameWindow() {
-//        return this.gameWindow;
-//    }
-
-//    /**
-//     * @param gameWindow New gameWindow to be set
-//     */
-//    public void setGameWindow(Main gameWindow) {
-//        this.gameWindow = gameWindow;
-//    }
+    
 }

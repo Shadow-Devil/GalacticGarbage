@@ -18,8 +18,8 @@ public abstract class SpaceObject{
 		this.positionVector = positionVector;
 		this.directionVector = directionVector;
 		this.accelerationVector = new Vector(0, 0);
-		this.alive = true;
 		this.facingVector = new Vector(1, 0);
+		this.alive = true;
 	}
 
 	public void move() { 

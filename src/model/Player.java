@@ -7,11 +7,10 @@ public class Player extends SpaceObject{
 	
 	private static final String ICONNAME = "spaceshipIcon.gif";
 	private static final double DEGREE_ON_TURN = 4.0;//TODO wert
-	private static final double projectileSpawnDiff = 30;	
+	private static final double projectileSpawnDiff = 30;
+	private static final double maxSpeed = 1.8;
 	
 	private int health = 100;
-	private double maxSpeed = 1.8;	
-
 	
 
 	public Player(){
@@ -26,13 +25,11 @@ public class Player extends SpaceObject{
 			multiply(projectileSpawnDiff)), facingVector.copy());
 		Input.resetSpacePressed();		
 		GameBoard.eventSpaceObjects.add(laser);
-		//System.out.println("Shoot");
 	}
 	
 
 	@Override
 	public void move() {
-		//TODO Gravitation
 		super.move();
 
 		if (Input.isaPressed() && !Input.isdPressed())
@@ -40,25 +37,22 @@ public class Player extends SpaceObject{
 		if (Input.isdPressed() && !Input.isaPressed())
 			facingVector.turn(-DEGREE_ON_TURN).toUnit();
 		
-		//change movement
-		boolean w = Input.iswPressed();
-		boolean s = Input.issPressed();
-		if (w && s) {
-		} else if (w) { 
+
+
+		if (Input.iswPressed() && !Input.issPressed()) {
 			Vector n = facingVector.copy().multiply(maxSpeed);
 			accelerationVector.add(n);
 			GameBoard.keepInFrame(positionVector);
-			//System.out.println("pressed w");
-		} else if (s) { 
+		}
+		
+		if (Input.issPressed() && !Input.iswPressed()) {
 			Vector n = facingVector.copy().multiply(-1*maxSpeed);
 			accelerationVector.add(n);
 			GameBoard.keepInFrame(positionVector);
 		}
 		
-		if (Input.isSpacePressed()){
-			//System.out.println("Shoot");
-			this.shoot();
-		}
+		if (Input.isSpacePressed())
+			shoot();
 	}
 	
 	

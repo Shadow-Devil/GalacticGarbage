@@ -27,23 +27,16 @@ public class GameBoardUI extends Canvas implements Runnable{
 	private static final Color backgroundColor = Color.BLACK;
 	private static final int SLEEP_TIME = 1000 / 25; // this gives us 25fps
 	
+	private static final HashMap<SpaceObject, Image> spaceImages = new HashMap<>();
+	
 	// attribute inherited by the JavaFX Canvas class
 	private final GraphicsContext graphicsContext = this.getGraphicsContext2D();
-
-	// thread responsible for starting game
-	private Thread theThread;
-
+	
 	// user interface objects
 	private GameBoard gameBoard;
 	private int width, height;
-	private Toolbar toolBar;
-
-	// user control objects
-	//private Input input;
-
-	private static HashMap<SpaceObject, Image> spaceImages;
-
-	public static GameBoardUI gui;
+	private final Toolbar toolBar;
+	
 
 	/**
 	 * Sets up all attributes, starts the mouse steering and sets up all graphics
@@ -55,7 +48,6 @@ public class GameBoardUI extends Canvas implements Runnable{
 		width = DEFAULT_WIDTH;
 		height = DEFAULT_HEIGHT;
 		gameSetup(0);
-		gui = this;
 	}
 
 	/**
@@ -96,17 +88,14 @@ public class GameBoardUI extends Canvas implements Runnable{
 		heightProperty().set(height);
 		width = (int) getWidth();
 		height = (int) getHeight();
-		spaceImages = new HashMap<>();
+		spaceImages.clear();
 		
 		gameBoard.resetSpaceObjects();
 		gameBoard.getSpaceObjects().forEach((so -> spaceImages.put(so, getImage(so.getIcon()))));
 		paint(graphicsContext);
 		toolBar.resetToolBarButtonStatus(false);
 	}
-
-	//public static HashMap<SpaceObject, Image> getSpaceImages(){
-	//	return spaceImages;
-	//}
+	
 
 	/**
 	 * Sets the Spaceobjects image
@@ -128,10 +117,6 @@ public class GameBoardUI extends Canvas implements Runnable{
 		return null;
 	}
 
-//	public static void addNew(SpaceObject so){
-//		spaceImages.put(so, gui.getImage(so.getIcon()));
-//	}
-
 	/**
 	 * Starts the GameBoardUI Thread, if it wasn't running. Starts the game board, which
 	 * causes the spaceObjects to change their positions (i.e. move). Renders graphics and updates
@@ -140,7 +125,9 @@ public class GameBoardUI extends Canvas implements Runnable{
 	public void startGame(){
 		if (!gameBoard.isRunning()){
 			gameBoard.startGame();
-			theThread = new Thread(this);
+			
+			// thread responsible for starting game
+			Thread theThread = new Thread(this);
 			theThread.start();
 			paint(graphicsContext);
 			toolBar.resetToolBarButtonStatus(true);
@@ -167,11 +154,9 @@ public class GameBoardUI extends Canvas implements Runnable{
 		graphics.setFill(backgroundColor);
 		graphics.fillRect(0, 0, getWidth(), getHeight());
 
-		for (SpaceObject so: gameBoard.getSpaceObjects()){
+		for (SpaceObject so: gameBoard.getSpaceObjects())
 			paintSpaceObject(so, graphics);
-		}
-		// render player spaceShip
-		//paintSpaceObject(gameBoard.getPlayer(), graphics); //Unnötig, da player auch in der Liste drin ist
+		
 	}
 
 	/**
@@ -190,9 +175,8 @@ public class GameBoardUI extends Canvas implements Runnable{
         rotate(graphics, -(so.getFacingVector().getDegree()),
 		 canvasPosition.getX(), canvasPosition.getY());
    
-		//TODO FELIX: hier überprüfen, ob das bild geladen ist und wenn nein neu laden??
 		if(spaceImages.get(so) == null)
-			spaceImages.put(so, gui.getImage(so.getIcon()));
+			spaceImages.put(so, getImage(so.getIcon()));
 		
         graphics.drawImage(spaceImages.get(so),
 		        canvasPosition.getX() - so.getRadius(), canvasPosition.getY() - so.getRadius(), so.getRadius()*2, so.getRadius()*2);
@@ -228,11 +212,4 @@ public class GameBoardUI extends Canvas implements Runnable{
 			gameSetup(0);
 		});
 	}
-	
-//	/**
-//	 * @return current gameBoard
-//	 */
-//	public GameBoard getGameBoard(){
-//		return this.gameBoard;
-//	}
 }

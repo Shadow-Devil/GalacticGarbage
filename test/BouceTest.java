@@ -28,7 +28,7 @@ public class BouceTest{
 		assertTrue(collision.detectCollision());
 		Policy policy = new Policy(collision);
 		policy.selectStrategy();
-		collision.collide();
+		collision.executeCollision();
 		
 		assertNotEquals(new Vector(100, 100), one.getPositionVector());
 		assertNotEquals(new Vector(110, 100), two.getPositionVector());

@@ -4,7 +4,6 @@ import model.SpaceObject;
 
 public interface CollisionInterface {
 	public boolean detectCollision();
-	public void collide();
 	public void selectCollisionType();
 	public void executeCollision();
 	public CollisionType getCollisionType();

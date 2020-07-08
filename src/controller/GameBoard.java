@@ -28,9 +28,9 @@ public class GameBoard{
 	private boolean gameEnded;
 	private int updateCounter;
 
-	public static List<SpaceObject> spaceObjects = new ArrayList<SpaceObject>();
-	public static List<SpaceObject> eventSpaceObjects = new ArrayList<SpaceObject>();
-	public List<Debris> spawn = new ArrayList<Debris>();
+	public static List<SpaceObject> spaceObjects = new ArrayList<>();
+	public static List<SpaceObject> eventSpaceObjects = new ArrayList<>();
+	public List<Debris> spawn = new ArrayList<>();
 	private int spawncounter;
 
 	private int score;
@@ -96,13 +96,6 @@ public class GameBoard{
 		return isRunning;
 	}
 	
-	/**
-	 * Used for testing only
-	 */
-	private void setRunning(boolean isRunning){
-		this.isRunning = isRunning;
-	}
-
 	/**
 	 * @return null if the game is running; true if the player has won; false if the player
 	 *         has lost

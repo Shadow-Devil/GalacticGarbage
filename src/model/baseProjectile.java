@@ -8,7 +8,6 @@ public class baseProjectile extends Projectile {
 	private int lifeTime = 50;
 
 	public baseProjectile(Vector positionVector, Vector directionVector){
-		//TODO radius, iconName, speed
 		super(5, ICONNAME, positionVector, directionVector.toUnit().multiply(10));
 	}
 	

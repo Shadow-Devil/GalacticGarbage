@@ -4,18 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.easymock.EasyMock.* ;
-import static org.junit.Assert.* ;
-
 import org.easymock.* ;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import controller.GameBoard;
-import controller.collision.Collision;
 import controller.collision.CollisionInterface;
-import controller.collision.Policy;
 import model.Debris;
-import model.Projectile;
 import model.SpaceObject;
 import model.Vector;
 import model.baseProjectile;
@@ -31,12 +26,12 @@ public class CollisionMockTest {
 	
 
     @Test
-    public void testUpdateSpaceObjects(){
+    public void testCollision(){
     	gameboard.addSpaceObjects();
     	GameBoard.maxDebris = 0;
     	List<SpaceObject> list = new ArrayList<SpaceObject>();
     	
-    	SpaceObject one = new Debris(0, new Vector(500, 500), new Vector(-1, 0) , 2);
+    	SpaceObject one = new Debris(0, new Vector(30, 30), new Vector(-1, 0) , 2);
     	SpaceObject two = new baseProjectile(new Vector(30, 30), new Vector(70, 70));
     	
     	list.add(one);
@@ -44,26 +39,76 @@ public class CollisionMockTest {
     	
     	GameBoard.setSpaceObjects(list);
     	
-		expect(collisionMock.detectCollision()).andReturn(false);
+    	//Es gibt immer eine Collision
+		expect(collisionMock.detectCollision()).andReturn(true);
+		
+		//Erzeugt ein Stub, welches die SelectCollisionType Methode als leere Methode simuliert
+		collisionMock.selectCollisionType();
+		expectLastCall().asStub();
+		
+		//Erzeugt ein Stub, welches die setSObjects Methode als leere Methode simuliert
+		collisionMock.setSObjects(one, two);
+		expectLastCall().asStub();
+		
+		//Simuliert die executeCollision Methode, dass beide Spaceobjecte sterben
+		collisionMock.executeCollision();
+		expectLastCall().andAnswer(() -> {
+		    one.die();
+			two.die();
+			return null;
+		});
 		
 		
 		replay(collisionMock);
 		
+		
 		assertEquals(2, gameboard.getSpaceObjects().size());
-		// Fehler bei executeCollision und setSObjects
+		
 		gameboard.updateSpaceObjects();
-		expectLastCall().andAnswer(new IAnswer() {
-		    public Object answer() {
-//		        //supply your mock implementation here...
-//		        SomeClass arg1 = (SomeClass) getCurrentArguments()[0];
-//		        AnotherClass arg2 = (AnotherClass) getCurrentArguments()[1];
-//		        arg1.doSomething(blah);
-//		        //return the value to be returned by the method (null for void)
-		        return null;
-		    }
+		assertEquals(0, gameboard.getSpaceObjects().size());
+    }
+    
+    @Test
+    public void testNoCollision(){
+    	gameboard.addSpaceObjects();
+    	GameBoard.maxDebris = 0;
+    	List<SpaceObject> list = new ArrayList<SpaceObject>();
+    	
+    	SpaceObject one = new Debris(0, new Vector(30, 30), new Vector(-1, 0) , 2);
+    	SpaceObject two = new baseProjectile(new Vector(30, 30), new Vector(70, 70));
+    	
+    	list.add(one);
+    	list.add(two);
+    	
+    	GameBoard.setSpaceObjects(list);
+    	
+    	//Es gibt keine Collision
+		expect(collisionMock.detectCollision()).andReturn(false);
+		
+		//Erzeugt ein Stub, welches die SelectCollisionType Methode als leere Methode simuliert
+		collisionMock.selectCollisionType();
+		expectLastCall().asStub();
+		
+		//Erzeugt ein Stub, welches die setSObjects Methode als leere Methode simuliert
+		collisionMock.setSObjects(one, two);
+		expectLastCall().asStub();
+		
+		//Simuliert die executeCollision Methode, dass beide Spaceobjecte sterben
+		collisionMock.executeCollision();
+		expectLastCall().andAnswer(() -> {
+		    one.die();
+			two.die();
+			return null;
 		});
 		
-		assertEquals(0, gameboard.getSpaceObjects().size());
+		
+		replay(collisionMock);
+		
+		
+		assertEquals(2, gameboard.getSpaceObjects().size());
+		
+		gameboard.updateSpaceObjects();
+		assertEquals(2, gameboard.getSpaceObjects().size());
     }
 
 }
