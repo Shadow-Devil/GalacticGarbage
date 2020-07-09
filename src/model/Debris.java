@@ -62,6 +62,6 @@ public class Debris extends SpaceObject{
 	 */
 	public Debris getCopy() {
 		GameBoard.debrisCount += (size>0 ? size*2 : 1);
-		return new Debris(size, positionVector, directionVector, baseSpeed);
+		return new Debris(size, positionVector.copy(), directionVector.copy(), baseSpeed);
 	}
 }

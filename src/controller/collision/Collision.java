@@ -115,9 +115,9 @@ public class Collision implements CollisionInterface {
 		double diff = Math.signum(degree);
 		System.out.println(diff);
 		Vector v = two.getDirectionVector().copy();
-		if(v.getLength() < 0.001) {
+		if (one instanceof Player) {
 			v.add(collisionVector).toUnit().multiply(-1 * 10);
-		}else {
+		} else {
 			v = two.getDirectionVector().copy().turn(2*degree*diff).multiply(-1);
 		}
 		
@@ -166,7 +166,7 @@ public class Collision implements CollisionInterface {
 		v2.turn(-degree);
 		
 		one.getAccelerationVector().add(v1);
-		two.getAccelerationVector().add(v1);
+		two.getAccelerationVector().add(v2);
 		
 		
 		
@@ -200,16 +200,20 @@ public class Collision implements CollisionInterface {
 //			
 //		}
 		
-		Vector v = new Vector(0,0)
-		.turnUnitVector(collision.collisionVector.getDegree())
-		.multiply((one.getRadius() + two.getRadius()));
+		
 		if(both) {
+			Vector v = new Vector(0,0)
+					.turnUnitVector(collision.collisionVector.getDegree())
+					.multiply((one.getRadius() + two.getRadius()));
 			
 			one.getPositionVector().add(v.copy().multiply(0.5));
-			two.getPositionVector().sub(v.multiply(0.5));
+			two.getPositionVector().sub(v.copy().multiply(0.5));
 			
 		System.out.println(two);
 		}else {
+			Vector v = new Vector(0,0)
+					.turnUnitVector(collision.collisionVector.getDegree())
+					.multiply((one.getRadius() + two.getRadius() - collision.collisionVector.getLength() + 0.5));
 			two.getPositionVector().sub(v);
 			
 		}
