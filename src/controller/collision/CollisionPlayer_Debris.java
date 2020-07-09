@@ -17,6 +17,6 @@ public class CollisionPlayer_Debris implements CollisionType{
 			one.loseHealth(two.getSize() * Debris.damagePerSize);
 			Collision.bounce(one, two, collisionVector);
 		}else
-			Collision.repel(one, two, collisionVector);
+			Collision.bounce(one, two, collisionVector);
 	}
 }
