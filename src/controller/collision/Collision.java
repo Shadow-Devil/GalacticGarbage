@@ -162,8 +162,8 @@ public class Collision implements CollisionInterface {
 		
 		
 //		two.setSpeed(v2.getLength());
-		v1.turn(-degree);
-		v2.turn(-degree);
+		v1.turn(-degree).multiply(1.1);
+		v2.turn(-degree).multiply(1.1);
 		
 //		one.getAccelerationVector().add(v1);
 //		two.getAccelerationVector().add(v2);

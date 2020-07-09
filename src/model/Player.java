@@ -65,10 +65,10 @@ public class Player extends SpaceObject{
 	 * @exception IllegalArgumentException if the damage is <= 0
 	 */
 	public void loseHealth(int damage) {
-//		if(damage <= 0)
-//			throw new IllegalArgumentException("received damage must be over 0");
-//		health -= damage;
-//		if(health <= 0)
-//			die();
+		if(damage <= 0)
+			throw new IllegalArgumentException("received damage must be over 0");
+		health -= damage;
+		if(health <= 0)
+			die();
 	}
 }
