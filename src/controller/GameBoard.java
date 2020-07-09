@@ -1,6 +1,7 @@
 package controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import controller.collision.CollisionInterface;
 import controller.collision.Policy;
@@ -8,6 +9,7 @@ import controller.collision.Policy;
 import java.util.ArrayList;
 
 import model.Debris;
+import model.Planet;
 import model.Player;
 import model.SpaceObject;
 import model.Vector;
@@ -40,6 +42,8 @@ public class GameBoard{
 	
 	private CollisionInterface collision;
 
+	private static List<Planet> planetList;
+
 	/**
 	 * Constructor, creates the gameboard based on size
 	 * 
@@ -61,7 +65,6 @@ public class GameBoard{
 	}
 
 
-
 	/**
 	 * Removes all existing spaceObjects from the spaceObjects list. <br>
 	 * Adds specified number of spaceObjects to the spaceObjects list. The number of spaceObjects depends on the chosen map
@@ -72,8 +75,11 @@ public class GameBoard{
 		maxDebris = map.getMaxDebris();
 		spawn = map.getBaseDebris();
 		spaceObjects = map.getObjects();
+		planetList = spaceObjects.stream()
+				.filter(so -> so instanceof Planet)
+				.map(so -> (Planet) so).collect(Collectors.toList());
 		spaceObjects.add(player); 
-	}  
+	}
 
 	/**
 	 * Resets the position of the player. <br>
@@ -203,6 +209,10 @@ public class GameBoard{
 
 	public Player getPlayer(){
 		return player;
+	}
+	
+	public static List<Planet> getPlanetList(){
+		return planetList;
 	}
 	
 	public void increaseScore() {

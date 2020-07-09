@@ -114,10 +114,17 @@ public class Collision implements CollisionInterface {
 		System.out.println(degree);
 		double diff = Math.signum(degree);
 		System.out.println(diff);
-		Vector v = two.getDirectionVector().copy().turn(2*degree*diff).multiply(-1);
+		Vector v = two.getDirectionVector().copy();
+		if(v.getLength() < 0.001) {
+			v.add(collisionVector).toUnit().multiply(-1 * 10);
+		}else {
+			v = two.getDirectionVector().copy().turn(2*degree*diff).multiply(-1);
+		}
+		
+		
 
 		two.getAccelerationVector().add(v);
-		//moveAppart(one, two, false);
+		moveAppart(one, two, false);
 	}
 	
 	/**
@@ -164,7 +171,7 @@ public class Collision implements CollisionInterface {
 		
 		
 		//System.out.println("Player: " + one.getAccelerationVector() + "\nDebris: " + two.getAccelerationVector());
-		//Collision.moveAppart(one, two, true);
+		Collision.moveAppart(one, two, true);
 	}
 
 	

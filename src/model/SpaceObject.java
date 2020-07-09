@@ -23,6 +23,11 @@ public abstract class SpaceObject{
 	}
 
 	public void move() { 
+		GameBoard.getPlanetList().forEach(p -> {
+			Vector c = positionVector.copy().sub(p.positionVector).multiply(-0.000002 * p.getRadius());
+			accelerationVector.add(c);
+		});
+		
 		//moveWithAcceleration
 		double y = -0.2;
 		Vector dir = directionVector.copy().multiply(y);
