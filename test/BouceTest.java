@@ -17,9 +17,9 @@ public class BouceTest{
 		
 //		SpaceObject one = new Player();
 //		one.getPositionVector().setXY(100, 100);
-		SpaceObject one = new Debris(0, new Vector(100, 100), new Vector(1, 0), 2);
+		SpaceObject one = new Debris(0, new Vector(100, 100), new Vector(1, 0));
 		
-		SpaceObject two = new Debris(0, new Vector(110, 100), new Vector(-1, 0), 2);
+		SpaceObject two = new Debris(0, new Vector(110, 100), new Vector(-1, 0));
 		
 
 		Collision collision = new Collision();

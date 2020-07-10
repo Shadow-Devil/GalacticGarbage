@@ -31,7 +31,7 @@ public class CollisionMockTest {
     	GameBoard.maxDebris = 0;
     	List<SpaceObject> list = new ArrayList<SpaceObject>();
     	
-    	SpaceObject one = new Debris(0, new Vector(30, 30), new Vector(-1, 0) , 2);
+    	SpaceObject one = new Debris(0, new Vector(30, 30), new Vector(-1, 0));
     	SpaceObject two = new Projectile(new Vector(30, 30), new Vector(70, 70));
     	
     	list.add(one);
@@ -74,7 +74,7 @@ public class CollisionMockTest {
     	GameBoard.maxDebris = 0;
     	List<SpaceObject> list = new ArrayList<SpaceObject>();
     	
-    	SpaceObject one = new Debris(0, new Vector(30, 30), new Vector(-1, 0) , 2);
+    	SpaceObject one = new Debris(0, new Vector(30, 30), new Vector(-1, 0));
 
     	SpaceObject two = new Projectile(new Vector(300, 300), new Vector(70, 70));
     	

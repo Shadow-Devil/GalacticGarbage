@@ -109,11 +109,11 @@ public class Collision implements CollisionInterface {
 	 */
 	public static void repel(SpaceObject one, SpaceObject two, Vector collisionVector){
 		//System.out.println("repel");
-		System.out.println(collisionVector.getDegree());
+//		System.out.println(collisionVector.getDegree());
 		double degree = collisionVector.getDegree() - two.getDirectionVector().getDegree();
-		System.out.println(degree);
+//		System.out.println(degree);
 		double diff = Math.signum(degree);
-		System.out.println(diff);
+//		System.out.println(diff);
 		Vector v = two.getDirectionVector().copy();
 //		if (one instanceof Player) {
 //			v.add(collisionVector).toUnit().multiply(-1 * 10);
@@ -207,7 +207,7 @@ public class Collision implements CollisionInterface {
 			one.getPositionVector().add(v.copy().multiply(0.5));
 			two.getPositionVector().sub(v.copy().multiply(0.5));
 			
-			System.out.println(two);
+//			System.out.println(two);
 		}else {
 			two.getPositionVector().sub(v);
 			

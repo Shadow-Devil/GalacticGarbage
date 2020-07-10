@@ -53,7 +53,6 @@ public class GameBoard{
 	 */
 	public GameBoard(int w, int h, int difficulty, CollisionInterface collision) { 
 		gameEnded = false;
-		player = new Player();
 		width = w;
 		height = h;
 		spawncounter = 0;
@@ -78,7 +77,8 @@ public class GameBoard{
 		planetList = spaceObjects.stream()
 				.filter(so -> so instanceof Planet)
 				.map(so -> (Planet) so).collect(Collectors.toList());
-		spaceObjects.add(player); 
+		player = spaceObjects.stream().filter(so -> so instanceof Player)
+				.map(so -> (Player) so).findFirst().get();
 	}
 
 	/**
@@ -86,7 +86,6 @@ public class GameBoard{
 	 * Invokes the creation of new spaceObjects.
 	 */
 	public void resetSpaceObjects(){
-		this.player = new Player();
 //		spaceObjects.clear();	//eig nicht nötig
 		debrisCount = 0;
 		addSpaceObjects();

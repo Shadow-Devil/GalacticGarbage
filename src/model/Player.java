@@ -13,8 +13,8 @@ public class Player extends SpaceObject{
 	private int health = 100;
 	
 
-	public Player(){
-		super(20, ICONNAME, new Vector(30, 30), new Vector(0, 0));
+	public Player(double x, double y){
+		super(20, ICONNAME, new Vector(x, y), new Vector(0, 0));
 	}
 	
 	/**
@@ -68,7 +68,7 @@ public class Player extends SpaceObject{
 		if(damage <= 0)
 			throw new IllegalArgumentException("received damage must be over 0");
 		health -= damage;
-		if(health <= 0)
-			die();
+//		if(health <= 0)
+//			die();
 	}
 }

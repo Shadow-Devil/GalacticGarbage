@@ -3,6 +3,7 @@ package controller;
 import model.Debris;
 import model.Moon;
 import model.Planet;
+import model.Player;
 import model.SpaceObject;
 import model.Vector;
 
@@ -16,35 +17,37 @@ public enum Maps{	//TODO bei getObj immer neue Liste erstellen!!
 		@Override
 		public List<SpaceObject> getObjects() {	//alles außer Player
 			List<SpaceObject> map = new ArrayList<>();
+			map.add(new Player(30, 30));
 			
-			Planet p1 = new Planet(100, 0, new Vector(700,300));
+			Planet p1 = new Planet(100, 0, 700, 300);
 			map.add(p1);
 			//Moon(int radius, int icon, Vector planetToMoonVector, double turnSpeed, Vector planet)
-			map.add(new Moon(10, 0, new Vector(0,200), -3.0, p1.getPositionVector().copy()));
-
-
+			map.add(new Moon(10, 0, new Vector(0,200), -2.0, p1.getPositionVector().copy()));
+			
+			
 			return map;
 		}
 
 		@Override
 		public List<Debris> getBaseDebris(){
-			//TODO Maps
 			List<Debris> baseDebris = new ArrayList<>();
-			baseDebris.add(new Debris(2, new Vector(500, 500), new Vector(-1, 0) , 2));
+			baseDebris.add(new Debris(500, 500));
 
 
 			return baseDebris;
 		}
-	}, MEDIUM(1) {
+	}, MEDIUM(2) {
 		@Override
 		public List<SpaceObject> getObjects() {	//alles außer Player
 			List<SpaceObject> map = new ArrayList<>();
+			map.add(new Player(30, 30));
 			
-			Planet p1 = new Planet(100, 0, new Vector(700,300));
+			Planet p1 = new Planet(100, 0, 700, 300);
 			map.add(p1);
 			//Moon(int radius, int icon, Vector planetToMoonVector, double turnSpeed, Vector planet)
 			//map.add(new Moon(10, 0, new Vector(0,200), -3.0, p1.getPositionVector().copy()));
 
+			
 
 			return map;
 		}
@@ -53,8 +56,9 @@ public enum Maps{	//TODO bei getObj immer neue Liste erstellen!!
 		public List<Debris> getBaseDebris(){
 			//TODO Maps
 			List<Debris> baseDebris = new ArrayList<>();
-			baseDebris.add(new Debris(2, new Vector(900, 500), new Vector(-0.5, -0.5) , 2));
-			System.out.println("Medium");
+			baseDebris.add(new Debris(900, 500));
+			baseDebris.add(new Debris(300, 500));
+			
 
 			return baseDebris;
 		}
@@ -63,6 +67,7 @@ public enum Maps{	//TODO bei getObj immer neue Liste erstellen!!
 		public List<SpaceObject> getObjects(){
 			// TODO Maps
 			List<SpaceObject> map = new ArrayList<>();
+			map.add(new Player(30, 30));
 			
 			return map;
 		}

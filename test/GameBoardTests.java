@@ -24,8 +24,8 @@ public class GameBoardTests {
 	@Test
 	public void dieTest() {
 		List<SpaceObject> obj = new ArrayList<SpaceObject>();
-		Debris debris1 = new Debris(0, new Vector(100, 100), new Vector(1, 0) , 2);
-		Debris debris2 = new Debris(0, new Vector(200, 200), new Vector(1, 0) , 2);
+		Debris debris1 = new Debris(0, new Vector(100, 100), new Vector(1, 0));
+		Debris debris2 = new Debris(0, new Vector(200, 200), new Vector(1, 0));
 		obj.add(debris1);
 		obj.add(debris2);
 		GameBoard.setSpaceObjects(obj);
@@ -43,8 +43,8 @@ public class GameBoardTests {
 	@Test
 	public void splitTest() {
 		List<SpaceObject> obj = new ArrayList<SpaceObject>();
-		Debris debris1 = new Debris(2, new Vector(200, 200), new Vector(1, 0) , 2);
-		Debris debris2 = new Debris(2, new Vector(500, 500), new Vector(1, 0) , 2);
+		Debris debris1 = new Debris(2, new Vector(200, 200), new Vector(1, 0));
+		Debris debris2 = new Debris(2, new Vector(500, 500), new Vector(1, 0));
 		obj.add(debris1);
 		obj.add(debris2);
 		GameBoard.setSpaceObjects(obj);
