@@ -9,13 +9,15 @@ public class GalacticGarbage {
 	 * 	Große und mittlere Debris gehen durch shoot kaputt, 
 	 * 		beim colliden mit Player bekommt dieser Schaden
 	 * 	Kleine Debris gehen durch Monde/Planeten kaputt
-	 * 	Nur Easy Map implementiert
+	 * 	Alle Maps implementiert
 	 * 	Score zählt kleinen Debris, die in Mode/Planeten geschoben wurden
+	 *  Spielzeit ausgegeben
 	 * 
 	 * TODO:
-	 * 	Collisionen fixen
-	 * 	Verschiedene Maps erstellen
-	 * 	Gravitation
+	 * 	Maps verbessern
+	 * 	Gravitation veränderbar machen
+	 * 	Highscore abspeichern
+	 * 	Multiplayer?
 	 * 
 	 * @param args
 	 */

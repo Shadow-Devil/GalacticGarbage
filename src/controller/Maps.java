@@ -22,7 +22,7 @@ public enum Maps{	//TODO bei getObj immer neue Liste erstellen!!
 			Planet p1 = new Planet(100, 0, 700, 300);
 			map.add(p1);
 			//Moon(int radius, int icon, Vector planetToMoonVector, double turnSpeed, Vector planet)
-			map.add(new Moon(10, 0, new Vector(0,200), -2.0, p1.getPositionVector().copy()));
+			map.add(new Moon(10, 0, new Vector(0,200), -2, p1.getPositionVector().copy()));
 			
 			
 			return map;
@@ -31,8 +31,8 @@ public enum Maps{	//TODO bei getObj immer neue Liste erstellen!!
 		@Override
 		public List<Debris> getBaseDebris(){
 			List<Debris> baseDebris = new ArrayList<>();
-			baseDebris.add(new Debris(500, 500));
-
+			baseDebris.add(new Debris(200, 500));
+			baseDebris.add(new Debris(200, 200));
 
 			return baseDebris;
 		}
@@ -42,40 +42,47 @@ public enum Maps{	//TODO bei getObj immer neue Liste erstellen!!
 			List<SpaceObject> map = new ArrayList<>();
 			map.add(new Player(30, 30));
 			
-			Planet p1 = new Planet(100, 0, 700, 300);
+			Planet p1 = new Planet(80, 0, 400, 300);
 			map.add(p1);
 			//Moon(int radius, int icon, Vector planetToMoonVector, double turnSpeed, Vector planet)
-			//map.add(new Moon(10, 0, new Vector(0,200), -3.0, p1.getPositionVector().copy()));
-
+			map.add(new Moon(20, 0, new Vector(0,-270), -3.0, p1.getPositionVector().copy()));
+			map.add(new Moon(10, 0, new Vector(150,0), -3.4, p1.getPositionVector().copy()));
 			
+			map.add(new Planet(30, 1, 800, 500));
 
 			return map;
 		}
 
 		@Override
 		public List<Debris> getBaseDebris(){
-			//TODO Maps
 			List<Debris> baseDebris = new ArrayList<>();
-			baseDebris.add(new Debris(900, 500));
+			baseDebris.add(new Debris(900, 200));
 			baseDebris.add(new Debris(300, 500));
-			
+			baseDebris.add(new Debris(20, 20));
 
 			return baseDebris;
 		}
 	}, HARD(4) {
 		@Override
 		public List<SpaceObject> getObjects(){
-			// TODO Maps
 			List<SpaceObject> map = new ArrayList<>();
-			map.add(new Player(30, 30));
+			map.add(new Player(0, 500));
+			
+			map.add(new Planet(40, 0, 900, 100));
+			map.add(new Planet(40, 1, 900, 500));
+			map.add(new Planet(50, 2, 400, 400));
+			
 			
 			return map;
 		}
 
 		@Override
 		public List<Debris> getBaseDebris(){
-			// TODO Maps
 			List<Debris> baseDebris = new ArrayList<>();
+			baseDebris.add(new Debris(850, 300));
+			baseDebris.add(new Debris(300, 200));
+			baseDebris.add(new Debris(20, 20));
+			
 			
 			return baseDebris;
 		}

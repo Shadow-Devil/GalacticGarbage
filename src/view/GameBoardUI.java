@@ -37,6 +37,8 @@ public class GameBoardUI extends Canvas implements Runnable{
 	private int width, height;
 	private final Toolbar toolBar;
 	
+	private long starttime;
+	
 
 	/**
 	 * Sets up all attributes, starts the mouse steering and sets up all graphics
@@ -58,13 +60,19 @@ public class GameBoardUI extends Canvas implements Runnable{
 	 */
 	@Override
 	public void run(){
+		starttime = System.currentTimeMillis();
 		while (gameBoard.isRunning()){
 			// updates Spaceobjects positions and re-renders graphics
 			gameBoard.updateSpaceObjects();
 			// when this.gameBoard.hasWon() is null, do nothing
 			if (gameBoard.hasEnded()){
+				int sek = (int) ((System.currentTimeMillis() - starttime)/1000);
+				int min = sek /60;
+				sek = sek % 60;
+				
 				showAsyncAlert("Oh.. you lost.\n" +
-						"Your Score: " + gameBoard.getScore());
+						"Your Score: " + gameBoard.getScore() + "\n" + 
+						"Time: " + min + " Min, " + sek + " Sek");
 				stopGame();
 			}
 			paint(graphicsContext);
@@ -75,7 +83,7 @@ public class GameBoardUI extends Canvas implements Runnable{
 			}
 		}
 	}
-
+	
 
 	/**
 	 * Removes all existing spaceObjects from the game board and re-adds them. Status bar is set to
