@@ -131,6 +131,7 @@ public class GameBoard{
 	 * Stops the game. SpaceObjects stop moving.
 	 */
 	public void stopGame(){
+		Input.resetAllPressed();
 		this.isRunning = false;
 	}
 

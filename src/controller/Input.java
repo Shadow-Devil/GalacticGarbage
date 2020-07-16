@@ -65,4 +65,13 @@ public class Input{
 	public static boolean isSpacePressed(){
 		return spacePressed;
 	}
+	
+	public static void resetAllPressed() {
+		wPressed = false;
+		aPressed = false;
+		sPressed = false;
+		dPressed = false;
+		spacePressed = false;
+		resetet = false;
+	}
 }

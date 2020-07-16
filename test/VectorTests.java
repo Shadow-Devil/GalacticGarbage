@@ -58,15 +58,15 @@ public class VectorTests{
 	@Test
 	public void testTurn() {
 		v1.setXY(0, 1);
-		System.out.println(v1);
+		//System.out.println(v1);
 		assertEquals(90, v1.getDegree(), 0.01);
 		
 		v1.turnUnitVector(0);
-		System.out.println(v1);
+		//System.out.println(v1);
 		assertEquals(90, v1.getDegree(), 0.01);
 		
 		v1.turnUnitVector(90);
-		System.out.println(v1);
+		//System.out.println(v1);
 		assertEquals(180, v1.getDegree(), 0.01);
 	}
 	
