@@ -12,19 +12,25 @@ public class Toolbar extends ToolBar {
 	private final Main gameWindow;
     private final Button start;
     private final Button stop;
+    
+    private final Button multiplayer;
 
     public Toolbar(Main gameWindow) {
         this.start = new Button("Start");
         this.stop = new Button("Stop");
+        
+        this.multiplayer = new Button("Multiplayer");
+        
         initActions();
-        this.getItems().addAll(start, new Separator(), stop);
+        this.getItems().addAll(start, new Separator(), stop, new Separator(), multiplayer);
         this.gameWindow = gameWindow;
     }
 
     /**
      * Initialises the actions
      */
-    private void initActions() {
+    @SuppressWarnings("deprecation")
+	private void initActions() {
         this.start.setOnAction(event -> {
         	gameWindow.gameBoardUI.stopGame();
     
@@ -69,6 +75,46 @@ public class Toolbar extends ToolBar {
             	gameWindow.gameBoardUI.startGame();
             }
         });
+        
+        this.multiplayer.setOnAction(event -> {
+        	gameWindow.gameBoardUI.stopGame();
+        	gameWindow.gameBoardUI.multiplayer = false;
+        	
+        	ButtonType HOST = new ButtonType("Host", ButtonBar.ButtonData.OK_DONE);
+            ButtonType CLIENT = new ButtonType("Client", ButtonBar.ButtonData.OK_DONE);
+            
+            Alert alert = new Alert(AlertType.INFORMATION, "Connection?", HOST, CLIENT);
+            alert.setTitle("Connection");
+            alert.setHeaderText("");
+            
+            Optional<ButtonType> result = alert.showAndWait();
+            if(result.get() == HOST) {
+            	ButtonType CANCEL = new ButtonType("Cancel", ButtonBar.ButtonData.OK_DONE);
+            	
+            	Alert alert2 = new Alert(AlertType.INFORMATION, "Wait for Connection.", CANCEL);
+                alert2.setTitle("Wait");
+                alert2.setHeaderText("");
+                
+                Optional<ButtonType> result2 = alert2.showAndWait();
+                gameWindow.gameBoardUI.waitForCon = true;
+                Thread thread = new Thread(() -> {gameWindow.gameBoardUI.setConnectionInHost(); alert2.close();});
+                thread.start();
+                if(result.get() == CANCEL) {
+                	thread.stop();
+                }
+            	
+            	
+            } else if(result.get() == CLIENT) {
+            	//ButtonType OK = new ButtonType("Host", ButtonBar.ButtonData.OK_DONE);
+            	//TextField TEXT = new TextField();
+            	
+            	TextInputDialog txt = new TextInputDialog();
+                txt.setTitle("Adress");
+                txt.setHeaderText("IP:");
+                
+                gameWindow.gameBoardUI.setConnectionInClient(txt.showAndWait().get());
+            }
+        });
     }
 
     /**
@@ -79,6 +125,7 @@ public class Toolbar extends ToolBar {
     public void resetToolBarButtonStatus(boolean running) {
         this.start.setDisable(running);
         this.stop.setDisable(!running);
+        this.multiplayer.setDisable(running);
     }
     
 }

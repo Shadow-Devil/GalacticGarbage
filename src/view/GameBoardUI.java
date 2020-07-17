@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
@@ -13,6 +14,8 @@ import model.Vector;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.net.URL;
 import java.util.HashMap;
 
@@ -39,6 +42,12 @@ public class GameBoardUI extends Canvas implements Runnable{
 	
 	private long starttime;
 	
+	private Socket sock;
+	public boolean waitForCon;
+	public boolean isServer;
+	public boolean multiplayer;
+	
+	
 
 	/**
 	 * Sets up all attributes, starts the mouse steering and sets up all graphics
@@ -50,6 +59,37 @@ public class GameBoardUI extends Canvas implements Runnable{
 		width = DEFAULT_WIDTH;
 		height = DEFAULT_HEIGHT;
 		gameSetup(0);
+	}
+	
+	public void setConnectionInHost() {
+		try {
+			int port = 25566;
+	           ServerSocket serverSock;
+			serverSock = new ServerSocket(port);
+			sock = serverSock.accept();
+			serverSock.close();
+			isServer = true;
+			this.multiplayer = true;
+			System.out.println("Server gestartet, erwarte Verbindungen");
+		} catch (IOException e) {
+			Alert alert = new Alert(AlertType.INFORMATION, "Connection failed.");
+               alert.setTitle("Fail");
+               alert.setHeaderText("");
+		}
+		
+	}
+	
+	public void setConnectionInClient(String ip) {
+		try {
+			sock = new Socket(ip, 25566);
+			this.multiplayer = true;
+		} catch (IOException e) {
+			Alert alert = new Alert(AlertType.INFORMATION, "Connection failed.");
+            alert.setTitle("Fail");
+            alert.setHeaderText("");
+            
+            alert.show();
+		}
 	}
 
 	/**
