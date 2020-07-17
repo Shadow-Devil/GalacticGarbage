@@ -18,8 +18,10 @@ import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -287,5 +289,20 @@ public class GameBoardUI extends Canvas implements Runnable {
 			alert.showAndWait();
 			gameSetup(0);
 		});
+	}
+	
+	public static void main(String[] args) {
+		Path path = FileSystems.getDefault().getPath("target", "scoresA.txt");
+		try {
+			Files.writeString(path, "\nNeuer next für scoresA.txt", StandardOpenOption.APPEND);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println("fertig geschrieben:");
+		try {
+			Files.readAllLines(path).stream().forEach(line -> System.out.println(line));;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
