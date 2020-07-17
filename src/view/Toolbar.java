@@ -13,16 +13,18 @@ public class Toolbar extends ToolBar {
     private final Button start;
     private final Button stop;
     
+    private final Button scores;
     private final Button multiplayer;
 
     public Toolbar(Main gameWindow) {
         this.start = new Button("Start");
         this.stop = new Button("Stop");
         
+        this.scores = new Button("Scores");
         this.multiplayer = new Button("Multiplayer");
         
         initActions();
-        this.getItems().addAll(start, new Separator(), stop, new Separator(), multiplayer);
+        this.getItems().addAll(start, new Separator(), stop, new Separator(), multiplayer, new Separator(), scores);
         this.gameWindow = gameWindow;
     }
 
@@ -37,7 +39,7 @@ public class Toolbar extends ToolBar {
             ButtonType EASY = new ButtonType("Easy", ButtonBar.ButtonData.OK_DONE);
             ButtonType MEDIUM = new ButtonType("Medium", ButtonBar.ButtonData.OK_DONE);
             ButtonType HARD = new ButtonType("Hard", ButtonBar.ButtonData.OK_DONE);
-            ButtonType CANCEL = new ButtonType("Cancle", ButtonBar.ButtonData.CANCEL_CLOSE);
+            ButtonType CANCEL = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
     
             Alert alert = new Alert(AlertType.INFORMATION, "Which difficulty do you want to play?", EASY, MEDIUM, HARD, CANCEL);
             alert.setTitle("Choose Difficulty");
@@ -115,6 +117,10 @@ public class Toolbar extends ToolBar {
                 gameWindow.gameBoardUI.setConnectionInClient(txt.showAndWait().get());
             }
         });
+        
+        this.scores.setOnAction(event -> { 
+        	// TODO
+        });
     }
 
     /**
@@ -122,10 +128,11 @@ public class Toolbar extends ToolBar {
      * 
      * @param running Used to disable/enable buttons
      */
-    public void resetToolBarButtonStatus(boolean running) {
+    public void resetToolBarButtonStatus(boolean running) { 
         this.start.setDisable(running);
         this.stop.setDisable(!running);
         this.multiplayer.setDisable(running);
+        this.scores.setDisable(running);
     }
     
 }
