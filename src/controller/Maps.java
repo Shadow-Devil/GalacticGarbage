@@ -45,8 +45,8 @@ public enum Maps{	//TODO bei getObj immer neue Liste erstellen!!
 			Planet p1 = new Planet(80, 0, 400, 300);
 			map.add(p1);
 			//Moon(int radius, int icon, Vector planetToMoonVector, double turnSpeed, Vector planet)
-			map.add(new Moon(20, 0, new Vector(0,-270), -3.0, p1.getPositionVector().copy()));
-			map.add(new Moon(10, 0, new Vector(150,0), -3.4, p1.getPositionVector().copy()));
+			map.add(new Moon(20, 2, new Vector(0,-270), -3.0, p1.getPositionVector().copy()));
+			map.add(new Moon(10, 1, new Vector(150,0), -3.4, p1.getPositionVector().copy()));
 			
 			map.add(new Planet(30, 1, 800, 500));
 
