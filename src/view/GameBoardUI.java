@@ -494,6 +494,7 @@ public class GameBoardUI extends Canvas implements Runnable {
 		});
 	}
 	
+	
 	public static void main(String[] args) {
 		Path path = FileSystems.getDefault().getPath("target", "scoresA.txt");
 		try {
