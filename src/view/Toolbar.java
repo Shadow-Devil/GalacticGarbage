@@ -7,7 +7,13 @@ import javafx.scene.control.Alert.AlertType;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import controller.Main;
 
@@ -266,7 +272,23 @@ public class Toolbar extends ToolBar {
 //        });
         
         this.scores.setOnAction(event -> { 
-        	// TODO
+        	Path path = Path.of("resources", "scores.txt");
+    		if(path == null || !path.toFile().exists()) {
+    			System.out.println("Saving score unsuccessfull //not in default Filesystem");
+    			System.out.println(path.toAbsolutePath().toFile().toString());
+    			return;
+    		}
+    		List<String> lines = new ArrayList<String>();
+    		try {
+    			lines = Files.readAllLines(path);
+    		} catch (IOException e) {
+    			e.printStackTrace();
+    		}
+    		
+    		Alert alert = new Alert(AlertType.INFORMATION, lines.stream().collect(Collectors.joining("\n")));
+    		alert.setTitle("Scores");
+    		alert.setHeaderText("");
+    		alert.showAndWait();
         });
     }
 
