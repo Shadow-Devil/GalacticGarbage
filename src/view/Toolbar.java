@@ -273,10 +273,17 @@ public class Toolbar extends ToolBar {
         
         this.scores.setOnAction(event -> { 
         	Path path = Path.of("resources", "scores.txt");
-    		if(path == null || !path.toFile().exists()) {
-    			System.out.println("Saving score unsuccessfull //not in default Filesystem");
-    			System.out.println(path.toAbsolutePath().toFile().toString());
-    			return;
+//    		if(path == null || !path.toFile().exists()) {
+//    			System.out.println("Saving score unsuccessfull //not in default Filesystem");
+//    			System.out.println(path.toAbsolutePath().toFile().toString());
+//    			return;
+//    		}
+    		if(!Files.isRegularFile(path)) {
+    			path = Path.of("scores.txt");
+    			if(path == null || !path.toFile().exists() || !Files.isRegularFile(path)) {
+    				System.out.println("Saving score unsuccessfull //not in extended Filesystem");
+    				return;
+    			}
     		}
     		List<String> lines = new ArrayList<String>();
     		try {

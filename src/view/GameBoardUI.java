@@ -24,6 +24,7 @@ import java.net.URL;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -340,10 +341,17 @@ public class GameBoardUI extends Canvas implements Runnable {
 	public static void updateScore(int score, String time) {
 //		Path path = FileSystems.getDefault().getPath("target", "scores.txt");
 		Path path = Path.of("resources", "scores.txt");
-		if(path == null || !path.toFile().exists()) {
-			System.out.println("Saving score unsuccessfull //not in default Filesystem");
-			System.out.println(path.toAbsolutePath().toFile().toString());
-			return;
+//		if(path == null || !path.toFile().exists()) {
+//			System.out.println("Saving score unsuccessfull //not in default Filesystem");
+//			System.out.println(path.toAbsolutePath().toFile().toString());
+//			return;
+//		}
+		if(!Files.isRegularFile(path)) {
+			path = Path.of("scores.txt");
+			if(path == null || !path.toFile().exists() || !Files.isRegularFile(path)) {
+				System.out.println("Saving score unsuccessfull //not in extended Filesystem");
+				return;
+			}
 		}
 		List<String> lines = new ArrayList<String>();
 		try {

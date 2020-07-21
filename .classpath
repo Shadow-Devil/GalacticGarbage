@@ -13,6 +13,7 @@
 	</classpathentry>
 	<classpathentry excluding="**" kind="src" output="target/classes" path="resources">
 		<attributes>
+			<attribute name="module" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
