@@ -36,7 +36,7 @@ import controller.Input;
 import controller.Input2;
 import controller.collision.Collision;
 
-public class GameBoardUI extends Canvas implements Runnable {
+public class GameBoardUI extends Canvas implements Runnable { 
 
 	private static final int DEFAULT_WIDTH = 1000;
 	private static final int DEFAULT_HEIGHT = 600;
