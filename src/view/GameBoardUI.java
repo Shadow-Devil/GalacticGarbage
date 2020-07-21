@@ -28,7 +28,8 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import controller.GameBoard;
 import controller.Input;
@@ -307,35 +308,18 @@ public class GameBoardUI extends Canvas implements Runnable {
 				sek = sek % 60;
 				String time = "Time: " + min + " Min, " + sek + " Sek";
 				
-				FileWriter writer;
-				File target = new File(GameBoardUI.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParentFile();
-				Path targetPath = target.toPath();
-				Path scoresPath = targetPath.resolve("scores.txt");
-				File scores = scoresPath.toFile();
-				System.out.println(scores.getName());
-				System.out.println(Files.isRegularFile(scoresPath));
-				
 				try {
-					System.out.println("trying");
-					/*
-					writer = new FileWriter(scores, true);
-					writer.write(gameBoard.getScore()+ "|" + time);
-					writer.write(System.getProperty("line.seperator"));
-					
-					writer.flush();
-					writer.close();*/
-					List<String> stringList = new ArrayList<String>();
-					stringList.add(""+gameBoard.getScore()+"|" + time);
-					Files.write(scoresPath, stringList);
-				} catch (IOException e) {
-					System.out.println("Catch");
-				} 
+					updateScore(gameBoard.getScore(), time);
+				} catch (Exception e) {
+					System.out.println("Saving score unsuccessfull //outer");
+				}
 				
 				showAsyncAlert("Oh.. you lost.\n" +
 						"Your Score: " + gameBoard.getScore() + "\n" + 
 						time);
 				stopGame();
-				exchangeInfoInHost(true);
+				if(multiplayer && isServer)
+					exchangeInfoInHost(true);
 			} 
 			paint(graphicsContext);
 			try{
@@ -352,6 +336,31 @@ public class GameBoardUI extends Canvas implements Runnable {
 				break;
 		}
 	}
+	
+	public static void updateScore(int score, String time) {
+//		Path path = FileSystems.getDefault().getPath("target", "scores.txt");
+		Path path = Path.of("resources", "scores.txt");
+		if(path == null || !path.toFile().exists()) {
+			System.out.println("Saving score unsuccessfull //not in default Filesystem");
+			System.out.println(path.toAbsolutePath().toFile().toString());
+			return;
+		}
+		List<String> lines = new ArrayList<String>();
+		try {
+			lines = Files.readAllLines(path);
+			lines.add(score + " | " + time);
+			String msg = lines.stream().sorted((l1,l2) -> {
+				int val1 = Integer.parseInt(l1.split(" | ")[0]);
+				int val2 = Integer.parseInt(l2.split(" | ")[0]);
+				return (int) Math.signum(val1 - val2)*(-1);
+			}).limit(3).collect(Collectors.joining("\n"));
+			Files.writeString(path, msg, StandardOpenOption.WRITE);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 
 	/**
 	 * Removes all existing spaceObjects from the game board and re-adds them.
@@ -496,17 +505,21 @@ public class GameBoardUI extends Canvas implements Runnable {
 	
 	
 	public static void main(String[] args) {
-		Path path = FileSystems.getDefault().getPath("target", "scoresA.txt");
-		try {
-			Files.writeString(path, "\nNeuer next für scoresA.txt", StandardOpenOption.APPEND);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		System.out.println("fertig geschrieben:");
-		try {
-			Files.readAllLines(path).stream().forEach(line -> System.out.println(line));;
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		String s = "Time: 0 Min, 01 Sek";
+		GameBoardUI.updateScore(5, s);
+		
+		//oder
+//		Path path = FileSystems.getDefault().getPath("target", "scores.txt");
+//		try {
+//			Files.writeString(path, "\nNeuer next für scoresA.txt", StandardOpenOption.APPEND);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//		System.out.println("fertig geschrieben:");
+//		try {
+//			Files.readAllLines(path).stream().forEach(line -> System.out.println(line));;
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 	}
 }
