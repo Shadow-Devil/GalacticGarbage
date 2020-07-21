@@ -278,6 +278,13 @@ public class Toolbar extends ToolBar {
     			System.out.println(path.toAbsolutePath().toFile().toString());
     			return;
     		}
+    		if(!Files.isRegularFile(path)) {
+    			path = Path.of("scores.txt");
+    			if(path == null || !path.toFile().exists() || !Files.isRegularFile(path)) {
+    				System.out.println("Saving score unsuccessfull //not in extended Filesystem");
+    				return;
+    			}
+    		}
     		List<String> lines = new ArrayList<String>();
     		try {
     			lines = Files.readAllLines(path);
