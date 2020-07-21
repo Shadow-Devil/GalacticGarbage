@@ -341,11 +341,11 @@ public class GameBoardUI extends Canvas implements Runnable {
 	public static void updateScore(int score, String time) {
 //		Path path = FileSystems.getDefault().getPath("target", "scores.txt");
 		Path path = Path.of("resources", "scores.txt");
-		if(path == null || !path.toFile().exists()) {
-			System.out.println("Saving score unsuccessfull //not in default Filesystem");
-			System.out.println(path.toAbsolutePath().toFile().toString());
-			return;
-		}
+//		if(path == null || !path.toFile().exists()) {
+//			System.out.println("Saving score unsuccessfull //not in default Filesystem");
+//			System.out.println(path.toAbsolutePath().toFile().toString());
+//			return;
+//		}
 		if(!Files.isRegularFile(path)) {
 			path = Path.of("scores.txt");
 			if(path == null || !path.toFile().exists() || !Files.isRegularFile(path)) {
