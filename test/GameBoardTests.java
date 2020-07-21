@@ -16,7 +16,7 @@ public class GameBoardTests {
 	
 	@Before
 	public void setup() {
-		gameboard = new GameBoard(1000, 1000, 0, new Collision());	//difficulty easy
+		gameboard = new GameBoard(1000, 1000, 0, new Collision(), false);	//difficulty easy
 		GameBoard.setSpaceObjects(new ArrayList<SpaceObject>());
 		gameboard.addSpaceObjects();
 	}

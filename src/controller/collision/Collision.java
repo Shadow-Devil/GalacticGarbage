@@ -54,7 +54,8 @@ public class Collision implements CollisionInterface {
 				switchSpaceObjects();
 				this.collisionType = new CollisionPlayer_MoonPlanet__Projectile_SpaceObject();
 			}else if(two instanceof Player){
-				throw new UnsupportedOperationException("Multiplayer not implemented.");
+				this.collisionType = new CollisionPlayer_Player();
+				//throw new UnsupportedOperationException("Multiplayer not implemented.");
 			}else {//Planet oder Moon
 				this.collisionType = new CollisionPlayer_MoonPlanet__Projectile_SpaceObject();
 			}

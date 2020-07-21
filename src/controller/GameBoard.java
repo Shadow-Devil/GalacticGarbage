@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import model.Debris;
 import model.Planet;
 import model.Player;
+import model.Player2;
 import model.SpaceObject;
 import model.Vector;
 
@@ -18,6 +19,7 @@ public class GameBoard{
 
 	// the player object with player car object
 	private Player player;
+	private Player player2;
 
 	//public static Input input;
 	//sollte static sein um vom Player darauf zuzugreifen, 
@@ -43,6 +45,8 @@ public class GameBoard{
 	private CollisionInterface collision;
 
 	private static List<Planet> planetList;
+	
+	public boolean multiplayer;
 
 	/**
 	 * Constructor, creates the gameboard based on size
@@ -51,7 +55,8 @@ public class GameBoard{
 	 * @param h of the gameboard
 	 * @param difficulty from 0(EASY) to 2(HARD)
 	 */
-	public GameBoard(int w, int h, int difficulty, CollisionInterface collision) { 
+	public GameBoard(int w, int h, int difficulty, CollisionInterface collision, boolean multiplayer) { 
+		this.multiplayer = multiplayer;
 		gameEnded = false;
 		width = w;
 		height = h;
@@ -62,6 +67,10 @@ public class GameBoard{
 		score = 0;
 		this.collision = collision;
 	}
+	
+	public GameBoard() {
+		this.difficulty = 0;
+	}
 
 
 	/**
@@ -70,6 +79,7 @@ public class GameBoard{
 	 * and therefore difficulty.
 	 */
 	public void addSpaceObjects(){
+		Maps.multiplayer = multiplayer;
 		Maps map = Maps.chooseMap(difficulty);
 		maxDebris = map.getMaxDebris();
 		spawn = map.getBaseDebris();
@@ -77,8 +87,12 @@ public class GameBoard{
 		planetList = spaceObjects.stream()
 				.filter(so -> so instanceof Planet)
 				.map(so -> (Planet) so).collect(Collectors.toList());
-		player = spaceObjects.stream().filter(so -> so instanceof Player)
+		player = spaceObjects.stream().filter(so -> so instanceof Player && !(so instanceof Player2))
 				.map(so -> (Player) so).findFirst().get();
+		if (multiplayer) {
+			player2 = spaceObjects.stream().filter(so -> so instanceof Player2)
+					.map(so -> (Player) so).findFirst().get();
+		}
 	}
 
 	/**
@@ -165,7 +179,8 @@ public class GameBoard{
 					policy.selectStrategy();
 					collision.executeCollision();
 
-					if (!player.isAlive())
+					if (!player.isAlive() && !multiplayer ||
+							!player.isAlive() && multiplayer && !player2.isAlive())
 						gameEnded = true;
 
 				}

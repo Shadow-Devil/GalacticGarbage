@@ -11,10 +11,13 @@ import javafx.scene.transform.Rotate;
 import model.SpaceObject;
 import model.Vector;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
@@ -28,6 +31,8 @@ import java.util.List;
 
 
 import controller.GameBoard;
+import controller.Input;
+import controller.Input2;
 import controller.collision.Collision;
 
 public class GameBoardUI extends Canvas implements Runnable {
@@ -51,6 +56,7 @@ public class GameBoardUI extends Canvas implements Runnable {
 	private long starttime;
 
 	private Socket sock;
+	public ServerSocket serverSock;
 	public boolean waitForCon;
 	public boolean isServer;
 	public boolean multiplayer;
@@ -67,35 +73,211 @@ public class GameBoardUI extends Canvas implements Runnable {
 		gameSetup(0);
 	}
 
-	public void setConnectionInHost() {
+	public boolean setConnectionInHost() {
 		try {
 			int port = 25566;
-			ServerSocket serverSock;
 			serverSock = new ServerSocket(port);
 			sock = serverSock.accept();
 			serverSock.close();
 			isServer = true;
 			this.multiplayer = true;
 			System.out.println("Server gestartet, Player2 verbunden");
+			return true;
 		} catch (IOException e) {
-			Alert alert = new Alert(AlertType.INFORMATION, "Connection failed.");
-			alert.setTitle("Fail");
-			alert.setHeaderText("");
+			return false;
 		}
 
 	}
 
-	public void setConnectionInClient(String ip) {
+	public boolean setConnectionInClient(String ip) {
 		try {
 			sock = new Socket(ip, 25566);
+			isServer = true;
 			this.multiplayer = true;
+			return true;
 		} catch (IOException e) {
 			Alert alert = new Alert(AlertType.INFORMATION, "Connection failed.");
 			alert.setTitle("Fail");
 			alert.setHeaderText("");
 
 			alert.show();
+			return false;
 		}
+	}
+	
+	private boolean exchangeInfoInHost(boolean toClose) {
+		boolean end = false;
+		try (BufferedReader in = new BufferedReader(
+                new InputStreamReader(sock.getInputStream()));
+                PrintWriter out = new PrintWriter(sock.getOutputStream(),
+                        true)) {
+			out.println("start");
+			String gState = in.readLine();
+			String inp = in.readLine();
+			
+			end = getGameStateFromString(gState);
+			getInputFromString(inp);
+			
+			out.println(buildSpaceObjectsString());
+			out.println(buildGameStateString(toClose));
+		} catch (IOException e1) {
+		}
+		if (toClose || end) {
+			try {
+				sock.close();
+			} catch (IOException e) {
+			}
+		}
+		return end;
+	}
+	
+	private boolean exchangeInfoInClient(boolean toClose) {
+		boolean end = false;
+		try (BufferedReader in = new BufferedReader(
+                new InputStreamReader(sock.getInputStream()));
+                PrintWriter out = new PrintWriter(sock.getOutputStream(),
+                        true)) {
+			
+			in.readLine();
+			out.println(buildGameStateString(toClose));
+			out.println(buildInputString());
+			String sObj = in.readLine();
+			String gState = in.readLine();
+			
+			getSpaceObjectsFromString(sObj);
+			end = getGameStateFromString(gState);
+		} catch (IOException e1) {
+		}
+		if (toClose || end) {
+			try {
+				sock.close();
+			} catch (IOException e) {
+			}
+		}
+		return end || toClose;
+	}
+	
+	private String buildSpaceObjectsString() {
+		List<SpaceObject> list = gameBoard.getSpaceObjects();
+		StringBuilder ret = new StringBuilder("");
+		list.forEach(sO -> {
+			ret.append("" + sO.getRadius() + ";" + 
+					sO.getIcon() + ";" + 
+					sO.getPositionVector().getX() + ";" +
+					sO.getPositionVector().getY() + ";" +
+					sO.getFacingVector().getX() + ";" +
+					sO.getFacingVector().getY() + "|"
+					);
+		});
+		return ret.toString();
+	}
+	
+	private void getSpaceObjectsFromString(String sObjects) {
+		List<SpaceObject> list = new ArrayList<SpaceObject>();
+		String[] arr = sObjects.split("|");
+		for (int i = 0; i < arr.length; i++) {
+			if (arr[i].equals("|"))
+				break;
+			String[] arr2 = arr[i].split(";");
+			
+			int count = 0;
+			for (int j = 0; j < arr2.length; j++) {
+				if (arr2[j].equals(";"))
+					break;
+				count++;
+			}
+			String[] newArr2 = new String[count];
+			int count2 = 0;
+			for (int j = 0; j < arr2.length; j++) {
+				if (arr2[j].equals(";"))
+					break;
+				newArr2[count2++] = arr2[j];
+			}
+			
+			list.add(new SpaceObject(
+					Integer.parseInt(newArr2[0]),
+					newArr2[1],
+					Double.parseDouble(newArr2[2]),
+					Double.parseDouble(newArr2[3]),
+					Double.parseDouble(newArr2[4]),
+					Double.parseDouble(newArr2[5])
+					));
+			GameBoard.setSpaceObjects(list);
+			gameBoard.getSpaceObjects().forEach((so -> spaceImages.put(so, getImage(so.getIcon()))));
+		}
+	}
+	//wPressed, aPressed, sPressed, dPressed, spacePressed
+
+	private String buildInputString() {
+		return "" + Input.iswPressed() + "|" +
+				Input.isaPressed() + "|" +
+				Input.issPressed() + "|" +
+				Input.isdPressed() + "|" +
+				Input.isSpacePressed()
+				;
+	}
+	
+	private void getInputFromString(String inp) {
+		String[] arr = inp.split("|");
+		int count = 0;
+		for (int j = 0; j < arr.length; j++) {
+			if (arr[j].equals("|"))
+				break;
+			count++;
+		}
+		String[] newArr = new String[count];
+		int count2 = 0;
+		for (int j = 0; j < arr.length; j++) {
+			if (arr[j].equals("|"))
+				break;
+			newArr[count2++] = arr[j];
+		}
+		
+		Input2.setwPressed(Boolean.parseBoolean(newArr[0]));
+		Input2.setwPressed(Boolean.parseBoolean(newArr[1]));
+		Input2.setwPressed(Boolean.parseBoolean(newArr[2]));
+		Input2.setwPressed(Boolean.parseBoolean(newArr[3]));
+		Input2.setwPressed(Boolean.parseBoolean(newArr[4]));
+	}
+	
+	private String buildGameStateString(boolean endGame) {
+		return "" + gameBoard.isRunning() + "|" +
+				gameBoard.hasEnded() + "|" +
+				gameBoard.getScore() + "|" +
+				endGame
+				;
+	}
+	
+	private boolean getGameStateFromString(String inp) {
+		String[] arr = inp.split("|");
+		int count = 0;
+		for (int j = 0; j < arr.length; j++) {
+			if (arr[j].equals("|"))
+				break;
+			count++;
+		}
+		String[] newArr = new String[count];
+		int count2 = 0;
+		for (int j = 0; j < arr.length; j++) {
+			if (arr[j].equals("|"))
+				break;
+			newArr[count2++] = arr[j];
+		}
+		boolean isR = Boolean.parseBoolean(newArr[0]);
+		boolean hasE = Boolean.parseBoolean(newArr[1]);
+		String sc = newArr[2];
+		boolean endG = Boolean.parseBoolean(newArr[3]);
+		
+		if (gameBoard.isRunning() && !isR)
+			stopGame();
+		if (!gameBoard.isRunning() && isR)
+			startGame();
+		if (hasE && !isServer) {
+			showAsyncAlert("Oh.. you lost.\n" +
+					"Your Score: " + sc);
+			stopGame();
+		}
+		return endG;
 	}
 
 	/**
@@ -108,6 +290,14 @@ public class GameBoardUI extends Canvas implements Runnable {
 	public void run(){
 		starttime = System.currentTimeMillis();
 		while (gameBoard.isRunning()){
+			if (multiplayer && isServer) {
+				boolean end = exchangeInfoInHost(false);
+				if (end) {
+					gameSetup(0);
+					stopGame();
+					return;
+				}
+			}
 			// updates Spaceobjects positions and re-renders graphics
 			gameBoard.updateSpaceObjects();
 			// when this.gameBoard.hasWon() is null, do nothing
@@ -145,6 +335,7 @@ public class GameBoardUI extends Canvas implements Runnable {
 						"Your Score: " + gameBoard.getScore() + "\n" + 
 						time);
 				stopGame();
+				exchangeInfoInHost(true);
 			} 
 			paint(graphicsContext);
 			try{
@@ -154,6 +345,13 @@ public class GameBoardUI extends Canvas implements Runnable {
 			}
 		}
 	} // end run()
+	
+	public void clientLoop() {
+		while (true) {
+			if (exchangeInfoInClient(false))
+				break;
+		}
+	}
 
 	/**
 	 * Removes all existing spaceObjects from the game board and re-adds them.
@@ -161,8 +359,11 @@ public class GameBoardUI extends Canvas implements Runnable {
 	 * starting position. Renders graphics.
 	 */
 	public void gameSetup(int difficulty) {
-
-		gameBoard = new GameBoard(width, height, difficulty, new Collision());
+		if(multiplayer && !isServer) {
+			exchangeInfoInClient(true);
+			return;
+		}
+		gameBoard = new GameBoard(width, height, difficulty, new Collision(), multiplayer);
 		widthProperty().set(width);
 		heightProperty().set(height);
 		width = (int) getWidth();
@@ -205,8 +406,10 @@ public class GameBoardUI extends Canvas implements Runnable {
 			gameBoard.startGame();
 
 			// thread responsible for starting game
-			Thread theThread = new Thread(this);
-			theThread.start();
+			if (!multiplayer || (multiplayer && isServer)) {
+				Thread theThread = new Thread(this);
+				theThread.start();
+			}
 			paint(graphicsContext);
 			toolBar.resetToolBarButtonStatus(true);
 		}

@@ -4,6 +4,7 @@ import model.Debris;
 import model.Moon;
 import model.Planet;
 import model.Player;
+import model.Player2;
 import model.SpaceObject;
 import model.Vector;
 
@@ -24,7 +25,8 @@ public enum Maps{	//TODO bei getObj immer neue Liste erstellen!!
 			//Moon(int radius, int icon, Vector planetToMoonVector, double turnSpeed, Vector planet)
 			map.add(new Moon(10, 0, new Vector(0,200), -2, p1.getPositionVector().copy()));
 			
-			
+			if (multiplayer)
+				map.add(new Player2(30, 100));
 			return map;
 		}
 
@@ -49,7 +51,9 @@ public enum Maps{	//TODO bei getObj immer neue Liste erstellen!!
 			map.add(new Moon(10, 1, new Vector(150,0), -3.4, p1.getPositionVector().copy()));
 			
 			map.add(new Planet(30, 1, 800, 500));
-
+			
+			if (multiplayer)
+				map.add(new Player2(30, 100));
 			return map;
 		}
 
@@ -72,7 +76,8 @@ public enum Maps{	//TODO bei getObj immer neue Liste erstellen!!
 			map.add(new Planet(40, 1, 900, 500));
 			map.add(new Planet(50, 2, 400, 400));
 			
-			
+			if (multiplayer)
+				map.add(new Player2(30, 100));
 			return map;
 		}
 
@@ -96,6 +101,7 @@ public enum Maps{	//TODO bei getObj immer neue Liste erstellen!!
 	public abstract List<SpaceObject> getObjects(); 
 	public abstract List<Debris> getBaseDebris();
 	private final int maxDebris;
+	public static boolean multiplayer;
 	
 	/**
 	 * @return amount of (initial) maxSpaceObjects, diese wird erst im GameBoard incremented.

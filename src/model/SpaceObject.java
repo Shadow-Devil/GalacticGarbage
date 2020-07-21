@@ -2,7 +2,7 @@ package model;
 
 import controller.GameBoard;
 
-public abstract class SpaceObject{
+public class SpaceObject{
 	protected final int radius;
 	protected final String icon;
 	protected final Vector positionVector, directionVector;
@@ -20,6 +20,11 @@ public abstract class SpaceObject{
 		this.accelerationVector = new Vector(0, 0);
 		this.facingVector = new Vector(1, 0);
 		this.alive = true;
+	}
+	
+	public SpaceObject(int radius, String icon, double pX, double pY, double fX, double fY) {
+		this(radius, icon, new Vector(pX, pY), null);
+		this.facingVector = new Vector(fX, fY);
 	}
 
 	public void move() { 

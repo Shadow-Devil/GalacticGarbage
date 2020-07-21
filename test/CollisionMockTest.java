@@ -21,7 +21,7 @@ public class CollisionMockTest {
 	private CollisionInterface collisionMock;
 	
 	@TestSubject
-	private GameBoard gameboard = new GameBoard(100, 100, 0, collisionMock);
+	private GameBoard gameboard = new GameBoard(100, 100, 0, collisionMock, false);
 	
 	
 
