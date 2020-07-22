@@ -78,7 +78,7 @@ public class GameBoardUI extends Canvas implements Runnable {
 			serverSock.close();
 			isServer = true;
 			this.multiplayer = true;
-			System.out.println("Server gestartet, Player2 verbunden");
+			// System.out.println("Server gestartet, Player2 verbunden");
 			return true;
 		} catch (IOException e) {
 			return false;
@@ -117,8 +117,9 @@ public class GameBoardUI extends Canvas implements Runnable {
 			
 			out.println(buildSpaceObjectsString());
 			out.println(buildGameStateString(toClose));
+			//System.out.println("end host");
 		} catch (IOException e1) {
-			System.out.println("catchHost");
+			// System.out.println("catchHost");
 		}
 		if (toClose || end) {
 			try {
@@ -142,15 +143,16 @@ public class GameBoardUI extends Canvas implements Runnable {
 			
 			String sObj = in.readLine();
 			String gState = in.readLine();
-			System.out.println(sObj);
-			System.out.println(gState);
+			//System.out.println(sObj);
+			//System.out.println(gState);
 			
 			getSpaceObjectsFromString(sObj);
-			System.out.println("so finished");
+			//System.out.println("so finished");
 			end = getGameStateFromString(gState);
-			System.out.println("gs finished");
+			//System.out.println("gs finished");
+			//System.out.println("end client");
 		} catch (IOException e1) {
-			System.out.println("catchClient");
+			// System.out.println("catchClient");
 		}
 		if (toClose || end) {
 			try {
@@ -182,7 +184,7 @@ public class GameBoardUI extends Canvas implements Runnable {
 		for (int i = 0; i < arr.length; i++) {
 			if (arr[i].equals(" ! "))
 				break;
-			System.out.println(arr[i]);
+			// System.out.println(arr[i]);
 			String[] arr2 = arr[i].split(" ; ");
 			
 			int count = 0;
@@ -207,12 +209,12 @@ public class GameBoardUI extends Canvas implements Runnable {
 					Double.parseDouble(newArr2[4]),
 					Double.parseDouble(newArr2[5])
 					));
-			System.out.println("list");
-			GameBoard.setSpaceObjects(list);
-			System.out.println("added");
-			gameBoard.getSpaceObjects().forEach((so -> spaceImages.put(so, getImage(so.getIcon()))));
-			System.out.println("image");
 		}
+//				System.out.println("list");
+				GameBoard.setSpaceObjects(list);
+			// 	System.out.println("added");
+				gameBoard.getSpaceObjects().forEach((so -> spaceImages.put(so, getImage(so.getIcon()))));
+			//	System.out.println("image");
 	}
 
 	private String buildInputString() {
@@ -306,7 +308,7 @@ public class GameBoardUI extends Canvas implements Runnable {
 				}
 			}
 			// updates Spaceobjects positions and re-renders graphics
-			gameBoard.updateSpaceObjects();
+			 gameBoard.updateSpaceObjects();
 			// when this.gameBoard.hasWon() is null, do nothing
 			if (gameBoard.hasEnded()){
 				int sek = (int) ((System.currentTimeMillis() - starttime)/1000);
@@ -338,13 +340,13 @@ public class GameBoardUI extends Canvas implements Runnable {
 	
 	public void clientLoop() {
 		clientRunning = true;
-		gameBoard = new GameBoard();
 		spaceImages.clear();
 		toolBar.resetToolBarButtonStatus(false);
 		startGame();
 		while (clientRunning) {
-			if (exchangeInfoInClient(false))
+			if (exchangeInfoInClient(false)) {
 				break;
+			}
 			paint(graphicsContext);
 		}
 	}
@@ -462,6 +464,9 @@ public class GameBoardUI extends Canvas implements Runnable {
 	 * @param graphics used to draw changes
 	 */
 	private void paint(GraphicsContext graphics) {
+		if (multiplayer && !isServer) {
+			//System.out.println("client paint");
+		}
 		graphics.setFill(backgroundColor);
 		graphics.fillRect(0, 0, getWidth(), getHeight());
 
@@ -477,8 +482,11 @@ public class GameBoardUI extends Canvas implements Runnable {
 	 * @param graphics used to draw changes
 	 */
 	private void paintSpaceObject(SpaceObject so, GraphicsContext graphics) {
+		if (multiplayer && !isServer) {
+			// System.out.println("client paintSpaceObjects");
+		}
+		
 		Vector canvasPosition = convertPosition(so.getPositionVector());
-		// System.out.println(so);
 		// TODO richtige drehung, vll. invertieren
 
 		graphics.save(); // saves the current state on stack, including the current transform
