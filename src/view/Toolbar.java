@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +29,7 @@ public class Toolbar extends ToolBar {
         this.stop = new Button("Stop");
         
         this.scores = new Button("Scores");
-//        this.multiplayer = new Button("Multiplayer");
+//        this.multiplayer = new Button("Multiplayer"); 
         
         initActions();
         this.getItems().addAll(start, new Separator(), stop, new Separator(), scores);
@@ -273,20 +272,25 @@ public class Toolbar extends ToolBar {
         
         this.scores.setOnAction(event -> { 
         	Path path = Path.of("resources", "scores.txt");
-//    		if(path == null || !path.toFile().exists()) {
-//    			System.out.println("Saving score unsuccessfull //not in default Filesystem");
-//    			System.out.println(path.toAbsolutePath().toFile().toString());
-//    			return;
-//    		}
+        	List<String> lines = new ArrayList<String>();
+
     		if(!Files.isRegularFile(path)) {
     			path = Path.of("scores.txt");
-    			if(path == null || !path.toFile().exists() || !Files.isRegularFile(path)) {
-    				System.out.println("Saving score unsuccessfull //not in extended Filesystem");
-    				return;
-    			}
     		}
-    		List<String> lines = new ArrayList<String>();
-    		try {
+    		
+    		if(!Files.isRegularFile(path)) {
+    			try {
+					path.toFile().createNewFile();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+    			
+    			if(!Files.isRegularFile(path)) {
+    				return;
+    			};
+    		}
+    		
+        	try {
     			lines = Files.readAllLines(path);
     		} catch (IOException e) {
     			e.printStackTrace();
