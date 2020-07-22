@@ -89,5 +89,10 @@ public class SpaceObject{
 	public Vector getFacingVector(){
 		return facingVector;
 	}
+	
+	@Override
+	public String toString() {
+		return radius + icon + positionVector + facingVector;
+	}
 
 }

@@ -78,7 +78,7 @@ public class GameBoardUI extends Canvas implements Runnable {
 			serverSock.close();
 			isServer = true;
 			this.multiplayer = true;
-			// System.out.println("Server gestartet, Player2 verbunden");
+//			 System.out.println("Server gestartet, Player2 verbunden");
 			return true;
 		} catch (IOException e) {
 			return false;
@@ -137,6 +137,7 @@ public class GameBoardUI extends Canvas implements Runnable {
                 PrintWriter out = new PrintWriter(sock.getOutputStream(),
                         true)) {
 			
+			System.out.println("client begin");
 			System.out.println(in.readLine());
 			out.println(buildGameStateString(toClose));
 			out.println(buildInputString());
@@ -150,7 +151,7 @@ public class GameBoardUI extends Canvas implements Runnable {
 			//System.out.println("so finished");
 			end = getGameStateFromString(gState);
 			//System.out.println("gs finished");
-			//System.out.println("end client");
+			System.out.println("end client");
 		} catch (IOException e1) {
 			// System.out.println("catchClient");
 		}
@@ -348,6 +349,7 @@ public class GameBoardUI extends Canvas implements Runnable {
 				break;
 			}
 			paint(graphicsContext);
+			//clientRunning = false;
 		}
 	}
 	

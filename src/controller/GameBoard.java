@@ -131,6 +131,7 @@ public class GameBoard{
 	}
 	
 	public static void setSpaceObjects(List<SpaceObject> sObj){
+		System.out.println(sObj.toString());
 		spaceObjects = sObj;
 	}
 
