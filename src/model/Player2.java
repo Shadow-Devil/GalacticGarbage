@@ -11,7 +11,7 @@ public class Player2 extends Player {
 	
 	@Override
 	public void move() {
-		super.move();
+		super.superMove();
 
 		if (Input2.isaPressed() && !Input2.isdPressed())
 			facingVector.turn(DEGREE_ON_TURN).toUnit();
