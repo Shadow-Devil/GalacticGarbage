@@ -3,7 +3,7 @@ package controller.collision;
 import model.*;
 
 public class Collision implements CollisionInterface { 
-	//private boolean collide;
+	
 	private SpaceObject one;
 	private SpaceObject two;
 	private Vector collisionVector;
@@ -51,7 +51,6 @@ public class Collision implements CollisionInterface {
 				this.collisionType = new CollisionPlayer_MoonPlanet__Projectile_SpaceObject();
 			}else if(two instanceof Player){
 				this.collisionType = new CollisionPlayer_Player();
-				//throw new UnsupportedOperationException("Multiplayer not implemented.");
 			}else {//Planet oder Moon
 				this.collisionType = new CollisionPlayer_MoonPlanet__Projectile_SpaceObject();
 			}

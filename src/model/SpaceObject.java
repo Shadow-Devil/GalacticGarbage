@@ -9,7 +9,6 @@ public class SpaceObject{
 	protected Vector accelerationVector;
 	protected Vector facingVector;
 	
-//	protected double speed;
 	protected boolean alive;
 	
 	public SpaceObject(int radius, String icon, Vector positionVector, Vector directionVector) {
