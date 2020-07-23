@@ -9,7 +9,7 @@ import model.Debris;
 import model.SpaceObject;
 import model.Vector;
 
-public class BouceTest{
+public class BounceTest{
 
 	@Test
 	public void test(){

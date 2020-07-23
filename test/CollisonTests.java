@@ -51,7 +51,7 @@ public class CollisonTests {
 		assertTrue(collision.getCollisionType() instanceof CollisionPlayer_Debris);
 	}
 	
-	@Test(expected = UnsupportedOperationException.class)
+	@Test
 	public void testPlayerPlayerCollisionSelection() {
 		SpaceObject one = new Player(30, 30);
 		SpaceObject two = new Player(30, 30);
@@ -62,6 +62,6 @@ public class CollisonTests {
 		
 		collision.selectCollisionType();
 		
-		assertTrue(collision.getCollisionType() instanceof CollisionPlayer_Debris);
+		assertTrue(collision.getCollisionType() instanceof CollisionPlayer_Player);
 	}
 }

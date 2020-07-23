@@ -12,12 +12,13 @@ public class GalacticGarbage {
 	 * 	Alle Maps implementiert
 	 * 	Score zählt kleinen Debris, die in Mode/Planeten geschoben wurden
 	 *  Spielzeit ausgegeben
+	 *  Maps verbessert
+	 *  Highscore wird in neu kreiertem(wenn nicht existent) scores.txt abgespeichert
+	 *    ansonsten in dem existierenden
+	 *  
 	 * 
 	 * TODO:
-	 * 	Maps verbessern
-	 * 	Gravitation veränderbar machen
-	 * 	Highscore abspeichern
-	 * 	Multiplayer?
+	 * 	Multiplayer fixen.
 	 * 
 	 * @param args
 	 */
