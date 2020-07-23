@@ -3,19 +3,16 @@ package controller.collision;
 import model.*;
 
 public class Collision implements CollisionInterface { 
-
 	//private boolean collide;
 	private SpaceObject one;
 	private SpaceObject two;
 	private Vector collisionVector;
 	private CollisionType collisionType;
 	
-	
 	public void setSObjects(SpaceObject one, SpaceObject two) {
 		this.one = one;
 		this.two = two;
 	}
-	
 
 	/**
 	 * Detects a collsion between two spaceObjects
@@ -29,7 +26,6 @@ public class Collision implements CollisionInterface {
 		
 		return one.getRadius() + two.getRadius() >= distance;
 	}
-	
 	
 	/**
 	 * Initializes the CollisionType based on the two SpaceObjects
@@ -109,12 +105,9 @@ public class Collision implements CollisionInterface {
 	 * @param collisionVector = the vector between the two SpaceObjects
 	 */
 	public static void repel(SpaceObject one, SpaceObject two, Vector collisionVector){
-		//System.out.println("repel");
-//		System.out.println(collisionVector.getDegree());
 		double degree = collisionVector.getDegree() - two.getDirectionVector().getDegree();
-//		System.out.println(degree);
 		double diff = Math.signum(degree);
-//		System.out.println(diff);
+		
 		Vector v = two.getDirectionVector().copy();
 //		if (one instanceof Player) {
 //			v.add(collisionVector).toUnit().multiply(-1 * 10);
@@ -122,8 +115,6 @@ public class Collision implements CollisionInterface {
 			v = two.getDirectionVector().copy().turn(2*degree*diff).multiply(-1);
 //		}
 		
-		
-
 		two.getAccelerationVector().add(v);
 		moveAppart(one, two, false);
 	}

@@ -46,7 +46,6 @@ public class Input{
 
 	
 	public static boolean iswPressed(){
-		//System.out.println(wPressed);
 		return wPressed;
 	}
 
