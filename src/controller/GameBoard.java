@@ -149,7 +149,11 @@ public class GameBoard{
 		Input.resetAllPressed();
 		this.isRunning = false;
 	}
-
+	
+	/**
+	 * Updates positions of all spaceObjects, checks collisions, handles eventSpaceObjects,
+	 * increases maximum Number of Debris
+	 */
 	public void updateSpaceObjects(){
 		List<SpaceObject> spaceObjects = getSpaceObjects();
 
@@ -161,7 +165,7 @@ public class GameBoard{
 		}
 
 
-		// iterate through all spaceObjects (except player) and check if it is crunched
+		// iterate through all spaceObjects (except player) and checks for collision
 		for (SpaceObject so1: spaceObjects){
 			if (!so1.isAlive())
 				continue; // because there is no need to check for a collision
@@ -217,12 +221,15 @@ public class GameBoard{
 		updateCounter++;
 	}
 	
+	/**
+	 * Checks if a Vector is outside of the game borders, updates it if necessary 
+	 * @param v Vector that needs to be updated
+	 */
 	public static void keepInFrame(Vector v) {
 		v.setXY(((v.getX() % width) + width) % width, 
 			 ((v.getY() % height) + height) % height);
 	}
-
-
+	
 	public Player getPlayer(){
 		return player;
 	}
@@ -243,5 +250,4 @@ public class GameBoard{
 		width = w;
 		height = h;
 	}
-
 }

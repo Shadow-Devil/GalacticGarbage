@@ -27,6 +27,9 @@ public class SpaceObject{
 		this.facingVector = new Vector(fX, fY);
 	}
 
+	/**
+	 * Moves this SpaceObject, applies gravity
+	 */
 	public void move() { 
 		GameBoard.getPlanetList().forEach(p -> {
 			Vector c = positionVector.copy().sub(p.positionVector).multiply(-0.000002 * p.getRadius());
@@ -47,6 +50,9 @@ public class SpaceObject{
 		accelerationVector = new Vector(0, 0);
 	}
 	
+	/**
+	 * Just adds the directionVector to this SpaceObjects positionVector
+	 */
 	public void moveBasic() {
 		positionVector.add(directionVector);
 		GameBoard.keepInFrame(positionVector);

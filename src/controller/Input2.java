@@ -1,12 +1,9 @@
 package controller;
 
 public class Input2 {
-	
 	private static boolean wPressed, aPressed, sPressed, dPressed, spacePressed;
-
 	
 	public static boolean iswPressed(){
-		//System.out.println(wPressed);
 		return wPressed;
 	}
 

@@ -353,6 +353,12 @@ public class GameBoardUI extends Canvas implements Runnable {
 		}
 	}
 	
+	/**
+	 * Checks score file, updates if necessary,
+	 * score is saved in format "score | time"
+	 * @param score int value
+	 * @param time String
+	 */
 	public static void updateScore(int score, String time) {
 		Path path = Path.of("resources", "scores.txt");
 		if(!Files.isRegularFile(path)) {
