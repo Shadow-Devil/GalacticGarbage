@@ -114,10 +114,7 @@ public class GameBoard {
 		return gameEnded;
 	}
 
-	/**
-	 * @return list of spaceObjects
-	 */
-	public List<SpaceObject> getSpaceObjects() {
+	public static List<SpaceObject> getSpaceObjects() {
 		return spaceObjects;
 	}
 

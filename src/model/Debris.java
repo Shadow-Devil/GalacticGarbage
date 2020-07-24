@@ -31,8 +31,8 @@ public class Debris extends SpaceObject {
 		Debris deb2 = new Debris(size - 1, positionVector.copy(), projectileDirectionVector.copy().turn(-30.0));
 		Collision.moveAppart(deb1, deb2, true);
 
-		GameBoard.getEventSpaceObjects().add(deb1);
-		GameBoard.getEventSpaceObjects().add(deb2);
+		GameBoard.getSpaceObjects().add(deb1);
+		GameBoard.getSpaceObjects().add(deb2);
 
 		GameBoard.setDebrisCount(GameBoard.getDebrisCount() + size * 2);
 	}
