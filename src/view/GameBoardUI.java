@@ -69,6 +69,11 @@ public class GameBoardUI extends Canvas implements Runnable {
 		gameSetup(0);
 	}
 
+	/**
+	 * Attempts to establish a connection with the host
+	 * 
+	 * @return true if successful
+	 */
 	public boolean setConnectionInHost() {
 		try {
 			int port = 25566;
@@ -85,6 +90,12 @@ public class GameBoardUI extends Canvas implements Runnable {
 
 	}
 
+	/**
+	 * Attempts to establish a connection with the client
+	 * 
+	 * @param ip IP-address in form of a String
+	 * @return true if successful
+	 */
 	public boolean setConnectionInClient(String ip) {
 		try {
 			sock = new Socket(ip, 25566);
@@ -101,6 +112,12 @@ public class GameBoardUI extends Canvas implements Runnable {
 		}
 	}
 
+	/**
+	 * Reads and writes over socket with client
+	 * 
+	 * @param toClose boolean that states if connections should be closed
+	 * @return true if successful
+	 */
 	private boolean exchangeInfoInHost(boolean toClose) {
 		boolean end = false;
 		try (BufferedReader in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
@@ -128,6 +145,12 @@ public class GameBoardUI extends Canvas implements Runnable {
 		return end;
 	}
 
+	/**
+	 * Reads and writes over socket with host
+	 * 
+	 * @param toClose boolean that states if connections should be closed
+	 * @return true if successful
+	 */
 	private synchronized boolean exchangeInfoInClient(boolean toClose) {
 		boolean end = false;
 		try (BufferedReader in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
@@ -158,96 +181,63 @@ public class GameBoardUI extends Canvas implements Runnable {
 
 	private String buildSpaceObjectsString() {
 		List<SpaceObject> list = gameBoard.getSpaceObjects();
-		StringBuilder ret = new StringBuilder("");
+		StringBuilder ret = new StringBuilder();
 		list.forEach(sO -> {
-			ret.append("" + sO.getRadius() + " ; " + sO.getIcon() + " ; " + sO.getPositionVector().getX() + " ; "
-					+ sO.getPositionVector().getY() + " ; " + sO.getFacingVector().getX() + " ; "
-					+ sO.getFacingVector().getY() + " ! ");
+			ret.append(sO.getRadius() + ";" + sO.getIcon() + ";" + sO.getPositionVector().getX() + ";"
+					+ sO.getPositionVector().getY() + ";" + sO.getFacingVector().getX() + ";"
+					+ sO.getFacingVector().getY() + "!");
 		});
 		return ret.toString();
 	}
 
 	private void getSpaceObjectsFromString(String sObjects) {
 		List<SpaceObject> list = new ArrayList<SpaceObject>();
-		String[] arr = sObjects.split(" ! ");
+		String[] arr = sObjects.split("!");
 		for (int i = 0; i < arr.length; i++) {
-			if (arr[i].equals(" ! "))
-				break;
-			String[] arr2 = arr[i].split(" ; ");
-
-			int count = 0;
-			for (int j = 0; j < arr2.length; j++) {
-				if (arr2[j].equals(" ; "))
-					break;
-				count++;
-			}
-			String[] newArr2 = new String[count];
-			int count2 = 0;
-			for (int j = 0; j < arr2.length; j++) {
-				if (arr2[j].equals(" ; "))
-					break;
-				newArr2[count2++] = arr2[j];
-			}
-
-			list.add(new SpaceObject(Integer.parseInt(newArr2[0]), newArr2[1], Double.parseDouble(newArr2[2]),
-					Double.parseDouble(newArr2[3]), Double.parseDouble(newArr2[4]), Double.parseDouble(newArr2[5])));
+			String[] arr2 = arr[i].split(";");
+			list.add(new SpaceObject(Integer.parseInt(arr2[0]), arr2[1], Double.parseDouble(arr2[2]),
+					Double.parseDouble(arr2[3]), Double.parseDouble(arr2[4]), Double.parseDouble(arr2[5])));
 		}
 		GameBoard.setSpaceObjects(list);
 		gameBoard.getSpaceObjects().forEach((so -> spaceImages.put(so, getImage(so.getIcon()))));
 	}
 
 	private String buildInputString() {
-		return "" + Input.iswPressed() + " ! " + Input.isaPressed() + " ! " + Input.issPressed() + " ! "
-				+ Input.isdPressed() + " ! " + Input.isSpacePressed();
+		return Input.iswPressed() + "!" + Input.isaPressed() + "!" + Input.issPressed() + "!" + Input.isdPressed() + "!"
+				+ Input.isSpacePressed();
 	}
 
 	private void getInputFromString(String inp) {
-		String[] arr = inp.split(" ! ");
-		int count = 0;
-		for (int j = 0; j < arr.length; j++) {
-			if (arr[j].equals(" ! "))
-				break;
-			count++;
-		}
-		String[] newArr = new String[count];
-		int count2 = 0;
-		for (int j = 0; j < arr.length; j++) {
-			if (arr[j].equals(" ! "))
-				break;
-			newArr[count2++] = arr[j];
-		}
-
-		Input2.setwPressed(Boolean.parseBoolean(newArr[0]));
-		Input2.setwPressed(Boolean.parseBoolean(newArr[1]));
-		Input2.setwPressed(Boolean.parseBoolean(newArr[2]));
-		Input2.setwPressed(Boolean.parseBoolean(newArr[3]));
-		Input2.setwPressed(Boolean.parseBoolean(newArr[4]));
+		String[] arr = inp.split("!");
+		Input2.setwPressed(Boolean.parseBoolean(arr[0]));
+		Input2.setwPressed(Boolean.parseBoolean(arr[1]));
+		Input2.setwPressed(Boolean.parseBoolean(arr[2]));
+		Input2.setwPressed(Boolean.parseBoolean(arr[3]));
+		Input2.setwPressed(Boolean.parseBoolean(arr[4]));
 	}
 
+	/**
+	 * Builds a String with current game information
+	 * 
+	 * @param endGame boolean
+	 * @return GameState in Form of a String (also contains endGame)
+	 */
 	private String buildGameStateString(boolean endGame) {
-		return "" + gameBoard.isRunning() + " ! " + gameBoard.hasEnded() + " ! " + gameBoard.getScore() + " ! "
-				+ endGame;
+		return gameBoard.isRunning() + "!" + gameBoard.hasEnded() + "!" + gameBoard.getScore() + "!" + endGame;
 	}
 
+	/**
+	 * Sets the GameState attributes in GameBoard from the input String
+	 * 
+	 * @param inp input String
+	 * @return boolean endG, if the game should end
+	 */
 	private boolean getGameStateFromString(String inp) {
-		String[] arr = inp.split(" ! ");
-		int count = 0;
-		for (int j = 0; j < arr.length; j++) {
-			if (arr[j].equals(" ! "))
-				break;
-			count++;
-		}
-		String[] newArr = new String[count];
-		int count2 = 0;
-		for (int j = 0; j < arr.length; j++) {
-			if (arr[j].equals(" ! "))
-				break;
-			newArr[count2++] = arr[j];
-		}
-		boolean isR = Boolean.parseBoolean(newArr[0]);
-		boolean hasE = Boolean.parseBoolean(newArr[1]);
-		int sc = Integer.parseInt(newArr[2]);
-		boolean endG = Boolean.parseBoolean(newArr[3]);
+		String[] arr = inp.split("!");
+		boolean isR = Boolean.parseBoolean(arr[0]);
+		boolean hasE = Boolean.parseBoolean(arr[1]);
+		int sc = Integer.parseInt(arr[2]);
+		boolean endG = Boolean.parseBoolean(arr[3]);
 
 		if (gameBoard.isRunning() && !isR)
 			stopGame();
@@ -307,6 +297,11 @@ public class GameBoardUI extends Canvas implements Runnable {
 		}
 	}
 
+	/**
+	 * Sets clientRunning to true, clears spaceImages, resets toolBar, calls
+	 * startGame() <br>
+	 * As long as clientRunning, this method will try to paint the graphicsContext
+	 */
 	public void clientLoop() {
 		clientRunning = true;
 		spaceImages.clear();
@@ -336,8 +331,8 @@ public class GameBoardUI extends Canvas implements Runnable {
 			List<String> lines = Files.readAllLines(path);
 			lines.add(score + " | " + time);
 			String msg = lines.stream().sorted((l1, l2) -> {
-				int val1 = Integer.parseInt(l1.split(" | ")[0]);
-				int val2 = Integer.parseInt(l2.split(" | ")[0]);
+				int val1 = Integer.parseInt(l1.split(" \\| ")[0]);
+				int val2 = Integer.parseInt(l2.split(" \\| ")[0]);
 				return (int) Math.signum(val1 - val2) * (-1);
 			}).limit(3).collect(Collectors.joining("\n"));
 			Files.writeString(path, msg, StandardOpenOption.WRITE);
@@ -345,6 +340,10 @@ public class GameBoardUI extends Canvas implements Runnable {
 		}
 	}
 
+	/**
+	 * @return Path of the scores.txt file, will attempt to create new file if it
+	 *         cant find scores.txt
+	 */
 	public static Path getScoresPath() {
 		Path path = Path.of("resources", "scores.txt");
 		if (!Files.isRegularFile(path)) {
@@ -469,6 +468,14 @@ public class GameBoardUI extends Canvas implements Runnable {
 		graphics.restore(); // back to original state (before rotation)
 	}
 
+	/**
+	 * Rotiert die Grafik gc um double angle gegen den Uhrzeigersinn
+	 * 
+	 * @param GraphicsContext gc
+	 * @param double          angle
+	 * @param double          px
+	 * @param double          py
+	 */
 	private void rotate(GraphicsContext gc, double angle, double px, double py) {
 		Rotate r = new Rotate(angle, px, py);
 		gc.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
@@ -510,24 +517,5 @@ public class GameBoardUI extends Canvas implements Runnable {
 
 	public ServerSocket getServerSock() {
 		return serverSock;
-	}
-
-	public static void main(String[] args) {
-//		String s = "Time: 0 Min, 01 Sek";
-//		GameBoardUI.updateScore(5, s);
-
-		// oder
-//		Path path = FileSystems.getDefault().getPath("target", "scores.txt");
-//		try {
-//			Files.writeString(path, "\nNeuer next für scoresA.txt", StandardOpenOption.APPEND);
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//		System.out.println("fertig geschrieben:");
-//		try {
-//			Files.readAllLines(path).stream().forEach(line -> System.out.println(line));;
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
 	}
 }

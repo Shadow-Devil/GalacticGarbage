@@ -19,9 +19,8 @@ public class Main extends Application {
 	 * interface and adding them to the stage.
 	 * 
 	 * @see javafx.application.Application#start(javafx.stage.Stage)
-	 * @param primaryStage
-	 *            the primary stage for this application, onto which the
-	 *            application scene can be set.
+	 * @param primaryStage the primary stage for this application, onto which the
+	 *                     application scene can be set.
 	 */
 	@Override
 	public void start(Stage primaryStage) {
@@ -45,7 +44,7 @@ public class Main extends Application {
 		Scene scene = new Scene(gridLayout);
 		scene.setOnKeyPressed(event -> Input.handle(event, true));
 		scene.setOnKeyReleased(event -> Input.handle(event, false));
-		
+
 		primaryStage.setTitle("Galactic Garbage");
 		primaryStage.setScene(scene);
 		primaryStage.show();
@@ -58,5 +57,4 @@ public class Main extends Application {
 	public static void startApp(String[] args) {
 		launch(args);
 	}
-
 }

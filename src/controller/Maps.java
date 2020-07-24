@@ -95,8 +95,14 @@ public enum Maps {
 		this.maxDebris = maxDebris * 4;
 	}
 
+	/**
+	 * @return a new List of the base SpaceObjects of a map
+	 */
 	public abstract List<SpaceObject> getObjects();
 
+	/**
+	 * @return a new List of the base Debris of a map
+	 */
 	public abstract List<Debris> getBaseDebris();
 
 	private final int maxDebris;
@@ -130,6 +136,5 @@ public enum Maps {
 		default:
 			throw new IllegalArgumentException("Ausgewählte Difficulty gibt es nicht");
 		}
-
 	}
 }

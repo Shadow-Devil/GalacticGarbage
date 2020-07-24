@@ -4,19 +4,17 @@ import model.Debris;
 import model.SpaceObject;
 import model.Vector;
 
-public class CollisionDebris_MoonPlanet implements CollisionType{
+public class CollisionDebris_MoonPlanet implements CollisionType {
 
 	@Override
-	public void collide(SpaceObject one, SpaceObject two, Vector collisionVector){
+	public void collide(SpaceObject one, SpaceObject two, Vector collisionVector) {
 		internCollide((Debris) one, two, collisionVector);
 	}
-		
+
 	private void internCollide(Debris one, SpaceObject two, Vector collisionVector) {
-		if(one.getSize() == 0)
+		if (one.getSize() == 0)
 			one.die();
-		else 
+		else
 			Collision.repel(two, one, collisionVector);
 	}
 }
-
-

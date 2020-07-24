@@ -8,7 +8,7 @@ public class Player2 extends Player {
 	public Player2(double x, double y) {
 		super(x, y);
 	}
-	
+
 	@Override
 	public void move() {
 		super.superMove();
@@ -17,23 +17,17 @@ public class Player2 extends Player {
 			facingVector.turn(DEGREE_ON_TURN).toUnit();
 		if (Input2.isdPressed() && !Input2.isaPressed())
 			facingVector.turn(-DEGREE_ON_TURN).toUnit();
-		
-
-
 		if (Input2.iswPressed() && !Input2.issPressed()) {
 			Vector n = facingVector.copy().multiply(maxSpeed);
 			accelerationVector.add(n);
 			GameBoard.keepInFrame(positionVector);
 		}
-		
 		if (Input2.issPressed() && !Input2.iswPressed()) {
-			Vector n = facingVector.copy().multiply(-1*maxSpeed);
+			Vector n = facingVector.copy().multiply(-1 * maxSpeed);
 			accelerationVector.add(n);
 			GameBoard.keepInFrame(positionVector);
 		}
-		
 		if (Input2.isSpacePressed())
 			shoot();
 	}
-
 }

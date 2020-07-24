@@ -1,13 +1,13 @@
 package controller.collision;
 
-public class Policy{
-	
+public class Policy {
+
 	private CollisionInterface context;
-	
-	public Policy(CollisionInterface collision){
+
+	public Policy(CollisionInterface collision) {
 		this.context = collision;
 	}
-	
+
 	/**
 	 * Calls selectCollisionType in context
 	 */

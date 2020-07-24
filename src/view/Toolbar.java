@@ -33,7 +33,7 @@ public class Toolbar extends ToolBar {
 	}
 
 	/**
-	 * Initialises the actions
+	 * Initializes the actions
 	 */
 	@SuppressWarnings("deprecation")
 	private void initActions() {

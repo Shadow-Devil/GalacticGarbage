@@ -2,27 +2,27 @@ package controller;
 
 public class Input2 {
 	private static boolean wPressed, aPressed, sPressed, dPressed, spacePressed;
-	
-	public static boolean iswPressed(){
+
+	public static boolean iswPressed() {
 		return wPressed;
 	}
 
-	public static boolean isaPressed(){
+	public static boolean isaPressed() {
 		return aPressed;
 	}
 
-	public static boolean issPressed(){
+	public static boolean issPressed() {
 		return sPressed;
 	}
 
-	public static boolean isdPressed(){
+	public static boolean isdPressed() {
 		return dPressed;
 	}
 
-	public static boolean isSpacePressed(){
+	public static boolean isSpacePressed() {
 		return spacePressed;
 	}
-	
+
 	public static void resetAllPressed() {
 		wPressed = false;
 		aPressed = false;
