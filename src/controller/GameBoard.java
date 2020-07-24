@@ -17,13 +17,8 @@ import model.Vector;
 
 public class GameBoard{
 
-	// the player object with player car object
 	private Player player;
 	private Player player2;
-
-	//public static Input input;
-	//sollte static sein um vom Player darauf zuzugreifen, 
-	//lässt sich für den Rest auch so argumentieren --> alles static?
 	
 	private final int difficulty;
 
@@ -46,7 +41,7 @@ public class GameBoard{
 
 	private static List<Planet> planetList;
 	
-	public boolean multiplayer;
+	private boolean multiplayer;
 
 	/**
 	 * Constructor, creates the gameboard based on size
@@ -79,7 +74,7 @@ public class GameBoard{
 	 * and therefore difficulty.
 	 */
 	public void addSpaceObjects(){
-		Maps.multiplayer = multiplayer;
+		Maps.setMultiplayer(multiplayer);
 		Maps map = Maps.chooseMap(difficulty);
 		maxDebris = map.getMaxDebris();
 		spawn = map.getBaseDebris();
@@ -131,7 +126,7 @@ public class GameBoard{
 	}
 	
 	public static void setSpaceObjects(List<SpaceObject> sObj){
-		System.out.println(sObj.toString());
+		//System.out.println(sObj.toString());
 		spaceObjects = sObj;
 	}
 

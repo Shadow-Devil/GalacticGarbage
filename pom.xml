@@ -37,6 +37,35 @@
 			<artifactId>javafx-media</artifactId>
 			<version>14.0.1</version>
 		</dependency>
+		<dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-base</artifactId>
+            <version>14.0.1</version>
+        </dependency>
+		<dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>14</version>
+            <classifier>win</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>14</version>
+            <classifier>linux</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>14</version>
+            <classifier>mac</classifier>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-maven-plugin -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-maven-plugin</artifactId>
+            <version>0.0.4</version>
+        </dependency>
 	</dependencies>
 	<build>
 		<sourceDirectory>${project.basedir}/src</sourceDirectory>
@@ -85,6 +114,7 @@
 				<configuration>
 					<archive>
 						<manifest>
+							<addClasspath>true</addClasspath>
 							<mainClass>GalacticGarbage</mainClass>
 						</manifest>
 					</archive>
@@ -93,6 +123,35 @@
 					</descriptorRefs>
 				</configuration>
 			</plugin>
+			 <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>GalacticGarbage</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.4</version>
+                <configuration>
+                    <source>14</source>
+                    <target>14</target>
+                    <release>14</release>
+                    <mainClass>GalacticGarbage</mainClass>
+                    <options>
+                        <option>
+                            --add-modules=javafx.base,javafx.graphics,javafx.controls
+                        </option>
+                    </options>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
 </project>

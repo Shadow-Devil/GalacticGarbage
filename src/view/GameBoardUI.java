@@ -31,7 +31,7 @@ import controller.Input;
 import controller.Input2;
 import controller.collision.Collision;
 
-public class GameBoardUI extends Canvas implements Runnable { 
+public class GameBoardUI extends Canvas implements Runnable {
 
 	private static final int DEFAULT_WIDTH = 1000;
 	private static final int DEFAULT_HEIGHT = 600;
@@ -52,10 +52,9 @@ public class GameBoardUI extends Canvas implements Runnable {
 	private long starttime;
 
 	private Socket sock;
-	public ServerSocket serverSock;
-	public boolean waitForCon;
-	public boolean isServer;
-	public boolean multiplayer;
+	private ServerSocket serverSock;
+	private boolean isServer;
+	private boolean multiplayer;
 	private boolean clientRunning;
 
 	/**
@@ -78,7 +77,7 @@ public class GameBoardUI extends Canvas implements Runnable {
 			serverSock.close();
 			isServer = true;
 			this.multiplayer = true;
-//			 System.out.println("Server gestartet, Player2 verbunden");
+			// System.out.println("Server gestartet, Player2 verbunden");
 			return true;
 		} catch (IOException e) {
 			return false;
@@ -101,23 +100,22 @@ public class GameBoardUI extends Canvas implements Runnable {
 			return false;
 		}
 	}
-	
+
 	private boolean exchangeInfoInHost(boolean toClose) {
 		boolean end = false;
-		try (BufferedReader in = new BufferedReader(
-                new InputStreamReader(sock.getInputStream()));
-                PrintWriter out = new PrintWriter(sock.getOutputStream(),
-                        true)) {
+		try (BufferedReader in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+				PrintWriter out = new PrintWriter(sock.getOutputStream(), true)) {
+
 			out.println("start");
 			String gState = in.readLine();
 			String inp = in.readLine();
-			
+
 			end = getGameStateFromString(gState);
 			getInputFromString(inp);
-			
+
 			out.println(buildSpaceObjectsString());
 			out.println(buildGameStateString(toClose));
-			//System.out.println("end host");
+			// System.out.println("end host");
 		} catch (IOException e1) {
 			// System.out.println("catchHost");
 		}
@@ -129,29 +127,23 @@ public class GameBoardUI extends Canvas implements Runnable {
 		}
 		return end;
 	}
-	
+
 	private synchronized boolean exchangeInfoInClient(boolean toClose) {
 		boolean end = false;
-		try (BufferedReader in = new BufferedReader(
-                new InputStreamReader(sock.getInputStream()));
-                PrintWriter out = new PrintWriter(sock.getOutputStream(),
-                        true)) {
-			
-			System.out.println("client begin");
-			System.out.println(in.readLine());
+		try (BufferedReader in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+				PrintWriter out = new PrintWriter(sock.getOutputStream(), true)) {
+
+			// System.out.println("client begin");
+			in.readLine();
 			out.println(buildGameStateString(toClose));
 			out.println(buildInputString());
-			
+
 			String sObj = in.readLine();
 			String gState = in.readLine();
-			//System.out.println(sObj);
-			//System.out.println(gState);
-			
+
 			getSpaceObjectsFromString(sObj);
-			//System.out.println("so finished");
 			end = getGameStateFromString(gState);
-			//System.out.println("gs finished");
-			System.out.println("end client");
+			// System.out.println("end client");
 		} catch (IOException e1) {
 			// System.out.println("catchClient");
 		}
@@ -163,31 +155,26 @@ public class GameBoardUI extends Canvas implements Runnable {
 		}
 		return end || toClose;
 	}
-	
+
 	private String buildSpaceObjectsString() {
 		List<SpaceObject> list = gameBoard.getSpaceObjects();
 		StringBuilder ret = new StringBuilder("");
 		list.forEach(sO -> {
-			ret.append("" + sO.getRadius() + " ; " + 
-					sO.getIcon() + " ; " + 
-					sO.getPositionVector().getX() + " ; " +
-					sO.getPositionVector().getY() + " ; " +
-					sO.getFacingVector().getX() + " ; " +
-					sO.getFacingVector().getY() + " ! "
-					);
+			ret.append("" + sO.getRadius() + " ; " + sO.getIcon() + " ; " + sO.getPositionVector().getX() + " ; "
+					+ sO.getPositionVector().getY() + " ; " + sO.getFacingVector().getX() + " ; "
+					+ sO.getFacingVector().getY() + " ! ");
 		});
 		return ret.toString();
 	}
-	
+
 	private void getSpaceObjectsFromString(String sObjects) {
 		List<SpaceObject> list = new ArrayList<SpaceObject>();
 		String[] arr = sObjects.split(" ! ");
 		for (int i = 0; i < arr.length; i++) {
 			if (arr[i].equals(" ! "))
 				break;
-			// System.out.println(arr[i]);
 			String[] arr2 = arr[i].split(" ; ");
-			
+
 			int count = 0;
 			for (int j = 0; j < arr2.length; j++) {
 				if (arr2[j].equals(" ; "))
@@ -201,32 +188,19 @@ public class GameBoardUI extends Canvas implements Runnable {
 					break;
 				newArr2[count2++] = arr2[j];
 			}
-			
-			list.add(new SpaceObject(
-					Integer.parseInt(newArr2[0]),
-					newArr2[1],
-					Double.parseDouble(newArr2[2]),
-					Double.parseDouble(newArr2[3]),
-					Double.parseDouble(newArr2[4]),
-					Double.parseDouble(newArr2[5])
-					));
+
+			list.add(new SpaceObject(Integer.parseInt(newArr2[0]), newArr2[1], Double.parseDouble(newArr2[2]),
+					Double.parseDouble(newArr2[3]), Double.parseDouble(newArr2[4]), Double.parseDouble(newArr2[5])));
 		}
-//				System.out.println("list");
-				GameBoard.setSpaceObjects(list);
-			// 	System.out.println("added");
-				gameBoard.getSpaceObjects().forEach((so -> spaceImages.put(so, getImage(so.getIcon()))));
-			//	System.out.println("image");
+		GameBoard.setSpaceObjects(list);
+		gameBoard.getSpaceObjects().forEach((so -> spaceImages.put(so, getImage(so.getIcon()))));
 	}
 
 	private String buildInputString() {
-		return "" + Input.iswPressed() + " ! " +
-				Input.isaPressed() + " ! " +
-				Input.issPressed() + " ! " +
-				Input.isdPressed() + " ! " +
-				Input.isSpacePressed()
-				;
+		return "" + Input.iswPressed() + " ! " + Input.isaPressed() + " ! " + Input.issPressed() + " ! "
+				+ Input.isdPressed() + " ! " + Input.isSpacePressed();
 	}
-	
+
 	private void getInputFromString(String inp) {
 		String[] arr = inp.split(" ! ");
 		int count = 0;
@@ -242,22 +216,19 @@ public class GameBoardUI extends Canvas implements Runnable {
 				break;
 			newArr[count2++] = arr[j];
 		}
-		
+
 		Input2.setwPressed(Boolean.parseBoolean(newArr[0]));
 		Input2.setwPressed(Boolean.parseBoolean(newArr[1]));
 		Input2.setwPressed(Boolean.parseBoolean(newArr[2]));
 		Input2.setwPressed(Boolean.parseBoolean(newArr[3]));
 		Input2.setwPressed(Boolean.parseBoolean(newArr[4]));
 	}
-	
+
 	private String buildGameStateString(boolean endGame) {
-		return "" + gameBoard.isRunning() + " ! " +
-				gameBoard.hasEnded() + " ! " +
-				gameBoard.getScore() + " ! " +
-				endGame
-				;
+		return "" + gameBoard.isRunning() + " ! " + gameBoard.hasEnded() + " ! " + gameBoard.getScore() + " ! "
+				+ endGame;
 	}
-	
+
 	private boolean getGameStateFromString(String inp) {
 		String[] arr = inp.split(" ! ");
 		int count = 0;
@@ -277,29 +248,28 @@ public class GameBoardUI extends Canvas implements Runnable {
 		boolean hasE = Boolean.parseBoolean(newArr[1]);
 		int sc = Integer.parseInt(newArr[2]);
 		boolean endG = Boolean.parseBoolean(newArr[3]);
-		
+
 		if (gameBoard.isRunning() && !isR)
 			stopGame();
 		if (!gameBoard.isRunning() && isR)
 			startGame();
 		if (hasE && !isServer) {
-			showAsyncAlert("Oh.. you lost.\n" +
-					"Your Score: " + sc);
+			showAsyncAlert("Oh.. you lost.\n" + "Your Score: " + sc);
 			stopGame();
 		}
 		return endG;
 	}
 
 	/**
-	 * Called after starting the game thread Constantly updates the game board and renders
-	 * graphics
+	 * Called after starting the game thread Constantly updates the game board and
+	 * renders graphics
 	 * 
 	 * @see Runnable#run()
 	 */
 	@Override
-	public void run(){
+	public void run() {
 		starttime = System.currentTimeMillis();
-		while (gameBoard.isRunning()){
+		while (gameBoard.isRunning()) {
 			if (multiplayer && isServer) {
 				boolean end = exchangeInfoInHost(false);
 				if (end) {
@@ -309,36 +279,34 @@ public class GameBoardUI extends Canvas implements Runnable {
 				}
 			}
 			// updates Spaceobjects positions and re-renders graphics
-			 gameBoard.updateSpaceObjects();
-			// when this.gameBoard.hasWon() is null, do nothing
-			if (gameBoard.hasEnded()){
-				int sek = (int) ((System.currentTimeMillis() - starttime)/1000);
-				int min = sek /60;
+			gameBoard.updateSpaceObjects();
+			// when this.gameBoard.hasEnded() is null, do nothing
+			if (gameBoard.hasEnded()) {
+				int sek = (int) ((System.currentTimeMillis() - starttime) / 1000);
+				int min = sek / 60;
 				sek = sek % 60;
 				String time = "Time: " + min + " Min, " + sek + " Sek";
-				
+
 				try {
 					updateScore(gameBoard.getScore(), time);
 				} catch (Exception e) {
 					System.out.println("Saving score unsuccessfull //outer");
 				}
-				
-				showAsyncAlert("Oh.. you lost.\n" +
-						"Your Score: " + gameBoard.getScore() + "\n" + 
-						time);
+
+				showAsyncAlert("Oh.. you lost.\n" + "Your Score: " + gameBoard.getScore() + "\n" + time);
 				stopGame();
-				if(multiplayer && isServer)
+				if (multiplayer && isServer)
 					exchangeInfoInHost(true);
-			} 
+			}
 			paint(graphicsContext);
-			try{
+			try {
 				Thread.sleep(SLEEP_TIME); // milliseconds to sleep
-			} catch (InterruptedException e){
+			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
-	} // end run()
-	
+	}
+
 	public void clientLoop() {
 		clientRunning = true;
 		spaceImages.clear();
@@ -349,48 +317,50 @@ public class GameBoardUI extends Canvas implements Runnable {
 				break;
 			}
 			paint(graphicsContext);
-			//clientRunning = false;
+			// clientRunning = false;
 		}
 	}
-	
+
 	/**
-	 * Checks score file, updates if necessary,
-	 * score is saved in format "score | time"
+	 * Checks score file, updates if necessary, score is saved in format "score |
+	 * time"
+	 * 
 	 * @param score int value
-	 * @param time String
+	 * @param time  String
 	 */
 	public static void updateScore(int score, String time) {
-		Path path = Path.of("resources", "scores.txt");
-		if(!Files.isRegularFile(path)) {
-			path = Path.of("scores.txt");
-		}
-		if(!Files.isRegularFile(path)) {
-			try {
-				path.toFile().createNewFile();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-			
-			if(!Files.isRegularFile(path)) {
-				return;
-			};
-		}
-		List<String> lines = new ArrayList<String>();
+		Path path = getScoresPath();
+		if (path == null)
+			return;
 		try {
-			lines = Files.readAllLines(path);
+			List<String> lines = Files.readAllLines(path);
 			lines.add(score + " | " + time);
-			String msg = lines.stream().sorted((l1,l2) -> {
+			String msg = lines.stream().sorted((l1, l2) -> {
 				int val1 = Integer.parseInt(l1.split(" | ")[0]);
 				int val2 = Integer.parseInt(l2.split(" | ")[0]);
-				return (int) Math.signum(val1 - val2)*(-1);
+				return (int) Math.signum(val1 - val2) * (-1);
 			}).limit(3).collect(Collectors.joining("\n"));
 			Files.writeString(path, msg, StandardOpenOption.WRITE);
 		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
-	
-	
+
+	public static Path getScoresPath() {
+		Path path = Path.of("resources", "scores.txt");
+		if (!Files.isRegularFile(path)) {
+			path = Path.of("scores.txt");
+		}
+		if (!Files.isRegularFile(path)) {
+			try {
+				path.toFile().createNewFile();
+			} catch (IOException e1) {
+			}
+			if (!Files.isRegularFile(path)) {
+				return null;
+			}
+		}
+		return path;
+	}
 
 	/**
 	 * Removes all existing spaceObjects from the game board and re-adds them.
@@ -398,7 +368,7 @@ public class GameBoardUI extends Canvas implements Runnable {
 	 * starting position. Renders graphics.
 	 */
 	public void gameSetup(int difficulty) {
-		if(multiplayer && !isServer) {
+		if (multiplayer && !isServer) {
 			clientRunning = false;
 			exchangeInfoInClient(true);
 			return;
@@ -422,7 +392,7 @@ public class GameBoardUI extends Canvas implements Runnable {
 	 * @param soImageFilePath: an image file path that needs to be available in the
 	 *                         resources folder of the project
 	 */
-	private Image getImage(String soImageFilePath) { // TODO GameBoardUI - getImage()
+	private Image getImage(String soImageFilePath) {
 		try {
 			URL soImageUrl = getClass().getClassLoader().getResource(soImageFilePath);
 			if (soImageUrl == null)
@@ -472,15 +442,11 @@ public class GameBoardUI extends Canvas implements Runnable {
 	 * @param graphics used to draw changes
 	 */
 	private void paint(GraphicsContext graphics) {
-		if (multiplayer && !isServer) {
-			//System.out.println("client paint");
-		}
 		graphics.setFill(backgroundColor);
 		graphics.fillRect(0, 0, getWidth(), getHeight());
 
 		for (SpaceObject so : gameBoard.getSpaceObjects())
 			paintSpaceObject(so, graphics);
-
 	}
 
 	/**
@@ -490,15 +456,9 @@ public class GameBoardUI extends Canvas implements Runnable {
 	 * @param graphics used to draw changes
 	 */
 	private void paintSpaceObject(SpaceObject so, GraphicsContext graphics) {
-		if (multiplayer && !isServer) {
-			// System.out.println("client paintSpaceObjects");
-		}
-		
 		Vector canvasPosition = convertPosition(so.getPositionVector());
-		// TODO richtige drehung, vll. invertieren
 
 		graphics.save(); // saves the current state on stack, including the current transform
-		// graphics.rotate((double) (so.getDirectionVector().getDegree()));
 		rotate(graphics, -(so.getFacingVector().getDegree()), canvasPosition.getX(), canvasPosition.getY());
 
 		if (spaceImages.get(so) == null)
@@ -539,19 +499,24 @@ public class GameBoardUI extends Canvas implements Runnable {
 			gameSetup(0);
 		});
 	}
-	
-	
+
+	public boolean isMultiplayer() {
+		return multiplayer;
+	}
+
+	public void setMultiplayer(boolean multiplayer) {
+		this.multiplayer = multiplayer;
+	}
+
+	public ServerSocket getServerSock() {
+		return serverSock;
+	}
+
 	public static void main(String[] args) {
-		// 1
-//		String sObjects = "20 ; spaceshipIcon.gif ; 30.0 ; 30.0 ; 1.0 ; 0.0 ! 100 ; planet1Icon.gif ; 700.0 ; 300.0 ; 1.0 ; 0.0 ! 10 ; moon1Icon.gif ; 700.0 ; 500.0 ; 1.0 ; 0.0 ! 20 ; spaceshipIcon.gif ; 30.0 ; 100.0 ; 1.0 ; 0.0 ! ";
-//		List<SpaceObject> l = getSpaceObjectsFromString(sObjects);
-//		System.out.println(l.toString());
-		
-		// 2
 //		String s = "Time: 0 Min, 01 Sek";
 //		GameBoardUI.updateScore(5, s);
-		
-		//oder 3
+
+		// oder
 //		Path path = FileSystems.getDefault().getPath("target", "scores.txt");
 //		try {
 //			Files.writeString(path, "\nNeuer next für scoresA.txt", StandardOpenOption.APPEND);
